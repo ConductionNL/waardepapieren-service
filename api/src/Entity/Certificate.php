@@ -89,6 +89,12 @@ class Certificate
      */
     private $image;
 
+
+    /**
+     */
+    private $imageLocation;
+
+
     /**
      * @var string The document of this certificate. This is a pdf.
      *
@@ -154,6 +160,18 @@ class Certificate
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImageLocation(): ?string
+    {
+        return $this->imageLocation;
+    }
+
+    public function setImageLocation(string $imageLocation): self
+    {
+        $this->imageLocation = $imageLocation;
 
         return $this;
     }
