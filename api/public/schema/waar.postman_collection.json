@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "9ae5253f-3fa8-4f8f-8e94-e3c41c46d1de",
+		"name": "Waardepapieren Service",
+		"description": "    API Details\r\n    - Component: Waardepapieren Service\r\n    - Reference: waar\r\n    - Enviroment: dev\r\n    - Version: V1.0\r\n    - Repository: [online](https://github.com/ConductionNL/waardepapieren-service) / [zip](https://github.com/ConductionNL/waardepapieren-service/archive/master.zip)\r\n    - Docker Image: [online](https://hub.docker.com/repository/docker/conduction/waar-php) \r\n    - Datamodel: [postman](/schema/waar.postman_collection.json) / [oas](/schema/openapi.yaml) / [pdf](/schema/datamodel.pdf) / [modelio (zip)](/schema/Datamodel_Modelio.zip) \r\n    \r\n    Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "certificate",
+			"item": [
+				{
+					"name": "Retrieves the collection of Certificate resources.",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/certificates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"certificates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creates a Certificate resource.",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/certificates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"certificates"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "325cd1c6-d6d6-4bd6-b525-37acec41a662",
+						"exec": [
+							"// example using pm.response.to.have\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// example using response assertions\r",
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"// example using pm.response.to.be*\r",
+							"pm.test(\"response must be valid and have a body\", function () {\r",
+							"     // assert that the status code is 200\r",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+							"});\r",
+							"pm.test(\"status must be 'pass'\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    console.log(jsonData);\r",
+							"    //var payloadData = JSON.parse(jsonData.Payload); //parsed payload\r",
+							"\r",
+							"    //console.log(payloadData.Id);\r",
+							"    pm.expect(jsonData.status).to.equal('pass');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/health+json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "45c1a4b6-59d3-4a6e-86bf-88a872f35845",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e8dd19ac-0e02-4f99-b86e-42c049e9d257",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d237883a-2e62-48fa-878e-bd6e2642ca2d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c3faa0e5-f593-4914-b60a-2cc17ba4cbd2",
+			"key": "baseUrl",
+			"value": "localhost"
+		},
+		{
+			"id": "e0b4791e-004a-49e0-bd59-62345ecfb135",
+			"key": "authorization",
+			"value": "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
