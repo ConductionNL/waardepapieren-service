@@ -10,6 +10,7 @@ use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -34,7 +35,7 @@ class CertificateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['certificate', EventPriorities::PRE_SERIALIZE],
+            KernelEvents::VIEW => ['certificate', EventPriorities::POST_VALIDATE],
         ];
     }
 
@@ -43,7 +44,7 @@ class CertificateSubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod();
         $contentType = $event->getRequest()->headers->get('accept');
         $route = $event->getRequest()->attributes->get('_route');
-        $resource = $event->getControllerResult();
+        $certificate = $event->getControllerResult();
 
         if (!$contentType) {
             $contentType = $event->getRequest()->headers->get('Accept');
@@ -54,10 +55,23 @@ class CertificateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($resource instanceof Certificate) {
-            $this->certificateService->handle($resource);
+        if ($certificate instanceof Certificate) {
+            $certificate = $this->certificateService->handle($certificate);
         }
-        $this->em->persist($resource);
-        $this->em->flush();
+
+        // Lets return the result
+         $response = $this->serializer->serialize(
+            $certificate,
+            'json'
+        );
+
+        // Creating a response
+        $response = new Response(
+            $response,
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
+
+        $event->setResponse($response);
     }
 }

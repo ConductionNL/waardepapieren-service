@@ -12,9 +12,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}, "enable_max_depth"=true},
- *     denormalizationContext={"groups"={"write"}, "enable_max_depth"=true}
+ *     denormalizationContext={"groups"={"write"}, "enable_max_depth"=true},
+ *     itemOperations={
+ *          "get",
+ *          "put",
+ *          "delete",
+ *          "get_change_logs"={
+ *              "path"="/certificates/{id}/change_log",
+ *              "method"="get",
+ *              "swagger_context" = {
+ *                  "summary"="Changelogs",
+ *                  "description"="Gets al the change logs for this resource"
+ *              }
+ *          },
+ *          "get_audit_trail"={
+ *              "path"="/certificates/{id}/audit_trail",
+ *              "method"="get",
+ *              "swagger_context" = {
+ *                  "summary"="Audittrail",
+ *                  "description"="Gets the audit trail for this resource"
+ *              }
+ *          }
+ *     }
  * )
- * @ORM\Entity(repositoryClass="App\Repository\CertificateRepository")
+ * @ORM\Entity()
  */
 class Certificate
 {
@@ -70,6 +91,12 @@ class Certificate
      */
     private $image;
 
+
+    /**
+     */
+    private $imageLocation;
+
+
     /**
      * @var string The document of this certificate. This is a pdf.
      *
@@ -82,6 +109,13 @@ class Certificate
     public function getId(): ?Uuid
     {
         return $this->id;
+    }
+
+    public function setId(Uuid $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getPerson(): ?string
@@ -128,6 +162,18 @@ class Certificate
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImageLocation(): ?string
+    {
+        return $this->imageLocation;
+    }
+
+    public function setImageLocation(string $imageLocation): self
+    {
+        $this->imageLocation = $imageLocation;
 
         return $this;
     }
