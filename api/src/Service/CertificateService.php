@@ -6,6 +6,7 @@ use App\Entity\Certificate;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
+use PhpOffice\PhpWord\SimpleType\DocProtect;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory as PhpWordFacory;
