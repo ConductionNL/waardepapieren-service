@@ -7,7 +7,9 @@ use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Settings;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CertificateService
@@ -27,13 +29,9 @@ class CertificateService
     {
         $person = $certificate->getPerson();
 
-        $claim = $this->createClaim($person);
-        $image = $this->createImage($claim);
-        $document = $this->createDocument($image);
-
-        $certificate->setClaim($claim);
-        $certificate->setImage($image);
-        $certificate->setDocument($document);
+        $certificate = $this->createClaim($certificate);
+        $certificate = $this->createImage($certificate);
+        //$certificate = $this->createDocument($certificate);
 
         return $certificate;
     }
@@ -61,19 +59,22 @@ class CertificateService
         return $certificate;
     }
 
-    public function createDocument(Certificate $certificate, Session $session) {
+    public function createDocument(Certificate $certificate) {
         // Deze willen we later uit het wrc halen
         $document = 'pdf document';
 
         // do some rendering
 
         // Creating the new document...
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord = new PhpWord();
 
         // Setup write protection
-        $documentProtection = $phpWord->getSettings()->getDocumentProtection();
-        $documentProtection->setEditing(DocProtect::READ_ONLY);
-        $documentProtection->setPassword('myPassword');
+        //$phpWord->getSettings()->setPdfRendererPath(dirname(__FILE__)."/../../Office/tcpdf");
+        //$phpWord->getSettings()->setPdfRendererName('TCPDF');
+
+        //$documentProtection = $phpWord->getSettings()->getDocumentProtection();
+        //$documentProtection->setEditing(DocProtect::READ_ONLY);
+        //$documentProtection->setPassword('myPassword');
 
         /* Note: any element you append to a document must reside inside of a Section. */
 
@@ -81,8 +82,10 @@ class CertificateService
         $section = $phpWord->addSection();
         $section->addText($document);
 
-        // Creating the dil
-        $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'pdf');
+        // Creating the file
+        $session = new Session();
+
+        $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'PDF');
         $filename = dirname(__FILE__, 3)."/var/".$session->getId().".pdf";
         $writer->save($filename);
 

@@ -640,6 +640,9 @@
     "tbbc/money-bundle": {
         "version": "v3.1.9"
     },
+    "tecnickcom/tcpdf": {
+        "version": "6.3.5"
+    },
     "twig/extensions": {
         "version": "1.0",
         "recipe": {
