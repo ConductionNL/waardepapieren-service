@@ -10,7 +10,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\SimpleType\DocProtect;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Ramsey\Uuid\Uuid;
 
 class CertificateService
 {
@@ -28,7 +30,7 @@ class CertificateService
     public function handle(Certificate $certificate)
     {
         $person = $certificate->getPerson();
-
+        $certificate = $certificate->setId(Uuid::uuid4());
         $certificate = $this->createClaim($certificate);
         $certificate = $this->createImage($certificate);
         //$certificate = $this->createDocument($certificate);
@@ -72,9 +74,9 @@ class CertificateService
         //$phpWord->getSettings()->setPdfRendererPath(dirname(__FILE__)."/../../Office/tcpdf");
         //$phpWord->getSettings()->setPdfRendererName('TCPDF');
 
-        //$documentProtection = $phpWord->getSettings()->getDocumentProtection();
-        //$documentProtection->setEditing(DocProtect::READ_ONLY);
-        //$documentProtection->setPassword('myPassword');
+        $documentProtection = $phpWord->getSettings()->getDocumentProtection();
+        $documentProtection->setEditing(DocProtect::READ_ONLY);
+        $documentProtection->setPassword('myPassword');
 
         /* Note: any element you append to a document must reside inside of a Section. */
 
@@ -83,10 +85,8 @@ class CertificateService
         $section->addText($document);
 
         // Creating the file
-        $session = new Session();
-
         $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'PDF');
-        $filename = dirname(__FILE__, 3)."/var/".$session->getId().".pdf";
+        $filename = dirname(__FILE__, 3)."/var/".$certificate->getId().".pdf";
         $writer->save($filename);
 
         $certificate->setDocument(base64_encode(file_get_contents($filename)));
