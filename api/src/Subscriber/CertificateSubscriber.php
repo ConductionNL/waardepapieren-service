@@ -55,8 +55,6 @@ class CertificateSubscriber implements EventSubscriberInterface
         }
 
         if ($resource instanceof Certificate) {
-            $resource->getRequest();
-
             $this->certificateService->handle($resource);
         }
         $this->em->persist($resource);

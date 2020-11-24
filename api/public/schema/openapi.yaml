@@ -2965,6 +2965,15 @@ components:
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
           type: string
+        claim:
+          description: 'The claim of this certificate. This is a jwt token.'
+          type: string
+        image:
+          description: 'The image of this certificate. This is a qr-code.'
+          type: string
+        document:
+          description: 'The document of this certificate. This is a pdf.'
+          type: string
     Certificate-write:
       type: object
       description: ''
@@ -3000,6 +3009,15 @@ components:
           type: string
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+          type: string
+        claim:
+          description: 'The claim of this certificate. This is a jwt token.'
+          type: string
+        image:
+          description: 'The image of this certificate. This is a qr-code.'
+          type: string
+        document:
+          description: 'The document of this certificate. This is a pdf.'
           type: string
     'Certificate:jsonld-write':
       type: object
@@ -3250,12 +3268,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-11-24 09:59:41'
+        example: '2020-11-24 10:13:09'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-11-24 09:59:41'
+        example: '2020-11-24 10:13:09'
     required: []
   AuditTrail-write:
     properties:
@@ -3303,12 +3321,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-11-24 09:59:41'
+        example: '2020-11-24 10:13:09'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-11-24 09:59:41'
+        example: '2020-11-24 10:13:09'
     required: []
   ChangeLog-write:
     properties:
