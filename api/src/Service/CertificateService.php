@@ -33,7 +33,7 @@ class CertificateService
         $certificate = $certificate->setId(Uuid::uuid4());
         $certificate = $this->createClaim($certificate);
         $certificate = $this->createImage($certificate);
-        //$certificate = $this->createDocument($certificate);
+        $certificate = $this->createDocument($certificate);
 
         return $certificate;
     }
@@ -52,11 +52,17 @@ class CertificateService
 
         $configuration['size'] = 300;
         $configuration['margin'] = 10;
+        $configuration['writer'] = 'png';
 
         $qrCode = $this->qrCodeFactory->create($certificate->getClaim(), $configuration);
         $response = new QrCodeResponse($qrCode);
 
-        $certificate->setImage(base64_encode($response->getContent()));
+        $certificate->setImage('data:image/png;base64,'.base64_encode($response->getContent()));
+
+        // Save it to a file
+        $filename = dirname(__FILE__, 3)."/var/".$certificate->getId().".png";
+        $qrCode->writeFile($filename);
+        $certificate->setImageLocation($filename);
 
         return $certificate;
     }
@@ -71,8 +77,9 @@ class CertificateService
         $phpWord = new PhpWord();
 
         // Setup write protection
-        //$phpWord->getSettings()->setPdfRendererPath(dirname(__FILE__)."/../../Office/tcpdf");
-        //$phpWord->getSettings()->setPdfRendererName('TCPDF');
+        $rendererName = Settings::PDF_RENDERER_DOMPDF;
+        $rendererLibraryPath = realpath('../vendor/dompdf/dompdf');
+        Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
 
         $documentProtection = $phpWord->getSettings()->getDocumentProtection();
         $documentProtection->setEditing(DocProtect::READ_ONLY);
@@ -84,15 +91,19 @@ class CertificateService
         $section = $phpWord->addSection();
         $section->addText($document);
 
+        // Add the iamge
+        $section->addImage($certificate->getImageLocation());
+
         // Creating the file
         $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'PDF');
         $filename = dirname(__FILE__, 3)."/var/".$certificate->getId().".pdf";
         $writer->save($filename);
 
-        $certificate->setDocument(base64_encode(file_get_contents($filename)));
+        $certificate->setDocument('data:'.mime_content_type($filename).';base64,'.base64_encode(file_get_contents($filename)));
 
         // Lets remove the temporary file
         unlink($filename);
+        unlink($certificate->getImageLocation());
 
         return $certificate;
     }
