@@ -78,7 +78,7 @@ class CertificateService
         $section->addText($document);
 
         // Creating the dil
-        $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'pdf');
+        $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'PDF');
         $filename = dirname(__FILE__, 3)."/var/".$session->getId().".pdf";
         $writer->save($filename);
 
