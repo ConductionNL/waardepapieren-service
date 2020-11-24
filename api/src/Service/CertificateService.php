@@ -8,7 +8,6 @@ use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\IOFactory as PhpWordFacory;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CertificateService
@@ -16,14 +15,12 @@ class CertificateService
     private $commonGroundService;
     private $params;
     private $qrCodeFactory;
-    private $phpWordFacory;
 
-    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory, PhpWordFacory $phpWordFacory)
+    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory)
     {
         $this->commonGroundService = $commonGroundService;
         $this->params = $params;
         $this->qrCodeFactory = $qrCodeFactory;
-        $this->phpWordFacory = $phpWordFacory;
     }
 
     public function handle(Certificate $certificate)
@@ -85,7 +82,7 @@ class CertificateService
         $section->addText($document);
 
         // Creating the dil
-        $writer = $this->phpWordFacory->createWriter($phpWord, 'pdf');
+        $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'pdf');
         $filename = dirname(__FILE__, 3)."/var/".$session->getId().".pdf";
         $writer->save($filename);
 
