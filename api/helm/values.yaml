@@ -4,20 +4,20 @@
 
 settings:
   registryBase: docker.io/conduction
-  projectName: pc
-  name: pc
-  title: Proto component commonground
+  projectName: waar
+  name: waar
+  title: Waardepapieren Service
   version: V1.0
   majorVersion: v1
   id: 
-  description: '&#039;Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.&#039;'
+  description: 'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'
   type: component
-  repro: https://github.com/ConductionNL/proto-component
-  demo: pc.zaakonline.nl
-  container: https://hub.docker.com/repository/docker/conduction/pc-php
-  domain: conduction.nl
-  subdomain: pc
-  subpath: pc
+  repro: https://github.com/ConductionNL/waardepapieren-service
+  demo: waar.zuid-drecht.nl
+  container: https://hub.docker.com/repository/docker/conduction/waar-php
+  domain: zuid-drecht.nl
+  subdomain: waar
+  subpath: waar
   subpathRouting: true
   organisationName: Conduction
   email: info@conduction.nl
