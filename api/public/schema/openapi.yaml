@@ -1260,12 +1260,6 @@ paths:
             text/html:
               schema:
                 $ref: '#/components/schemas/Certificate-read'
-          links:
-            GetCertificateItem:
-              parameters:
-                id: '$response.body#/id'
-              operationId: getCertificateItem
-              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /certificates/{id}`.'
         400:
           description: 'Invalid input'
         404:
@@ -2952,13 +2946,6 @@ components:
       type: object
       description: ''
       properties:
-        id:
-          readOnly: true
-          description: 'The UUID identifier of this resource'
-          externalDocs:
-            url: 'http://schema.org/identifier'
-          type: string
-          format: uuid
         person:
           description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
           type: string
@@ -2997,13 +2984,6 @@ components:
         '@type':
           readOnly: true
           type: string
-        id:
-          readOnly: true
-          description: 'The UUID identifier of this resource'
-          externalDocs:
-            url: 'http://schema.org/identifier'
-          type: string
-          format: uuid
         person:
           description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
           type: string
@@ -3156,14 +3136,6 @@ components:
           readOnly: true
           type: string
 definitions:
-  Certificate-read:
-    properties:
-      id:
-        description: 'The UUID identifier of this resource'
-        type: string
-        example: e2984465-190a-4562-829e-a8cca81aa35d
-        format: uuid
-    required: []
   AuditTrail-read:
     properties:
       id:
@@ -3268,12 +3240,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-11-24 10:45:40'
+        example: '2020-11-24 12:20:21'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-11-24 10:45:40'
+        example: '2020-11-24 12:20:21'
     required: []
   AuditTrail-write:
     properties:
@@ -3321,12 +3293,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-11-24 10:45:40'
+        example: '2020-11-24 12:20:21'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-11-24 10:45:40'
+        example: '2020-11-24 12:20:21'
     required: []
   ChangeLog-write:
     properties:
@@ -3337,12 +3309,6 @@ definitions:
         maxLength: 2555
     required: []
 tags:
-  -
-    name: Certificate
-    description: |
-      
-      
-      
   -
     name: AuditTrail
     description: |

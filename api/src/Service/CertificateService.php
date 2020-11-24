@@ -8,7 +8,6 @@ use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use PhpOffice\PhpWord\PhpWord;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CertificateService
@@ -26,22 +25,18 @@ class CertificateService
 
     public function handle(Certificate $certificate)
     {
-        $person = $certificate->getPerson();
-
-        $claim = $this->createClaim($person);
-        $image = $this->createImage($claim);
-        $document = $this->createDocument($image);
-
-        $certificate->setClaim($claim);
-        $certificate->setImage($image);
-        $certificate->setDocument($document);
+        $certificate = $this->createClaim($certificate);
+        $certificate = $this->createImage($certificate);
+        $certificate = $this->createDocument($certificate, new Session());
 
         return $certificate;
     }
 
     public function createClaim(Certificate $certificate) {
+        $person = $certificate->getPerson();
         // generate jwt token with this person
         // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
+
         $jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo';
 
         $certificate->setClaim($jwt);
