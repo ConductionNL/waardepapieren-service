@@ -8,7 +8,12 @@ use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\SimpleType\DocProtect;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Ramsey\Uuid\Uuid;
 
 class CertificateService
 {
@@ -25,9 +30,11 @@ class CertificateService
 
     public function handle(Certificate $certificate)
     {
+        $person = $certificate->getPerson();
+        $certificate = $certificate->setId(Uuid::uuid4());
         $certificate = $this->createClaim($certificate);
         $certificate = $this->createImage($certificate);
-        $certificate = $this->createDocument($certificate, new Session());
+        //$certificate = $this->createDocument($certificate);
 
         return $certificate;
     }
@@ -57,16 +64,19 @@ class CertificateService
         return $certificate;
     }
 
-    public function createDocument(Certificate $certificate, Session $session) {
+    public function createDocument(Certificate $certificate) {
         // Deze willen we later uit het wrc halen
         $document = 'pdf document';
 
         // do some rendering
 
         // Creating the new document...
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord = new PhpWord();
 
         // Setup write protection
+        //$phpWord->getSettings()->setPdfRendererPath(dirname(__FILE__)."/../../Office/tcpdf");
+        //$phpWord->getSettings()->setPdfRendererName('TCPDF');
+
         $documentProtection = $phpWord->getSettings()->getDocumentProtection();
         $documentProtection->setEditing(DocProtect::READ_ONLY);
         $documentProtection->setPassword('myPassword');
@@ -77,9 +87,9 @@ class CertificateService
         $section = $phpWord->addSection();
         $section->addText($document);
 
-        // Creating the dil
+        // Creating the file
         $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'PDF');
-        $filename = dirname(__FILE__, 3)."/var/".$session->getId().".pdf";
+        $filename = dirname(__FILE__, 3)."/var/".$certificate->getId().".pdf";
         $writer->save($filename);
 
         $certificate->setDocument(base64_encode(file_get_contents($filename)));
