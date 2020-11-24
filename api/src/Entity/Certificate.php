@@ -52,6 +52,33 @@ class Certificate
      */
     private $type;
 
+    /**
+     * @var string The claim of this certificate. This is a jwt token.
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     * @Groups({"read"})
+     */
+    private $claim;
+
+    /**
+     * @var string The image of this certificate. This is a qr-code.
+     *
+     * @example ...
+     *
+     * @Groups({"read"})
+     */
+    private $image;
+
+    /**
+     * @var string The document of this certificate. This is a pdf.
+     *
+     * @example ...
+     *
+     * @Groups({"read"})
+     */
+    private $document;
+
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -77,6 +104,42 @@ class Certificate
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getClaim(): ?string
+    {
+        return $this->claim;
+    }
+
+    public function setClaim(string $claim): self
+    {
+        $this->claim = $claim;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDocument(): ?string
+    {
+        return $this->document;
+    }
+
+    public function setDocument(string $document): self
+    {
+        $this->document = $document;
 
         return $this;
     }
