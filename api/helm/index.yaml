@@ -3,14 +3,27 @@ entries:
   pc:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2020-10-16T13:23:41.402163Z"
+    created: "2020-11-24T09:04:51.4727431Z"
     description: '&#039;Naast deze JSON rest API is er ook een [graphql](/graphql)
       interface beschikbaar.&#039;'
-    digest: c860b1af96831908a11d8bcdcf01479cd2061a4aecaf26b5f9e23aa90f8a42c6
+    digest: 22105bb8e0c0f0a6090474acf636b9cbc4b48514f6161c9ad99f688f076626cf
     home: pc.zaakonline.nl
     icon: pc.zaakonline.nl
     name: pc
     urls:
     - pc-0.1.0.tgz
     version: 0.1.0
-generated: "2020-10-16T13:23:41.3961004Z"
+  waar:
+  - apiVersion: v1
+    appVersion: V1.0
+    created: "2020-11-24T09:04:51.4849499Z"
+    description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
+      beschikbaar.
+    digest: 1def02d90bf7fb24de19c9d6624fbb7dfa33a6ef5965c60e7e9aa23f439b71b2
+    home: waar.zaakonline.nl
+    icon: waar.zaakonline.nl
+    name: waar
+    urls:
+    - waar-0.1.0.tgz
+    version: 0.1.0
+generated: "2020-11-24T09:04:51.4641615Z"
