@@ -5,19 +5,23 @@ namespace App\Service;
 use App\Entity\Certificate;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Doctrine\ORM\EntityManagerInterface;
+use Endroid\QrCode\Factory\QrCodeFactoryInterface;
+use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class CertificateService
 {
     private $em;
     private $commonGroundService;
+    private $qrCodeFactory;
     private $params;
 
-    public function __construct(EntityManagerInterface $em, CommonGroundService $commonGroundService, ParameterBagInterface $params)
+    public function __construct(EntityManagerInterface $em, CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory)
     {
         $this->em = $em;
         $this->commonGroundService = $commonGroundService;
         $this->params = $params;
+        $this->qrCodeFactory = $qrCodeFactory;
     }
 
     public function handle(Certificate $certificate)
@@ -37,16 +41,21 @@ class CertificateService
 
     public function createClaim($person) {
         // generate jwt token with this person
-        // check if $person is a bsn or 'haal centraal' uri!
+        // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
         $jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo';
 
         return $jwt;
     }
 
     public function createImage($claim) {
-        $image = 'qr-code';
 
-        return $image;
+        $configuration['size'] = 300;
+        $configuration['margin'] = 10;
+
+        $qrCode = $this->qrCodeFactory->create($claim, $configuration);
+        $response = new QrCodeResponse($qrCode);
+
+        return base64_encode($response->getContent());
     }
 
     public function createDocument($image) {
