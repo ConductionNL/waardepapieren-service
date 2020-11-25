@@ -126,7 +126,6 @@ class CertificateService
      */
     public function createDocument(Certificate $certificate) {
         // Deze willen we later uit het wrc halen
-        $document = 'pdf document';
 
         // Creating the new document...
         $phpWord = new PhpWord();
@@ -145,12 +144,50 @@ class CertificateService
         // Adding an empty Section to the document...
         $section = $phpWord->addSection();
 
-        //$header = $section->addHeader();
-        //$header->addWatermark( realpath('../public/images/cert_hoorn.svg'), array('marginTop' => 0, 'marginLeft' => 0));
+        $header = $section->addHeader();
+        $header->addWatermark( realpath('../public/images/cert_hoorn.jpg'), array('marginTop' => 200, 'marginLeft' => 50));
 
-        $section->addText($document);
+        switch ($certificate->getType()) {
+            case "geboorte akte":
+                $section->addText(
+                    'Geboorte Akte',
+                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
+                );
+                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                break;
+            case "verblijfs geschiedenis":
+                $section->addText(
+                    'Verblijfs geschiedenis',
+                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
+                );
+                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                break;
+            case "uitreksel brp":
+                $section->addText(
+                    'Uitreksel BRP',
+                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
+                );
+                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                break;
+            default:
+                /* @todo throw error */
+        }
+
+
+        $section->addTextBreak(2);
+        $section->addText(
+            'Uw gefaliceerde claim',
+            array('name' => 'Calibri', 'size' => 15, 'color' => 'CA494D', 'bold' => true)
+        );
+
+        $section->addText($certificate->getClaim());
 
         // Add the iamge
+        $section->addTextBreak(2);
+        $section->addText(
+            'Uw scanbare claim',
+            array('name' => 'Tahoma', 'size' => 16, 'color' => 'CA494D', 'bold' => true)
+        );
         $section->addImage($certificate->getImageLocation());
 
         // Creating the file
