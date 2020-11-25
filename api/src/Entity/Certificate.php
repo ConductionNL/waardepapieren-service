@@ -14,25 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     normalizationContext={"groups"={"read"}, "enable_max_depth"=true},
  *     denormalizationContext={"groups"={"write"}, "enable_max_depth"=true},
  *     itemOperations={
- *          "get",
- *          "put",
- *          "delete",
- *          "get_change_logs"={
- *              "path"="/certificates/{id}/change_log",
- *              "method"="get",
- *              "swagger_context" = {
- *                  "summary"="Changelogs",
- *                  "description"="Gets al the change logs for this resource"
- *              }
- *          },
- *          "get_audit_trail"={
- *              "path"="/certificates/{id}/audit_trail",
- *              "method"="get",
- *              "swagger_context" = {
- *                  "summary"="Audittrail",
- *                  "description"="Gets the audit trail for this resource"
- *              }
- *          }
+ *          "get"
+ *     },
+ *     collectionOperations={
+ *          "post"
  *     }
  * )
  * @ORM\Entity()
