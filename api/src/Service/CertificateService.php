@@ -144,6 +144,8 @@ class CertificateService
         // Adding an empty Section to the document...
         $section = $phpWord->addSection();
 
+        $section->addImage(realpath('../public/images/logo_hoorn.jpg'));
+
         $header = $section->addHeader();
         $header->addWatermark( realpath('../public/images/cert_hoorn.jpg'), array('marginTop' => 200, 'marginLeft' => 50));
 
