@@ -27,27 +27,80 @@ class CertificateService
         $this->qrCodeFactory = $qrCodeFactory;
     }
 
-    public function handle(Certificate $certificate)
-    {
-        $person = $certificate->getPerson();
-        $certificate = $certificate->setId(Uuid::uuid4());
-        $certificate = $this->createClaim($certificate);
-        $certificate = $this->createImage($certificate);
-        $certificate = $this->createDocument($certificate);
+    public function get($id){
+        $registerdCertificate = $this->commonGroundService->getResource(['component'=>'wari','type'=>'certificate','id'=>$id]);
+
+        $certificate = New Certificate();
+        $certificate->setId($registerdCertificate['id']);
+        $certificate->setClaim($registerdCertificate['claim']);
+        $certificate->setImage($registerdCertificate['image']);
+        $certificate->setDocument($registerdCertificate['document']);
 
         return $certificate;
     }
 
+    public function create(Certificate $certificate)
+    {
+        // Lets first get a prelimitary id from the register
+
+        // Theorganisation should be dynamic
+        $organization = 'https://wrc.zaakonline.nl/organisations/16353702-4614-42ff-92af-7dd11c8eef9f';
+        $registerdCertificate = ['person'=>$certificate->getPerson(),'organization'=>$organization];
+        $registerdCertificate = $this->commonGroundService->createResource(['component'=>'wari','type'=>'certificates']);
+
+        // Then we can create a certificate
+        $certificate = $certificate->setId($registerdCertificate['id']);
+        $certificate = $this->createClaim($certificate);
+        $certificate = $this->createImage($certificate);
+        $certificate = $this->createDocument($certificate);
+
+        // And update the created certificate to the register
+        $registerdCertificate['claim'] = $certificate->getClaim();
+        $registerdCertificate['image'] = $certificate->getImage();
+        $registerdCertificate['document'] = $certificate->getDocument();
+
+        $this->commonGroundService->saveResource($registerdCertificate);
+
+        // Now we can return our freshly created certificate
+        return $certificate;
+    }
+
     public function createClaim(Certificate $certificate) {
-        // generate jwt token with this person
+        // Get person from BRP
+
         // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
-        $jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo';
+        if(filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)){
+            $person = $this->commonGroundService->getResource($certificate->getPerson());
+        }
+        else{
+            $person = $this->commonGroundService->getResource(['component'=>'brp','type'=>'ingeschrevenpersonen','id'=>$certificate->getPerson()]);
+        }
+        //
+        if(!$person){
+            /* @todo throw error */
+        }
+
+        // Create a secret
+        $secret = $certificate->getId();
+
+        // Create token payload as a JSON string
+        $payload = json_encode([
+            'iss' => $certificate->getId(),
+            'user_id' => $person['id'],
+            'user_representation' => $person['@id'],
+            'iat' => time()
+        ]);
+
+        $jwt = $this->createJWT($payload, $secret);
 
         $certificate->setClaim($jwt);
 
         return $certificate;
     }
 
+    /*
+     * This function creates a QR code for the given claim
+     */
     public function createImage(Certificate $certificate) {
 
         $configuration['size'] = 300;
@@ -67,11 +120,12 @@ class CertificateService
         return $certificate;
     }
 
+    /*
+     * This function creates the (pdf) document for a given certificate type
+     */
     public function createDocument(Certificate $certificate) {
         // Deze willen we later uit het wrc halen
         $document = 'pdf document';
-
-        // do some rendering
 
         // Creating the new document...
         $phpWord = new PhpWord();
@@ -106,5 +160,28 @@ class CertificateService
         unlink($certificate->getImageLocation());
 
         return $certificate;
+    }
+
+    /*
+     * This function creates a jwt envelope for a payload and secret
+     */
+    public function createJWT(array $payload, string $secret) {
+        // Create token header as a JSON string
+        $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+
+        // Encode Header to Base64Url String
+        $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
+
+        // Encode Payload to Base64Url String
+        $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
+
+        // Create Signature Hash
+        $signature = hash_hmac('sha256', $base64UrlHeader.'.'.$base64UrlPayload, $secret, true);
+
+        // Encode Signature to Base64Url String
+        $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
+
+        // Return JWT
+        return $base64UrlHeader.'.'.$base64UrlPayload.'.'.$base64UrlSignature;
     }
 }

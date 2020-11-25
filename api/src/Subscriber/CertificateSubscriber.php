@@ -50,13 +50,23 @@ class CertificateSubscriber implements EventSubscriberInterface
             $contentType = $event->getRequest()->headers->get('Accept');
         }
 
-        // We should also check on entity = component
-        if ($method != 'POST') {
+        /* @todo check for  routes */
+
+        // Entity Check
+        if (!$certificate instanceof Certificate) {
             return;
+
         }
 
-        if ($certificate instanceof Certificate) {
-            $certificate = $this->certificateService->handle($certificate);
+        // We should also check on entity = component
+        if ($method == 'POST') {
+            $certificate = $this->certificateService->create($certificate);
+        }
+        elseif($method == 'GET' && $event->getRequest()->get('id')){
+            $certificate = $this->certificateService->get($event->getRequest()->get('id'));
+        }
+        else{
+            /* @todo thow unknown poeeration exeption */
         }
 
         // Lets return the result
