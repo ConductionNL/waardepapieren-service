@@ -15,7 +15,7 @@ settings:
   repro: https://github.com/ConductionNL/waardepapieren-service
   demo: waar.zuid-drecht.nl
   container: https://hub.docker.com/repository/docker/conduction/waar-php
-  domain: zuid-drecht.nl
+  domain: https://waardepapieren-gemeentehoorn.commonground.nu
   subdomain: waar
   subpath: waar
   subpathRouting: true
@@ -50,9 +50,9 @@ settings:
   archiveEnabled: false
 
 security:
-  commongroundId: "9329d8d0-1d5e-433c-bb47-6991053c7fcb"
-  commongroundKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
-  applicationKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+  commongroundId: "47e971de-2272-4e09-a141-134612e46a22"
+  commongroundKey: "47e971de-2272-4e09-a141-134612e46a22"
+  applicationKey: "47e971de-2272-4e09-a141-134612e46a22"
   userKey: "79d5b14c-70ab-41fb-ac02-917e3288870b"
   authorisationProviderUser: https://uc.zuid-drecht.nl
   authorisationProviderApplication: https://openzaak.dev.zuid-drecht.nl/authorizaties/api/v1

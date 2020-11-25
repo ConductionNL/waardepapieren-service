@@ -41,7 +41,7 @@ class Certificate
     /**
      * @var string The person for this certificate, this can be a bsn or 'haal centraal' uri.
      *
-     * @example 999993456
+     * @example https://dev.zuid-drecht.nl/api/v1/brp/ingeschrevenpersonen/999992016
      *
      * @Groups({"read", "write"})
      */

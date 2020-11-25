@@ -46,10 +46,10 @@ class CertificateService
         // Theorganisation should be dynamic
         $organization = 'https://wrc.zaakonline.nl/organisations/16353702-4614-42ff-92af-7dd11c8eef9f';
         $registerdCertificate = ['person'=>$certificate->getPerson(),'organization'=>$organization];
-        $registerdCertificate = $this->commonGroundService->createResource(['component'=>'wari','type'=>'certificates']);
+        $registerdCertificate = $this->commonGroundService->createResource($registerdCertificate, ['component'=>'wari','type'=>'certificates']);
 
         // Then we can create a certificate
-        $certificate = $certificate->setId($registerdCertificate['id']);
+        $certificate = $certificate->setId( Uuid::fromString($registerdCertificate['id']));
         $certificate = $this->createClaim($certificate);
         $certificate = $this->createImage($certificate);
         $certificate = $this->createDocument($certificate);
@@ -69,6 +69,7 @@ class CertificateService
         // Get person from BRP
 
         // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
+
         if(filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)){
             $person = $this->commonGroundService->getResource($certificate->getPerson());
         }
@@ -84,12 +85,12 @@ class CertificateService
         $secret = $certificate->getId();
 
         // Create token payload as a JSON string
-        $payload = json_encode([
+        $payload = [
             'iss' => $certificate->getId(),
             'user_id' => $person['id'],
             'user_representation' => $person['@id'],
             'iat' => time()
-        ]);
+        ];
 
         $jwt = $this->createJWT($payload, $secret);
 
@@ -143,6 +144,10 @@ class CertificateService
 
         // Adding an empty Section to the document...
         $section = $phpWord->addSection();
+
+        //$header = $section->addHeader();
+        //$header->addWatermark( realpath('../public/images/cert_hoorn.svg'), array('marginTop' => 0, 'marginLeft' => 0));
+
         $section->addText($document);
 
         // Add the iamge
@@ -173,7 +178,7 @@ class CertificateService
         $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
 
         // Encode Payload to Base64Url String
-        $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
+        $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode($payload)));
 
         // Create Signature Hash
         $signature = hash_hmac('sha256', $base64UrlHeader.'.'.$base64UrlPayload, $secret, true);
