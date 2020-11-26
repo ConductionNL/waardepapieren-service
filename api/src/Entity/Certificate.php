@@ -81,7 +81,7 @@ class Certificate
     private $type;
 
     /**
-     * @var string The claim of this certificate as an json object
+     * @var array The claim of this certificate as an json object
      *
      * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
      *
@@ -90,7 +90,7 @@ class Certificate
     private $claim;
 
     /**
-     * @var aray The claim of this certificate as a jwt token.
+     * @var string The claim of this certificate as a jwt token.
      *
      * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
      *

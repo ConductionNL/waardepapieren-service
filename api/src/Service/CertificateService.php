@@ -155,77 +155,77 @@ class CertificateService
                     'Akte van geboorte',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_huwelijk":
                 $section->addText(
                     'Akte van huwelijk',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_overlijden":
                 $section->addText(
                     'Akte van overlijden',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_registratie_van_een_partnerschap":
                 $section->addText(
                     'Akte van registratie van een partnerschap',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_omzetting_van_een_registratie_van_een_partnerschap":
                 $section->addText(
                     'Akte van omzetting van een registratie van een partnerschap',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "verklaring_van_huwelijksbevoegdheid":
                 $section->addText(
                     'Verklaring van huwelijksbevoegdheid',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "verklaring_van_in_leven_zijn":
                 $section->addText(
                     'Verklaring van in leven zijn',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "verklaring_van_nederlandershap":
                 $section->addText(
                     'Verklaring va nederlandershap',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "uittreksel_basis_registratie_personen":
                 $section->addText(
                     'Uittreksel basis registratie personen',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "uittreksel_registratie_niet_ingezetenen":
                 $section->addText(
                     'Uittreksel registratie niet ingezetenen',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "historisch_uittreksel_basis_registratie_personen":
                 $section->addText(
                     'Historisch uittreksel basis registratie_personen',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             default:
                 /* @todo throw error */
