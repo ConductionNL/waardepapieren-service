@@ -41,7 +41,20 @@ class CertificateService
 
     public function create(Certificate $certificate)
     {
-        // Lets first get a prelimitary id from the register
+        // Get person from BRP
+
+        // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
+
+        if(filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)){
+            $person = $certificate->setPersonObject($certificate->getPerson());
+        }
+        else{
+            $person = $certificate->setPersonObject(['component'=>'brp','type'=>'ingeschrevenpersonen','id'=>$certificate->getPerson()]);
+        }
+        //
+        if(!$person){
+            /* @todo throw error */
+        }
 
         // Theorganisation should be dynamic
         $organization = 'https://wrc.zaakonline.nl/organisations/16353702-4614-42ff-92af-7dd11c8eef9f';
@@ -57,6 +70,7 @@ class CertificateService
         // And update the created certificate to the register
         $registerdCertificate['type'] = $certificate->getType();
         $registerdCertificate['claim'] = $certificate->getClaim();
+        $registerdCertificate['jwt'] = $certificate->getJWT();
         $registerdCertificate['image'] = $certificate->getImage();
         $registerdCertificate['document'] = $certificate->getDocument();
 
@@ -67,20 +81,6 @@ class CertificateService
     }
 
     public function createClaim(Certificate $certificate) {
-        // Get person from BRP
-
-        // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
-
-        if(filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)){
-            $person = $this->commonGroundService->getResource($certificate->getPerson());
-        }
-        else{
-            $person = $this->commonGroundService->getResource(['component'=>'brp','type'=>'ingeschrevenpersonen','id'=>$certificate->getPerson()]);
-        }
-        //
-        if(!$person){
-            /* @todo throw error */
-        }
 
         // Create a secret
         $secret = $certificate->getId();
@@ -88,14 +88,16 @@ class CertificateService
         // Create token payload as a JSON string
         $payload = [
             'iss' => $certificate->getId(),
-            'user_id' => $person['id'],
+            'user_id' =>  $certificate->getPersonObject()['id'],
             'user_representation' => $person['@id'],
             'iat' => time()
         ];
 
-        $jwt = $this->createJWT($payload, $secret);
+        $certificate = $this->setClaim($payload);
 
-        $certificate->setClaim($jwt);
+        $jwt = $this->createJWT($certificate);
+
+        $certificate->setJWT($jwt);
 
         return $certificate;
     }
@@ -266,7 +268,14 @@ class CertificateService
     /*
      * This function creates a jwt envelope for a payload and secret
      */
-    public function createJWT(array $payload, string $secret) {
+    public function createJWT(Certificate $certificate) {
+
+        // Create a secret
+        $secret = $certificate->getId();
+
+        // Create a payload
+        $payload = $certificate->getClaimt();
+
         // Create token header as a JSON string
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
 
