@@ -46,10 +46,10 @@ class CertificateService
         // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
 
         if(filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)){
-            $person = $certificate->setPersonObject($certificate->getPerson());
+            $person = $certificate->setPersonObject($this->commonGroundService->getResource($certificate->getPerson()));
         }
         else{
-            $person = $certificate->setPersonObject(['component'=>'brp','type'=>'ingeschrevenpersonen','id'=>$certificate->getPerson()]);
+            $person = $certificate->setPersonObject($this->commonGroundService->getResource(['component'=>'brp','type'=>'ingeschrevenpersonen','id'=>$certificate->getPerson()]));
         }
         //
         if(!$person){
@@ -69,8 +69,8 @@ class CertificateService
 
         // And update the created certificate to the register
         $registerdCertificate['type'] = $certificate->getType();
-        $registerdCertificate['claim'] = $certificate->getClaim();
-        $registerdCertificate['jwt'] = $certificate->getJWT();
+        //$registerdCertificate['claim'] = $certificate->getClaim();
+        //$registerdCertificate['jwt'] = $certificate->getJWT();
         $registerdCertificate['image'] = $certificate->getImage();
         $registerdCertificate['document'] = $certificate->getDocument();
 
@@ -82,18 +82,15 @@ class CertificateService
 
     public function createClaim(Certificate $certificate) {
 
-        // Create a secret
-        $secret = $certificate->getId();
-
         // Create token payload as a JSON string
         $payload = [
             'iss' => $certificate->getId(),
             'user_id' =>  $certificate->getPersonObject()['id'],
-            'user_representation' => $person['@id'],
+            'user_representation' => $certificate->getPersonObject()['@id'],
             'iat' => time()
         ];
 
-        $certificate = $this->setClaim($payload);
+        $certificate = $certificate->setClaim($payload);
 
         $jwt = $this->createJWT($certificate);
 
@@ -111,7 +108,7 @@ class CertificateService
         $configuration['margin'] = 10;
         $configuration['writer'] = 'png';
 
-        $qrCode = $this->qrCodeFactory->create($certificate->getClaim(), $configuration);
+        $qrCode = $this->qrCodeFactory->create($certificate->getJwt(), $configuration);
         $response = new QrCodeResponse($qrCode);
 
         $certificate->setImage('data:image/png;base64,'.base64_encode($response->getContent()));
@@ -158,77 +155,77 @@ class CertificateService
                     'Akte van geboorte',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_huwelijk":
                 $section->addText(
                     'Akte van huwelijk',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_overlijden":
                 $section->addText(
                     'Akte van overlijden',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_registratie_van_een_partnerschap":
                 $section->addText(
                     'Akte van registratie van een partnerschap',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "akte_van_omzetting_van_een_registratie_van_een_partnerschap":
                 $section->addText(
                     'Akte van omzetting van een registratie van een partnerschap',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "verklaring_van_huwelijksbevoegdheid":
                 $section->addText(
                     'Verklaring van huwelijksbevoegdheid',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "verklaring_van_in_leven_zijn":
                 $section->addText(
                     'Verklaring van in leven zijn',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "verklaring_van_nederlandershap":
                 $section->addText(
                     'Verklaring va nederlandershap',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "uittreksel_basis_registratie_personen":
                 $section->addText(
                     'Uittreksel basis registratie personen',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "uittreksel_registratie_niet_ingezetenen":
                 $section->addText(
                     'Uittreksel registratie niet ingezetenen',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             case "historisch_uittreksel_basis_registratie_personen":
                 $section->addText(
                     'Historisch uittreksel basis registratie_personen',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
-                $section->addText('/* @todo weergeven relevant en geclaimde gegevens */');
+                $section->addText('Betreffende:'.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
                 break;
             default:
                 /* @todo throw error */
@@ -238,10 +235,10 @@ class CertificateService
         $section->addTextBreak(2);
         $section->addText(
             'Uw gefaliceerde claim',
-            array('name' => 'Calibri', 'size' => 15, 'color' => 'CA494D', 'bold' => true)
+            array('name' => 'Calibri', 'size' => 16, 'color' => 'CA494D', 'bold' => true)
         );
 
-        $section->addText($certificate->getClaim());
+        $section->addText($certificate->getJwt());
 
         // Add the iamge
         $section->addTextBreak(2);
@@ -274,7 +271,7 @@ class CertificateService
         $secret = $certificate->getId();
 
         // Create a payload
-        $payload = $certificate->getClaimt();
+        $payload = $certificate->getClaim();
 
         // Create token header as a JSON string
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
