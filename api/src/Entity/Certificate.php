@@ -52,7 +52,21 @@ class Certificate
      *
      * @example geboorte akte
      *
-     * @Assert\Choice({"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"})
+     * @Assert\Choice({
+     *     "akte_van_geboorte",
+     *     "akte_van_huwelijk",
+     *     "akte_van_ooverlijden",
+     *     "akte_van_registratie_van_een_partnerschap",
+     *     "akte_van_omzetting_van_een_huwelijk_in_een_registratie_van_een_partnerschap",
+     *     "akte_van_omzetting_van_een_registratie_van_een_partnerschap",
+     *     "verklaring_van_huwelijksbevoegdheid",
+     *     "verklaring_van_in_leven_zijn",
+     *     "verklaring_van_nederlandershap",
+     *     "uittreksel_basis_registratie_personen",
+     *     "uittreksel_registratie_niet_ingezetenen",
+     *     "uittreksel_registratie_niet_ingezetenen",
+     *     "historisch_uittreksel_basis_registratie_personen",
+     * })
      *
      * @Groups({"read", "write"})
      */
