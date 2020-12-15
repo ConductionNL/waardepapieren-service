@@ -3,7 +3,7 @@ entries:
   waar:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2020-11-26T11:38:31.9335258Z"
+    created: "2020-12-15T05:39:11.6056322Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
     digest: 7d403f12a308b5ee5a1b0cf67e6f2b5cdc681ecb0f422ecac322eab849068546
@@ -13,4 +13,4 @@ entries:
     urls:
     - waar-0.1.0.tgz
     version: 0.1.0
-generated: "2020-11-26T11:38:31.9264702Z"
+generated: "2020-12-15T05:39:11.5957456Z"

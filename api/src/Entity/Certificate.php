@@ -63,7 +63,7 @@ class Certificate
      * @Assert\Choice({
      *     "akte_van_geboorte",
      *     "akte_van_huwelijk",
-     *     "akte_van_ooverlijden",
+     *     "akte_van_overlijden",
      *     "akte_van_registratie_van_een_partnerschap",
      *     "akte_van_omzetting_van_een_huwelijk_in_een_registratie_van_een_partnerschap",
      *     "akte_van_omzetting_van_een_registratie_van_een_partnerschap",
@@ -72,13 +72,21 @@ class Certificate
      *     "verklaring_van_nederlandershap",
      *     "uittreksel_basis_registratie_personen",
      *     "uittreksel_registratie_niet_ingezetenen",
-     *     "uittreksel_registratie_niet_ingezetenen",
      *     "historisch_uittreksel_basis_registratie_personen",
      * })
      *
      * @Groups({"read", "write"})
      */
     private $type;
+
+    /**
+     * @var string The organizations that is requested to "sign" this claim
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     * @Groups({"read", "write"})
+     */
+    private $organization;
 
     /**
      * @var array The claim of this certificate as an json object
@@ -164,6 +172,18 @@ class Certificate
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getOrganization(): ?string
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(string $organization): self
+    {
+        $this->organization = $organization;
 
         return $this;
     }

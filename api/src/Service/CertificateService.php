@@ -46,19 +46,23 @@ class CertificateService
         // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
 
         if(filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)){
-            $person = $certificate->setPersonObject($this->commonGroundService->getResource($certificate->getPerson()));
+            $person = $this->commonGroundService->getResource($certificate->getPerson());
         }
         else{
-            $person = $certificate->setPersonObject($this->commonGroundService->getResource(['component'=>'brp','type'=>'ingeschrevenpersonen','id'=>$certificate->getPerson()]));
+            $person = $this->commonGroundService->getResource(['component'=>'brp','type'=>'ingeschrevenpersonen','id'=>$certificate->getPerson()]);
         }
-        //
+
+        // Lets check if this actually brought us a person
         if(!$person){
             /* @todo throw error */
+        }
+        else{
+            $person = $certificate->setPersonObject($person);
         }
 
         // Theorganisation should be dynamic
         $organization = 'https://wrc.zaakonline.nl/organisations/16353702-4614-42ff-92af-7dd11c8eef9f';
-        $registerdCertificate = ['person'=>$certificate->getPerson(),'organization'=>$organization];
+        $registerdCertificate = ['person'=>$certificate->getPerson(),'organization'=>$organization,'type'=>$certificate->getType()];
         $registerdCertificate = $this->commonGroundService->createResource($registerdCertificate, ['component'=>'wari','type'=>'certificates']);
 
         // Then we can create a certificate
@@ -211,7 +215,40 @@ class CertificateService
                     'Uittreksel basis registratie personen',
                     array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
                 );
+
                 $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
+
+
+                $section->addTextBreak(2);
+                if(array_key_exists('naam', $certificate->getPersonObject())){
+                    $section->addText(
+                        'Huisnummer: '.$certificate->getPersonObject()['naam']['huisnummer']
+                        .'Huisnummertoevoeging: '.$certificate->getPersonObject()['naam']['huisnummertoevoeging']
+                        .'Straatnaam: '.$certificate->getPersonObject()['naam']['straatnaam']
+                        . 'Postcode: '.$certificate->getPersonObject()['naam']['postcode']
+                        . 'Woonplaats: '.$certificate->getPersonObject()['naam']['woonplaatsnaam']
+                    );
+
+                }
+                if(array_key_exists('geboorte', $certificate->getPersonObject())) {
+                    $section->addText(
+                        'Huisnummer: '.$certificate->getPersonObject()['geboorte']['huisnummer']
+                        .'Huisnummertoevoeging: '.$certificate->getPersonObject()['huisnummertoevoeging']
+                        .'Straatnaam: '.$certificate->getPersonObject()['geboorte']['straatnaam']
+                        . 'Postcode: '.$certificate->getPersonObject()['geboorte']['postcode']
+                        . 'Woonplaats: '.$certificate->getPersonObject()['geboorte']['woonplaatsnaam']
+                    );
+
+                }
+                if(array_key_exists('verblijfplaats', $certificate->getPersonObject())){
+                    $section->addText(
+                         'Huisnummer: '.$certificate->getPersonObject()['verblijfplaats']['huisnummer']
+                         .'Huisnummertoevoeging: '.$certificate->getPersonObject()['verblijfplaats']['huisnummertoevoeging']
+                        .'Straatnaam: '.$certificate->getPersonObject()['verblijfplaats']['straatnaam']
+                        . 'Postcode: '.$certificate->getPersonObject()['verblijfplaats']['postcode']
+                        . 'Woonplaats: '.$certificate->getPersonObject()['verblijfplaats']['woonplaatsnaam']
+                    );
+                }
                 break;
             case "uittreksel_registratie_niet_ingezetenen":
                 $section->addText(
