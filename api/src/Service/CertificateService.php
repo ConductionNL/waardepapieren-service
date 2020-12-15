@@ -69,8 +69,10 @@ class CertificateService
         $certificate = $certificate->setId(Uuid::fromString($registerdCertificate['id']));
         $certificate = $this->createClaim($certificate);
 
-        if(count($fields) > 1  && in_array("image", $fields) || array_key_exists("document", $fields))$certificate = $this->createImage($certificate);
-        if(count($fields) > 1  && in_array("document", $fields))$certificate = $this->createDocument($certificate);
+        //if(count($fields) > 1  && in_array("image", $fields) || array_key_exists("document", $fields))
+            $certificate = $this->createImage($certificate);
+        //if(count($fields) > 1  && in_array("document", $fields))
+            $certificate = $this->createDocument($certificate);
 
         // And update the created certificate to the register
         $registerdCertificate['type'] = $certificate->getType();
