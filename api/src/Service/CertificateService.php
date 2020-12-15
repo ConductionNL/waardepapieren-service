@@ -66,8 +66,9 @@ class CertificateService
         $registerdCertificate = $this->commonGroundService->createResource($registerdCertificate, ['component'=>'wari','type'=>'certificates']);
 
         // Then we can create a certificate
-        $certificate = $certificate->setId( Uuid::fromString($registerdCertificate['id']));
+        $certificate = $certificate->setId(Uuid::fromString($registerdCertificate['id']));
         $certificate = $this->createClaim($certificate);
+
         $certificate = $this->createImage($certificate);
         $certificate = $this->createDocument($certificate);
 
@@ -86,15 +87,120 @@ class CertificateService
 
     public function createClaim(Certificate $certificate) {
 
+        // Lets add data to this claim
+        $claimData = $certificate->getClaimData();
+
+        switch ($certificate->getType()) {
+            case "akte_van_geboorte":
+
+                if(array_key_exists('geboorte', $certificate->getPersonObject())){
+                    $claimData['geboorte'] = [];
+                    $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
+                    $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
+                    $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
+                }
+                else{
+                    $claimData['overlijden'] = ['indicatieGeboorte'=>false];
+                }
+
+                break;
+            case "akte_van_huwelijk":
+
+
+                break;
+            case "akte_van_registratie_van_een_partnerschap":
+
+                break;
+
+            case "akte_van_overlijden":
+
+                if(array_key_exists('overlijden', $certificate->getPersonObject())){
+                    $claimData['overlijden'] = $certificate->getPersonObject()['overlijden'];
+                }
+                else{
+                    $claimData['overlijden'] = ['indicatieOverleden'=>false];
+                }
+
+                break;
+            case "akte_van_omzetting_van_een_registratie_van_een_partnerschap":
+
+                break;
+            case "verklaring_van_huwelijksbevoegdheid":
+
+                break;
+            case "verklaring_van_in_leven_zijn":
+
+                if(array_key_exists('overlijden', $certificate->getPersonObject())){
+                    $claimData['overlijden'] = $certificate->getPersonObject()['overlijden'];
+                }
+                else{
+                    $claimData['overlijden'] = ['indicatieOverleden'=>false];
+                }
+
+                break;
+            case "verklaring_van_nederlandershap":
+
+                if(array_key_exists('nationaliteiten', $certificate->getPersonObject())){
+                    $claimData['nationaliteiten'] = $certificate->getPersonObject()['nationaliteiten'];
+                }
+                else{
+                    $claimData['nationaliteiten'] = ['nederlandschap'=>false];
+                }
+
+                break;
+            case "uittreksel_basis_registratie_personen":
+
+
+                if(array_key_exists('naam', $certificate->getPersonObject())){
+                        $claimData['naam'] = $certificate->getPersonObject()['naam'];
+                }
+
+                if(array_key_exists('geboorte', $certificate->getPersonObject())) {
+                        $claimData['geboorte'] = $certificate->getPersonObject()['geboorte'];
+
+                }
+                if(array_key_exists('verblijfplaats', $certificate->getPersonObject())){
+                        $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                }
+
+                break;
+            case "uittreksel_registratie_niet_ingezetenen":
+
+                break;
+            case "historisch_uittreksel_basis_registratie_personen":
+
+                break;
+            default:
+                /*@todo throw error */
+        }
+
+        $claimData["doel"] = $certificate->getType();
+        $claimData["persoon"] = $certificate->getPersonObject()['burgerservicenummer'];
+        $certificate->setClaimData($claimData);
+
         // Create token payload as a JSON string
-        $payload = [
+        $claim = [
             'iss' => $certificate->getId(),
             'user_id' =>  $certificate->getPersonObject()['id'],
             'user_representation' => $certificate->getPersonObject()['@id'],
+            'claim_data' => $certificate->getClaimData(),
             'iat' => time()
         ];
+        $certificate = $certificate->setClaim($claim);
 
-        $certificate = $certificate->setClaim($payload);
+        // Create token payload as a JSON string
+        $discipl = [
+            'claimData' => [
+                "did:discipl:ephemeral:crt:4c86faf535029c8cf4a371813cc44cb434875b18"=>[
+                    "link:discipl:ephemeral:tEi6K3mPRmE6QRf4WvpxY1hQgGmIG7uDV85zQILQNSCnQjAZPg2mj4Fbok/BHL9C8mFJQ1tCswBHBtsu6NIESA45XnN13pE+nLD6IPOeHx2cUrObxtzsqLhAy4ZXN6eDpZDmqnb6ymELUfXu/D2n4rL/t9aD279vqjFRKgBVE5WsId9c6KEYA+76mBQUBoJr8sF7w+3oMjzKy88oW693I3Keu+cdl/9sRCyYAYIDzwmg3A6n8t9KUpsBDK1b6tNznA6qoiN9Zb4JZ7rpq6lnVpyU5pyJjD+p9DiWgIYsVauJy8WOcKfNWkeOomWez0of2o+gu9xf+VLzcX3MSiAfZA=="=>$certificate->getClaimData()
+                ]
+            ],
+            'metadata' =>  ["cert"=>"zuid-drecht.nl:8080"]
+        ];
+        $certificate = $certificate->setDiscipl($discipl);
+
+        // Create token payload as a JSON string
+        $certificate = $certificate->setIrma($discipl);
 
         $jwt = $this->createJWT($certificate);
 
@@ -218,37 +324,6 @@ class CertificateService
 
                 $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
 
-
-                $section->addTextBreak(2);
-                if(array_key_exists('naam', $certificate->getPersonObject())){
-                    $section->addText(
-                        'Huisnummer: '.$certificate->getPersonObject()['naam']['huisnummer']
-                        .'Huisnummertoevoeging: '.$certificate->getPersonObject()['naam']['huisnummertoevoeging']
-                        .'Straatnaam: '.$certificate->getPersonObject()['naam']['straatnaam']
-                        . 'Postcode: '.$certificate->getPersonObject()['naam']['postcode']
-                        . 'Woonplaats: '.$certificate->getPersonObject()['naam']['woonplaatsnaam']
-                    );
-
-                }
-                if(array_key_exists('geboorte', $certificate->getPersonObject())) {
-                    $section->addText(
-                        'Huisnummer: '.$certificate->getPersonObject()['geboorte']['huisnummer']
-                        .'Huisnummertoevoeging: '.$certificate->getPersonObject()['huisnummertoevoeging']
-                        .'Straatnaam: '.$certificate->getPersonObject()['geboorte']['straatnaam']
-                        . 'Postcode: '.$certificate->getPersonObject()['geboorte']['postcode']
-                        . 'Woonplaats: '.$certificate->getPersonObject()['geboorte']['woonplaatsnaam']
-                    );
-
-                }
-                if(array_key_exists('verblijfplaats', $certificate->getPersonObject())){
-                    $section->addText(
-                         'Huisnummer: '.$certificate->getPersonObject()['verblijfplaats']['huisnummer']
-                         .'Huisnummertoevoeging: '.$certificate->getPersonObject()['verblijfplaats']['huisnummertoevoeging']
-                        .'Straatnaam: '.$certificate->getPersonObject()['verblijfplaats']['straatnaam']
-                        . 'Postcode: '.$certificate->getPersonObject()['verblijfplaats']['postcode']
-                        . 'Woonplaats: '.$certificate->getPersonObject()['verblijfplaats']['woonplaatsnaam']
-                    );
-                }
                 break;
             case "uittreksel_registratie_niet_ingezetenen":
                 $section->addText(
@@ -268,7 +343,30 @@ class CertificateService
                 /* @todo throw error */
         }
 
+        // Generiek printen van de claim data
+        if($certificate->getClaimData()){
+            foreach ($certificate->getClaimData() as $key => $value){
+                // Skipp goalbinding
+                if($key == "doel" || $key == "persoon") continue;
 
+                // Section header
+                $section->addTextBreak(2);
+                $section->addText(
+                    ucfirst ( $key),
+                    array('name' => 'Calibri', 'size' => 16, 'color' => 'CA494D', 'bold' => true)
+                );
+                if(is_array($value)){
+                    foreach ($value as $name => $claim){
+                        if(!is_array($claim)) $section->addText($name.': '.$claim);
+                    }
+                }
+                else{
+                    //var_dump($value);
+                }
+            }
+        }
+
+        /*
         $section->addTextBreak(2);
         $section->addText(
             'Uw gefaliceerde claim',
@@ -276,7 +374,7 @@ class CertificateService
         );
 
         $section->addText($certificate->getJwt());
-
+        */
         // Add the iamge
         $section->addTextBreak(2);
         $section->addText(

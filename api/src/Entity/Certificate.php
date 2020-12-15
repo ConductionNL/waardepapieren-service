@@ -98,6 +98,32 @@ class Certificate
     private $claim;
 
     /**
+     * @var array The discipl of this certificate as an json object
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     * @Groups({"read"})
+     */
+    private $discipl;
+
+    /**
+     * @var string The claim of this certificate as an json object
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     * @Groups({"read"})
+     */
+    private $irma;
+
+    /**
+     * @var string The claim of this certificate as an json object
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     */
+    private $claimData;
+
+    /**
      * @var string The claim of this certificate as a jwt token.
      *
      * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
@@ -196,6 +222,42 @@ class Certificate
     public function setClaim(array $claim): self
     {
         $this->claim = $claim;
+
+        return $this;
+    }
+
+    public function getDiscipl(): ?array
+    {
+        return $this->discipl;
+    }
+
+    public function setDiscipl(array $discipl): self
+    {
+        $this->discipl = $discipl;
+
+        return $this;
+    }
+
+    public function getIrma(): ?array
+    {
+        return $this->irma;
+    }
+
+    public function setIrma(array $irma): self
+    {
+        $this->irma = $irma;
+
+        return $this;
+    }
+
+    public function getClaimData(): ?array
+    {
+        return $this->claimData;
+    }
+
+    public function setClaimData(array $claimData): self
+    {
+        $this->claimData = $claimData;
 
         return $this;
     }
