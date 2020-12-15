@@ -150,17 +150,25 @@ class CertificateService
                 break;
             case "uittreksel_basis_registratie_personen":
 
-
                 if(array_key_exists('naam', $certificate->getPersonObject())){
-                        $claimData['naam'] = $certificate->getPersonObject()['naam'];
+                    $claimData['naam'] = $certificate->getPersonObject()['naam'];
+                    unset($claimData['naam']["@id"]);
+                    unset($claimData['naam']["@type"]);
+                    unset($claimData['naam']["uuid"]);
                 }
 
                 if(array_key_exists('geboorte', $certificate->getPersonObject())) {
-                        $claimData['geboorte'] = $certificate->getPersonObject()['geboorte'];
+                    $claimData['geboorte'] = [];
+                    $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
+                    $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
+                    $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
 
                 }
                 if(array_key_exists('verblijfplaats', $certificate->getPersonObject())){
-                        $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                    $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                    unset($claimData['verblijfplaats']["@id"]);
+                    unset($claimData['verblijfplaats']["@type"]);
+                    unset($claimData['verblijfplaats']["uuid"]);
                 }
 
                 break;
