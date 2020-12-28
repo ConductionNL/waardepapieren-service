@@ -82,7 +82,7 @@ class Certificate
     /**
      * @var string The organizations that is requested to "sign" this claim
      *
-     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     * @example https://example.com/organization
      *
      * @Groups({"read", "write"})
      */
@@ -116,7 +116,7 @@ class Certificate
     private $irma;
 
     /**
-     * @var string The claim of this certificate as an json object
+     * @var string The data of the claim this certificate as an json object
      *
      * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
      *
@@ -142,6 +142,7 @@ class Certificate
     private $image;
 
     /**
+     *
      */
     private $imageLocation;
 

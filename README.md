@@ -1,20 +1,15 @@
 Readme
 =======
 
-Welcome to the claim service! This component provides a convience style api for creating and validating claims based on the ictu discpli project 
+Welcome to the claim service! This component provides a convenience style api for creating and validating claims based on the ictu discpli project.
 
-Settign up your test enviroment
--------
-If you want to expiriment with this api we sugest using postman, 
+The service will first receive the data set linked to the provided person Uri.
+This has to be either an brp uri or haal centraal uri.
 
-Creating an claim
--------
-Claims can be created by
+Based on the type specified in the post the claim service will then fill the claim with the required data from the person object.
+And then provides the claim as a JSON object and as a JWT token.
 
-Setting up an organisation
--------
-Asking for a claim wil 
-
+It also generates a QR code in base64 format containing the claim.
 
 Credits
 -------
