@@ -4,20 +4,17 @@ If you want to contribute to Conduction, we ask you to follow these guidelines.
 
 ## Reporting bugs
 If you encounter a bug in this component, please check if an issue already exists in the issue section of this repository.
-If such an issue does not exist you can create one.
-[issue](/user/project/issues/new?assignees=&labels=&template=feature_request.md&title=)
-[test](/../../issues/new?assignees=&labels=&template=feature_request.md&title=)
 
-Make sure to incorporate the following information in your bug report:
+If such an issue does not exist you can create one [here](/../../issues/new?assignees=&labels=&template=bug_report.md&title=).
 
-- your docker version
-- clear instructions on how to reproduce said bug
+Make sure you answer each step in detail.
 
 ## Requesting new features
 Before requesting a new feature please check if the feature isn't listed in either [roadmap](ROADMAP.md) or the issue tab in Github.
-If this is not the case you can create an issue describing the feature you wish to request.
 
-Make sure to describe your feature in detail and explain why you believe this feature would improve the component.
+If this is not the case you can create one [here](/../../issues/new?assignees=&labels=&template=feature_request.md&title=).
+
+Make sure you answer each step in detail.
 
 ### Code style
 To keep the code clean and readable, Conduction uses:
@@ -26,7 +23,7 @@ To keep the code clean and readable, Conduction uses:
 When a pull request is made style CI will then check the code for any changes that are required before the pull request can be accepted.
 
 ### Forking the repository
-To start you must first fork the repository.
+To start you must first fork the repository, which can be done [here](/../../fork).
 Once this is done you can clone it to your local machine.
 
 ### Making the changes
