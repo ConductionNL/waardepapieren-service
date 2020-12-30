@@ -5,6 +5,8 @@ If you want to contribute to Conduction, we ask you to follow these guidelines.
 ## Reporting bugs
 If you encounter a bug in this component, please check if an issue already exists in the issue section of this repository.
 If such an issue does not exist you can create one.
+[issue](/user/project/issues/new?assignees=&labels=&template=feature_request.md&title=)
+[test](/../../issues/new?assignees=&labels=&template=feature_request.md&title=)
 
 Make sure to incorporate the following information in your bug report:
 
