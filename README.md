@@ -15,11 +15,11 @@ For deployment to clusters we use Helm 3.
 
 For an in depth installation guide you can refer to the [installation guide](INSTALLATION.md).
 
-##Tutorial
+## Tutorial
 
 An in depth tutorial can be found [here](TUTORIAL.md).
 
-####Setup your local environment
+#### Setup your local environment
 Before we can spin up our component we must first get a local copy from our repository, we can either do this through the command line or use a Git client. 
 
 For this example we're going to use [GitKraken](https://www.gitkraken.com/) but you can use any tool you like, feel free to skip this part if you are already familiar with setting up a local clone of your repository.
@@ -42,7 +42,7 @@ Your computer should now start up your local development environment. Don't worr
 Open your browser type [<http://localhost/>](https://localhost) as address and hit enter, you should now see your common ground component up and running.
 
 
-####Addition Calls
+#### Addition Calls
 
 - info over afwijkende call
 
