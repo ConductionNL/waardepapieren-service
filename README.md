@@ -1,8 +1,8 @@
 Description
 ----
-Welcome to the claim service! This component provides a convenience style api for creating and validating claims based on the ictu discpli project.
+Welcome to the claim service! This component provides a convenience style api for creating and validating claims based on the ICTU discpl project.
 
-The service will first receive the data set linked to the provided person Uri. This has to be either an brp uri or haal centraal uri.
+The service will first receive the data set linked to the provided person Uri. This has to be either an brp uri or "Haal Centraal" uri.
 
 Based on the type specified in the post the claim service will then fill the claim with the required data from the person object. And then provides the claim as a JSON object and as a JWT token.
 
@@ -11,7 +11,7 @@ It also generates a QR code in base64 format containing the claim.
 Installation
 ----
 
-For deployment to clusters we use Helm 3.
+For deployment to kubernetes clusters we use Helm 3.
 
 For an in depth installation guide you can refer to the [installation guide](INSTALLATION.md).
 
@@ -44,7 +44,7 @@ Open your browser type [<http://localhost/>](https://localhost) as address and h
 
 #### Additional Calls
 
-- info over afwijkende call
+- TODO: info over afwijkende call
 
 
 Additional Information
@@ -63,6 +63,6 @@ Additional Information
 Credits
 ----
 
-- authors
-- waarop is datamodel gebaseerd
-- eigenaar van code
+- TODO: authors
+- TODO: waarop is datamodel gebaseerd
+- TODO: eigenaar van code
