@@ -42,7 +42,7 @@ Your computer should now start up your local development environment. Don't worr
 Open your browser type [<http://localhost/>](https://localhost) as address and hit enter, you should now see your common ground component up and running.
 
 
-#### Addition Calls
+#### Additional Calls
 
 - info over afwijkende call
 
@@ -63,5 +63,6 @@ Additional Information
 Credits
 ----
 
+- authors
 - waarop is datamodel gebaseerd
 - eigenaar van code
