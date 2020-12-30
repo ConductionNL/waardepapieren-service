@@ -29,10 +29,12 @@ please use the following naming convention for your branch name:
 Once you have made changes or additions to the code, you can commit them (try to keep the commit message descriptive but short). 
 Be sure to format your commit message to include the issue number.
 
-## Code conventions
-To keep the code clean and readable, Conduction uses the following services:
-- [`Style CI`](https://styleci.io/)
-- [`Better code hub`](https://bettercodehub.com/repositories)
+## Code quality & conventions
+To keep the code clean and readable, Conduction uses the following coding standards:
+- [Style CI](https://styleci.io/)
+- [Better code hub](https://bettercodehub.com/repositories)
+- [PSR-02](https://docs.opnsense.org/development/guidelines/psr2.html)
+- [Public Code](https://publiccode.net/)
 
 ### DocBlocks
 We use [DocBlock](https://en.wikipedia.org/wiki/Docblock) annotations in our projects.

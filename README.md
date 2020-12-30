@@ -1,23 +1,42 @@
-Description
-----
-Welcome to the claim service! This component provides a convenience style api for creating and validating claims based on the ICTU discpl project.
-
-The service will first receive the data set linked to the provided person Uri. This has to be either an brp uri or "Haal Centraal" uri.
-
-Based on the type specified in the post the claim service will then fill the claim with the required data from the person object. And then provides the claim as a JSON object and as a JWT token.
-
-It also generates a QR code in base64 format containing the claim.
-
-Installation
+Additional Information
 ----
 
 For deployment to kubernetes clusters we use Helm 3.
 
 For an in depth installation guide you can refer to the [installation guide](INSTALLATION.md).
 
-## Tutorial
+- [Contributing](CONTRIBUTING.md)
 
-An in depth tutorial can be found [here](TUTORIAL.md).
+- [ChangeLogs](CHANGELOG.md)
+
+- [RoadMap](ROADMAP.md)
+
+- [Security](SECURITY.md)
+
+- [Licence](LICENSE.md)
+
+Description
+----
+
+Welcome to the claim service! This component provides a convenience style api for creating and validating claims based on the ICTU discipl project.
+
+The service will first receive the data set linked to the provided person Uri. This has to be either a brp uri or "Haal Centraal" uri.
+
+Based on the type specified in the post the claim service will then fill the claim with the required data from the person object. 
+
+It then provides the claim both as a JSON object and a JWT token.
+
+It also generates a QR code in base64 format containing the claim.
+
+![qr](resources/qr.png)
+
+![pdf](resources/pdf.png)
+
+
+Tutorial
+----
+
+For information on how to work with the component you can refer to the tutorial [here](TUTORIAL.md).
 
 #### Setup your local environment
 Before we can spin up our component we must first get a local copy from our repository, we can either do this through the command line or use a Git client. 
@@ -42,27 +61,11 @@ Your computer should now start up your local development environment. Don't worr
 Open your browser type [<http://localhost/>](https://localhost) as address and hit enter, you should now see your common ground component up and running.
 
 
-#### Additional Calls
-
-- TODO: info over afwijkende call
-
-
-Additional Information
-----
-
-- [Contributing](CONTRIBUTING.md)
-
-- [ChangeLogs](CHANGELOG.md)
-
-- [RoadMap](ROADMAP.md)
-
-- [Security](SECURITY.md)
-
-- [Licence](LICENSE.md)
-
 Credits
 ----
 
-- TODO: authors
-- TODO: waarop is datamodel gebaseerd
-- TODO: eigenaar van code
+Information about the authors of this component can be found [here](AUTHORS.md)
+
+This component is based on the [ICTU discipl project](https://github.com/discipl/waardepapieren)
+
+Copyright © [Dimpact](https://www.dimpact.nl/) 2020
