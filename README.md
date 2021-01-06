@@ -13,7 +13,7 @@ For an in depth installation guide you can refer to the [installation guide](INS
 
 - [Security](SECURITY.md)
 
-- [Licence](LICENSE.md)
+- [License](LICENSE.md)
 
 Description
 ----
