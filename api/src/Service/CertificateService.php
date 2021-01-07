@@ -194,6 +194,7 @@ class CertificateService
             'user_id' =>  $certificate->getPersonObject()['id'],
             'user_representation' => $certificate->getPersonObject()['@id'],
             'claim_data' => $certificate->getClaimData(),
+            'validation_uri' => "https://waardepapieren-gemeentehoorn.commonground.nu/api/v1/waar",
             'iat' => time()
         ];
         $certificate = $certificate->setClaim($claim);
