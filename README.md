@@ -1,5 +1,5 @@
-#Waardepapieren Serive
-##Additional Information
+# Waardepapieren Service
+## Additional Information
 
 
 
@@ -17,7 +17,7 @@ For an in depth installation guide you can refer to the [installation guide](INS
 
 - [License](LICENSE.md)
 
-##Description
+## Description
 
 
 Welcome to the claim service! This component provides a convenience style api for creating and validating claims based on the ICTU discipl project.
@@ -34,13 +34,13 @@ It also generates a QR code in base64 format containing the claim.
 
 ![pdf](resources/pdf.png)
 
-###About Waardepapieren
+### About Waardepapieren
 
 The waardenpapieren project aims at digitizing proof from the dutch government for its citizens (e.g. birth certificates, marriage certificates and proof of residence and residential history) it is based on the [W3C claims structure](https://w3c.github.io/vc-data-model/#claims) for standardization.
 
 At the core of the waardepapieren concept is that a “proof” should be applicable both digital and non-digital. Therefore a proof is presented as a PDF containing an JTW based claim, the claim itself however can also be used separately. For more information about the inner workings of waardepapieren see the waardepapieren service at it [repro]( https://github.com/ConductionNL/waardepapieren-service).
 
-###Online test environment
+### Online test environment
 There are several online environments available for testing
 
 1. [Example user interface](https://waardepapieren-gemeentehoorn.commonground.nu)
@@ -49,7 +49,7 @@ There are several online environments available for testing
 4. [Example Waardepapieren Service](https://waardepapieren-gemeentehoorn.commonground.nu/api/v1/waar)
 5. [Example Waardepapieren Registration](https://waardepapieren-gemeentehoorn.commonground.nu/api/v1/wari )
 
-###Dependencies
+### Dependencies
 
 For this repository you will need an API key at a waardepapieren service, a valid api key can be obtained at [Dimpac](https://www.dimpact.nl/) a key for the test api can be obtained from [Conduction](https://condution.nl).
 
@@ -75,10 +75,10 @@ Your computer should now start up your local development environment. Don't worr
 
 Open your browser type [<http://localhost/>](https://localhost) as address and hit enter, you should now see your common ground component up and running.
 
-###Installation 
+### Installation 
 This repository comes with an helm installation package and guide for installations on kubernates and haven environments. The installation guide can be found under INSTALLATION.md[](INSTALLATION.md).
 
-###Using the api 
+### Using the api 
 In order to create a waardepapier you nee to make a API call to the waarde papieren service, the preffered format for this is JSON. If you are running the applicaton locally the endpoint is `localhost`. The post should at least contain the BSN number of the person for who you are trieng to create a waardepapier, the type of the waardepapier to be created and the organization reqesting the waardepapier (for styling reasons) e.g.
 
 ```JSON
@@ -163,7 +163,7 @@ e.g.
 ```
 
 
-###Adding waardepapieren
+### Adding waardepapieren
 The actual rendering of the waarde papieren service is done by the [CertificateService](/api/src/Service/CertificateService.php) with use of the [Certificate](/api/src/Entity/Certificate.php) object. In order to add new waardepapieren to the service add the waardepaier type to the type enum of the [Certificate](/api/src/Entity/Certificate.php) object.
 
 Then suply handling logic for the claim under the `createClaim` function of the [CertificateService](/api/src/Service/CertificateService.php). This is done by profiding a new case and adding the required BRP data to the claim. e.g.
@@ -187,7 +187,7 @@ Then suply handling logic for the claim under the `createClaim` function of the 
 As you see the certificate hepler object automatically profides you with BRP acces
 
 
-###Other Repro’s
+### Other Repro’s
 *UI*
 1. [Burger interface](https://github.com/ConductionNL/waardepapieren) 
 2. [Ballie interface](https://github.com/ConductionNL/waardepapieren-ballie)
