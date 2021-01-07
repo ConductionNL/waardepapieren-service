@@ -93,8 +93,8 @@ You will then be be presented with a json(-ld)return object containing
 1. an claim (jwt object)
 2. an discipl representation of the claim
 3. an irma representation of the claim
-4. an png image of the claim
-5. an pdf representation of the claim in the organization style
+4. an [png image](/resources/akte_van_geboorte.pdf) of the claim
+5. an [pdf representation](/resources/akte_van_geboorte.png) of the claim in the organization style
 
 e.g.
 ```JSON
