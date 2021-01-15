@@ -83,7 +83,7 @@ In order to create a waardepapier you nee to make a API call to the waarde papie
 
 ```JSON
 {
-    "person":999999928"",
+    "person":"999999928",
     "type": "akte_van_geboorte",
     "organization": "001516814"
 }
