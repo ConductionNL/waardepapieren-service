@@ -1,8 +1,6 @@
 # Waardepapieren Service
 ## Additional Information
 
-
-
 For deployment to kubernetes clusters we use Helm 3.
 
 For an in depth installation guide you can refer to the [installation guide](INSTALLATION.md).
@@ -40,6 +38,50 @@ The waardenpapieren project aims at digitizing proof from the dutch government f
 
 At the core of the waardepapieren concept is that a “proof” should be applicable both digital and non-digital. Therefore a proof is presented as a PDF containing an JTW based claim, the claim itself however can also be used separately. For more information about the inner workings of waardepapieren see the waardepapieren service at it [repro]( https://github.com/ConductionNL/waardepapieren-service).
 
+
+### About Claims
+A claim represents something a person says for which he or she can provide proof. For example a person might claim that he or she lives at a given address or has a certain diploma. Proof for many of these claims can be found in governmental databases, the government for example knows where you live or which education you followed. Actually for a lot of these things the government is your legal source.
+
+Citizens however often need to prove these claims to third parties, like a bank when they require a mortgage. The waardepapieren project aims at helping citizens prove their claims in a digital way.
+
+### History
+Traditionally there have always been waardepapieren, these have been around in many forms but most recently have taken the forms of pieces of paper containing data (like an address) some anti forgery measures (like watermarks and holograms) and the proof of signature of a organisation trusted to create the documents (like a municipality or notary).  A “Verklaring Omtrend Gedrag (VOG)” is a well known dutch example. There are however more and older examples of waardepapieren. One might think about old paper bonds, actual paper money in the time of the golden standard or especially in Europe medieval cities granted by a monarch.
+
+### Properties
+From this we can delude some basic claim properties
+It contains the claim itself (in modern time we might call this data) like an address.
+It contains anti forgery masseuse to provide security to thirth parties
+It is supplied by a trusted organization
+All of these properties have made it to the modern API like  interpretation of claims specified under the [W3C claim specification](https://w3c.github.io/vc-data-model/#claims). A claim consists of a data set that is claimed (like an address). A security measure (the claim is coded) and a trusted organization (an issuer).
+
+### Claim Data
+The core of a claim is the claimed data, or subject of the credential. To put it in other words that which the claim actually proofes. This can be either one thing or a set of things but is in essence always a JSON data object like
+
+```JSON
+"credentialSubject": {
+    "id": "did:example:ebfeb1f712ebc6f1c276e12ec21",
+    "degree": {
+      "type": "BachelorDegree",
+      "name": "Bachelor of Science and Arts"
+    }
+  }
+```
+Keep in mind that this can be anything by any issuer so that might for example be a degree issued by a university, an address issued by your bank or a degree issued by your mother. To put it bluntly the only thing a claim proofs is that issuer A said that claim B was proven. Whether or not you trust issuer A to say that is up to you. And would  mostly determine the claim itself. You might for example trust the university to provide proof for degrees but not to provide proof for living addresses (we all know how that post-grad administration is going).
+
+There is also something to be said in relation to the ongoing process, for one process you might simply need an address and will accept any address provided by an issues that has in the past send post to a user. In other instances you might want to be legally sure that an address is actually correct and require a claim provided by a governmental party.
+
+This touches the architectural and legal aspect of sources (or holders), in some cases there might actually be a parte tasked (by law) to perform a certain registration. Like addresses by the municipality or company date by the chamber of commerce.  We designate those issuers as holders. This has no technical impact, but you are urged to find out the actual holders of the information that you require.
+
+### Securing claims
+A claim concerts of a data set, in a claim this data set is signed by the issuer of a claim trough either a certificate or a blockchain. Right now the preferred option is trough a certificate since not all providers support checking a claim against a blockchain. 
+
+So how does this work? When a claim is created als de data in that claim then gets tokenized in a JWT token and this token is signed with an organization's private key. The token, signature and a link to the public certificate are then all passed into the claim.
+
+This means that a third party has two levels of security checks. First it can check if the data in the claim checks out with the JWT token. This provides security against data tempering.  Secondly it can use the included link to the public certificate to check is the JWT signature and establish that the claim was indeed issued by the issuer (and has again, not been tampered with). 
+
+### Working with claims
+The above structure means that claims are in essentially a JSON object (or data blob) that we can play with. We might inprint a claim on an NFC card to provide building access, allow users to download them as JSON files and store them locally (mutch like bitcoins)  print them on paper as QR codes (instead of holograms) and even store them in digital wallets (like IRMA). In the end the new W3C claim structure gives us a ton of options to play with. Either to provide the same functionality as is currently available to citizens or to take a leap into the digital world.
+ 
 ### Online test environment
 There are several online environments available for testing
 
@@ -162,6 +204,15 @@ e.g.
 }
 ```
 
+### Organizations 
+For testing purposes the repro is provided with three testing organisation
+- 001516814 The Manucipality of Hoorn
+- 807287684 The Manucipality of Buren
+- 000000001 The Dutch Internal Revenue Service (Belsatingdienst)
+- 000000002 The Dutch Education Service (Dient Uitvoering Onderwijs)
+
+### Adding organizations
+Adding aditional organizations requers a few steps, an organization wil requere a template (under its rsin number) in the template/organization direcotory. Aditionally both a public and private certificate wil be required in the matching cert/{{ rsin }} and public/cert/{{rsin}} folder. To make this al a bit easyer a 
 
 ### Adding waardepapieren
 The actual rendering of the waarde papieren service is done by the [CertificateService](/api/src/Service/CertificateService.php) with use of the [Certificate](/api/src/Entity/Certificate.php) object. In order to add new waardepapieren to the service add the waardepaier type to the type enum of the [Certificate](/api/src/Entity/Certificate.php) object.

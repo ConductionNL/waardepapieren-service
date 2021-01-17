@@ -1,0 +1,19 @@
+
+{% extends base %}
+
+{% block content %}
+<h1> Verklaring Studieschuld </h1>
+
+<p>
+    Uit de administatie van de DUO is gebleken dat voor:
+</p>
+
+{% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
+
+<p>
+    Op {{ "now"|date("d/m/Y") }} het resterende bedrag studie schuld <b><u>€ 0,-</u></b> bedroeg. Ten opzichte van een oorspronkelijke studieschuld van € 25.000,-
+</p>
+
+{% include '/blocks/claim.html.twig' with {'qr': qr} %}
+
+{% endblock %}
