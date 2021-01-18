@@ -1,0 +1,32 @@
+<table style="border:none; width: 100%" >
+    <tr>
+        <td><b>Naam</b></td>
+        <td>{{ person.naam.voorvoegsel }} {{ person.naam.geslachtsnaam }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><b>Voornamen</b></td>
+        <td>{{ person.naam.voornamen }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><b>Geboren</b></td>
+        <td>{{ person.geboorte.datum.datum }} te {{ person.geboorte.plaats.omschrijving }}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><b>Wonende te</b></td>
+        <td>{{ person.verblijfplaats.straatnaam}} {{ person.verblijfplaats.huisnummer}} {{ person.verblijfplaats.huisnummertoevoeging}}, {{ person.verblijfplaats.postcode}}  {{ person.verblijfplaats.woonplaatsnaam }}</td>
+        <td>(woonaddres)</td>
+    </tr>
+    <tr>
+        <td><b>Burgelijke staat</b></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><b>BSN</b></td>
+        <td>{{ person.burgerservicenummer }}</td>
+        <td></td>
+    </tr>
+</table>

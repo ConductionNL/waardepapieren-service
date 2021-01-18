@@ -1,0 +1,76 @@
+{% extends base %}
+
+{% block content %}
+<h1 style='font-family: Calibri; font-weight: bold; text-align: center; font-size: 22px; color: #CA494D;'> Uitreksel Basisregistratie Personen</h1>
+
+<p>
+    Uit de basisregistratie personenen van de gemeente {{ person.verblijfplaats.woonplaatsnaam }} blijkt dat daarin is opgenomen:
+</p>
+
+
+{% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
+
+<p>
+    is in de gemeente {{ person.verblijfplaats.woonplaatsnaam }}  ingeschreven op het navolgende adres:
+</p>
+
+<p>
+    <table>
+        <tr>
+            <td>van:</td>
+            <td>tot:</td>
+            <td>adres:</td>
+            <td>gemeente:</td>
+        </tr>
+        <tr>
+            <td><b>{{ person.verblijfplaats.datumIngangGeldigheid }}</b></td>
+            <td><b>Heden</b></td>
+            <td><b>{{ person.verblijfplaats.straatnaam}} {{ person.verblijfplaats.huisnummer}} {{ person.verblijfplaats.huisnummertoevoeging}}, {{ person.verblijfplaats.postcode}}  </b></td>
+            <td><b>{{ person.verblijfplaats.woonplaatsnaam }}</b></td>
+        </tr>
+    </table>
+</p>
+
+<p>
+    Totaal aantal personen ingeschreven op het adres: 3
+</p>
+
+<p>
+    Betrokkene is hiervoor ingeschreven geweest op de navolgende adressen:
+</p>
+
+<table>
+    <tr>
+        <td>van:</td>
+        <td>tot:</td>
+        <td>adres:</td>
+        <td>gemeente:</td>
+    </tr>
+    <tr>
+        <td><b>30 december 2020</b></td>
+        <td><b>Heden</b></td>
+        <td><b>{{ person.verblijfplaats.straatnaam}} {{ person.verblijfplaats.huisnummer}} {{ person.verblijfplaats.huisnummertoevoeging}}, {{ person.verblijfplaats.postcode}}</b></td>
+        <td><b>{{ person.verblijfplaats.woonplaatsnaam }}</b></td>
+    </tr>
+    <tr>
+        <td><b>30 december 2015</b></td>
+        <td><b>39 december 2020</b></td>
+        <td><b>Kortedijk 1, 1001 ZD</b></td>
+        <td><b>Zuidrecht</b></td>
+    </tr>
+    <tr>
+        <td><b>30 december 2000</b></td>
+        <td><b>32 december 2015<</b></td>
+        <td><b>Langedijk 666, 1002 ZD</b></td>
+        <td><b>Zuidrecht</b></td>
+    </tr>
+</table>
+
+{% include '/blocks/ondertekening.html.twig' with {'person': person} %}
+
+{% include '/blocks/claim.html.twig' with {'qr': qr} %}
+
+{% endblock %}
+
+
+

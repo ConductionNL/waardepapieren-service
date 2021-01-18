@@ -1,0 +1,51 @@
+
+{% extends base %}
+
+{% block content %}
+<h1> Verklaring Diplomas </h1>
+
+<p>
+    Uit het landelijk register diplomas is gebleken dat:
+</p>
+
+{% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
+
+<p>
+    Beschikt over de volgende in Nederland afgeven diploma's en aktes
+</p>
+
+<table>
+    <tr>
+    <td>Datum</td>
+    <td>Diploma / Akte</td>
+    <td>Instelling</td>
+    </tr>
+    <tr>
+        <td><b>31/6/2000</b></td>
+        <td><b>HAVO (Profiel E&M)</b></td>
+        <td>Zuid-Drecht's Openbaar College</td>
+    </tr>
+    <tr>
+        <td><b>31/6/2001</b></td>
+        <td><b>HBO Propedeuse (Bedrijfskunde)</b></td>
+        <td>Hogeschool van Zuid-Drecht</td>
+    </tr>
+    <tr>
+        <td><b>31/6/2002</b></td>
+        <td><b>WO Propedeuse (Economie)</b></td>
+        <td>Universiteit van Zuid-Drecht</td>
+    </tr>
+    <tr>
+        <td><b>31/6/2004</b></td>
+        <td><b>WO Bachelor (Economie)</b></td>
+        <td>Universiteit van Zuid-Drecht</td>
+    </tr>
+    <tr>
+        <td><b>31/6/2005</b></td>
+        <td><b>WO Master (Economie)</b></td>
+        <td>Universiteit van Zuid-Drecht</td>
+    </tr>
+</table>
+{% include '/blocks/claim.html.twig' with {'qr': qr} %}
+
+{% endblock %}

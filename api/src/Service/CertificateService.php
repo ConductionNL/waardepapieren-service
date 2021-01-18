@@ -13,18 +13,27 @@ use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Ramsey\Uuid\Uuid;
+use Twig\Environment as Twig;
+
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class CertificateService
 {
     private $commonGroundService;
     private $params;
     private $qrCodeFactory;
+    private $twig;
 
-    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory)
+    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory, Twig $twig)
     {
         $this->commonGroundService = $commonGroundService;
         $this->params = $params;
         $this->qrCodeFactory = $qrCodeFactory;
+        $this->twig = $twig;
     }
 
     public function get($id){
@@ -179,6 +188,42 @@ class CertificateService
                 break;
             case "historisch_uittreksel_basis_registratie_personen":
 
+                if(array_key_exists('naam', $certificate->getPersonObject())){
+                    $claimData['naam'] = $certificate->getPersonObject()['naam'];
+                    unset($claimData['naam']["@id"]);
+                    unset($claimData['naam']["@type"]);
+                    unset($claimData['naam']["uuid"]);
+                }
+
+                if(array_key_exists('geboorte', $certificate->getPersonObject())) {
+                    $claimData['geboorte'] = [];
+                    $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
+                    $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
+                    $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
+
+                }
+                if(array_key_exists('verblijfplaats', $certificate->getPersonObject())){
+                    $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                    $claimData['van'] = "2021-01-01";
+                    unset($claimData['verblijfplaats']["@id"]);
+                    unset($claimData['verblijfplaats']["@type"]);
+                    unset($claimData['verblijfplaats']["uuid"]);
+                }
+
+                $claimData['verblijfplaatsHistorish'] = [
+                    [   "van" => "2010-01-01",
+                        "tot" => "2010-12-31",
+                        "verblijfplaats"=>["huisnummer"=>60,"postcode"=>"9876 ZZ", "straatnaam"=>"Straathofjesweg","woonplaatsnaam"=>"Medemblik"]
+                    ],
+                    [   "van" => "2011-01-01",
+                        "tot" => "2011-12-31",
+                        "verblijfplaats"=>["huisnummer"=>61,"postcode"=>"9876 ZZ", "straatnaam"=>"Straathofjesweg","woonplaatsnaam"=>"Hoorn"]
+                    ],
+                    [   "van" => "2012-01-01",
+                        "tot" => "2020-12-31",
+                        "verblijfplaats"=>["huisnummer"=>62,"postcode"=>"9876 ZZ", "straatnaam"=>"Straathofjesweg","woonplaatsnaam"=>"Zaanstad"]
+                    ],
+                ];
                 break;
             default:
                 /*@todo throw error */
@@ -194,6 +239,7 @@ class CertificateService
             'user_id' =>  $certificate->getPersonObject()['id'],
             'user_representation' => $certificate->getPersonObject()['@id'],
             'claim_data' => $certificate->getClaimData(),
+            'validation_uri' => "https://waardepapieren-gemeentehoorn.commonground.nu/api/v1/waar",
             'iat' => time()
         ];
         $certificate = $certificate->setClaim($claim);
@@ -224,19 +270,17 @@ class CertificateService
      */
     public function createImage(Certificate $certificate) {
 
+        // First we need set a bit of basic configuration
         $configuration['size'] = 300;
         $configuration['margin'] = 10;
         $configuration['writer'] = 'png';
 
+        // Then we need to render the QR code
         $qrCode = $this->qrCodeFactory->create($certificate->getJwt(), $configuration);
         $response = new QrCodeResponse($qrCode);
 
+        // And finnaly we need to set the result on the certificate resource
         $certificate->setImage('data:image/png;base64,'.base64_encode($response->getContent()));
-
-        // Save it to a file
-        $filename = dirname(__FILE__, 3)."/var/".$certificate->getId().".png";
-        $qrCode->writeFile($filename);
-        $certificate->setImageLocation($filename);
 
         return $certificate;
     }
@@ -245,164 +289,22 @@ class CertificateService
      * This function creates the (pdf) document for a given certificate type
      */
     public function createDocument(Certificate $certificate) {
-        // Deze willen we later uit het wrc halen
 
-        // Creating the new document...
-        $phpWord = new PhpWord();
+        // First we need the HTML  for the template
+        $html = $this->twig->render('certificates/'.$certificate->getType().'.html.twig', [
+            'qr' => $certificate->getImage(),
+            'claim' => $certificate->getClaim(),
+            'person' => $certificate->getPersonObject(),
+            'base' => '/organizations/'.$certificate->getOrganization().'.html.twig'
+        ]);
 
-        // Setup write protection
-        $rendererName = Settings::PDF_RENDERER_DOMPDF;
-        $rendererLibraryPath = realpath('../vendor/dompdf/dompdf');
-        Settings::setPdfRenderer($rendererName, $rendererLibraryPath);
+        // Then we need to render the template
+        $dompdf = new DOMPDF();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
 
-        $documentProtection = $phpWord->getSettings()->getDocumentProtection();
-        $documentProtection->setEditing(DocProtect::READ_ONLY);
-        $documentProtection->setPassword('myPassword');
-
-        /* Note: any element you append to a document must reside inside of a Section. */
-
-        // Adding an empty Section to the document...
-        $section = $phpWord->addSection();
-
-        $section->addImage(realpath('../public/images/logo_hoorn.jpg'));
-
-        $header = $section->addHeader();
-        $header->addWatermark( realpath('../public/images/cert_hoorn.jpg'), array('marginTop' => 200, 'marginLeft' => 50));
-
-        switch ($certificate->getType()) {
-            case "akte_van_geboorte":
-                $section->addText(
-                    'Akte van geboorte',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "akte_van_huwelijk":
-                $section->addText(
-                    'Akte van huwelijk',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "akte_van_overlijden":
-                $section->addText(
-                    'Akte van overlijden',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "akte_van_registratie_van_een_partnerschap":
-                $section->addText(
-                    'Akte van registratie van een partnerschap',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "akte_van_omzetting_van_een_registratie_van_een_partnerschap":
-                $section->addText(
-                    'Akte van omzetting van een registratie van een partnerschap',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "verklaring_van_huwelijksbevoegdheid":
-                $section->addText(
-                    'Verklaring van huwelijksbevoegdheid',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "verklaring_van_in_leven_zijn":
-                $section->addText(
-                    'Verklaring van in leven zijn',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "verklaring_van_nederlandershap":
-                $section->addText(
-                    'Verklaring va nederlandershap',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "uittreksel_basis_registratie_personen":
-                $section->addText(
-                    'Uittreksel basis registratie personen',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-
-                break;
-            case "uittreksel_registratie_niet_ingezetenen":
-                $section->addText(
-                    'Uittreksel registratie niet ingezetenen',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            case "historisch_uittreksel_basis_registratie_personen":
-                $section->addText(
-                    'Historisch uittreksel basis registratie_personen',
-                    array('name' => 'Calibri', 'size' => 22, 'color' => 'CA494D', 'bold' => true)
-                );
-                $section->addText('Betreffende: '.$certificate->getPersonObject()['naam']['aanschrijfwijze']);
-                break;
-            default:
-                /* @todo throw error */
-        }
-
-        // Generiek printen van de claim data
-        if($certificate->getClaimData()){
-            foreach ($certificate->getClaimData() as $key => $value){
-                // Skipp goalbinding
-                if($key == "doel" || $key == "persoon") continue;
-
-                // Section header
-                $section->addTextBreak(2);
-                $section->addText(
-                    ucfirst ( $key),
-                    array('name' => 'Calibri', 'size' => 16, 'color' => 'CA494D', 'bold' => true)
-                );
-                if(is_array($value)){
-                    foreach ($value as $name => $claim){
-                        if(!is_array($claim)) $section->addText($name.': '.$claim);
-                    }
-                }
-                else{
-                    //var_dump($value);
-                }
-            }
-        }
-
-        /*
-        $section->addTextBreak(2);
-        $section->addText(
-            'Uw gefaliceerde claim',
-            array('name' => 'Calibri', 'size' => 16, 'color' => 'CA494D', 'bold' => true)
-        );
-
-        $section->addText($certificate->getJwt());
-        */
-        // Add the iamge
-        $section->addTextBreak(2);
-        $section->addText(
-            'Uw scanbare claim',
-            array('name' => 'Tahoma', 'size' => 16, 'color' => 'CA494D', 'bold' => true)
-        );
-        $section->addImage($certificate->getImageLocation());
-
-        // Creating the file
-        $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'PDF');
-        $filename = dirname(__FILE__, 3)."/var/".$certificate->getId().".pdf";
-        $writer->save($filename);
-
-        $certificate->setDocument('data:'.mime_content_type($filename).';base64,'.base64_encode(file_get_contents($filename)));
-
-        // Lets remove the temporary file
-        unlink($filename);
-        unlink($certificate->getImageLocation());
+        // And finnaly we need to set the result on the certificate resource
+        $certificate->setDocument('data:application/pdf;base64,'.base64_encode($dompdf->output()));
 
         return $certificate;
     }

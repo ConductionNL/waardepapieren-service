@@ -1,5 +1,4 @@
 # Installation
-This document dives a little bit deeper into installing your component on a kubernetes cluster, looking for information on setting up your component on a local machine? Take a look at the [tutorial](TUTORIAL.md) instead. 
 
 For installation of components you will have to have [helm 3](https://helm.sh) and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) installed.
 
@@ -13,8 +12,8 @@ For installation of components you will have to have [helm 3](https://helm.sh) a
 ## Kubernetes Providers
 There is a number of Kubernetes providers that are suitable to run CommonGround components. Most notable are:
 
-- [TransIP](https://transip.nl)
 - [Fuga cloud](https://fuga.cloud)
+- [TransIP](https://transip.nl)
 - [Digital Ocean](https://digitalocean.com)
 - [Google Cloud](https://cloud.google.com)
 - [Amazon Web Services](https://aws.amazon.com)
@@ -69,7 +68,6 @@ $ kubectl proxy --kubeconfig kubeconfig.yaml
 This should proxy our dashboard to helm making it available trough our favorite browser and a simple link
 ```CLI
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:dashboard-kubernetes-dashboard:https/proxy/#!/login
-```
 
 Then, you can login using the Kubeconfig option and uploading your kubeconfig.
 
@@ -139,6 +137,6 @@ To force the re-generation of certificates simply delete the org.crt en org.key 
 ## Setting up analytics and a help chat function
 As a developer you might be interested to know how your application documentation is used, so you can see which parts of your documentation are most read and which parts might need some additional love. You can measure this (and other user interactions) with google tag manager. Just add your google tag id to the .env file (replacing the default) under GOOGLE_TAG_MANAGER_ID. This will only enable Google analytics on your documentation page, it will never analyse the actual traffic of the API.
 
-Have you seen our sweet support-chat on the documentation page? We didn't build that ourselves ;). We use a Hubspot chat for that, just head over to Hubspot, create an account and enter your Hubspot embed code in het .env file (replacing the default) under HUBSPOT_EMBED_CODE.
+Have you seen our sweet support-chat on the documentation page? We didn't build that ourselves ;) We use a Hubspot chat for that, just head over to Hubspot, create an account and enter your Hubspot embed code in het .env file (replacing the default) under HUBSPOT_EMBED_CODE.
 
-Would you like to use a different analytics or chat-tool? Just shoot us a [feature request](https://github.com/ConductionNL/commonground-component/issues/new?assignees=&labels=&template=feature_request.md&title=New%20Analytics%20or%20Chat%20provider)!  
+Would you like to use a different analytics or chat-tool? Just shoot us a [feature request](https://github.com/ConductionNL/commonground-component/issues/new?assignees=&labels=&template=feature_request.md&title=New Analytics or Chat provider)  
