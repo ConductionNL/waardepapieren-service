@@ -3,12 +3,11 @@
 namespace App\Subscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\Entity\Component;
 use App\Entity\Certificate;
+use App\Entity\Component;
 use App\Service\CertificateService;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -59,7 +58,6 @@ class CertificateSubscriber implements EventSubscriberInterface
         // Entity Check
         if (!$certificate instanceof Certificate) {
             return;
-
         }
 
         if (
@@ -71,18 +69,16 @@ class CertificateSubscriber implements EventSubscriberInterface
         }
 
         // Lets support field selection
-        if($fields = $event->getRequest()->get('fields')){
+        if ($fields = $event->getRequest()->get('fields')) {
             $fields = explode(',', $fields);
         }
 
         // We should also check on entity = component
         if ($method == 'POST') {
             $certificate = $this->certificateService->create($certificate, $fields);
-        }
-        elseif($method == 'GET' && $event->getRequest()->get('id')){
+        } elseif ($method == 'GET' && $event->getRequest()->get('id')) {
             $certificate = $this->certificateService->get($event->getRequest()->get('id'));
-        }
-        else{
+        } else {
             /* @todo thow unknown poeeration exeption */
         }
 
@@ -127,7 +123,6 @@ class CertificateSubscriber implements EventSubscriberInterface
             Response::HTTP_OK,
             ['content-type' => $contentType]
         );
-
 
         $event->setResponse($response);
     }

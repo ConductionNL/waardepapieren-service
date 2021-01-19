@@ -25,13 +25,14 @@ class ClaimService
     }
 
     /**
-     * This function checks if cert and template files exist for the given rsin
+     * This function checks if cert and template files exist for the given rsin.
      *
      * @param string $rsin rsin of the organisation we want to check
+     *
      * @return bool true if rsin is already used or false if available
      */
-    public function checkRsin(string $rsin) {
-
+    public function checkRsin(string $rsin)
+    {
         if (
             $this->filesystem->exists("cert/{$rsin}.pem") ||
             $this->filesystem->exists("public/cert/{$rsin}.pem") ||
@@ -48,17 +49,17 @@ class ClaimService
      *
      * @param string $rsin rsin of the organisation we want to create files for
      */
-    public function createOrganization(string $rsin) {
-
+    public function createOrganization(string $rsin)
+    {
         $jwk = JWKFactory::createRSAKey(
             4096, // Size in bits of the key. We recommend at least 2048 bits.
             [
                 'alg' => 'RS512',
-                'use' => 'alg'
-            ]);
+                'use' => 'alg',
+            ]
+        );
         $this->filesystem->dumpFile("cert/{$rsin}.pem", RSAKey::createFromJWK($jwk)->toPEM());
         $this->filesystem->dumpFile("public/cert/{$rsin}.pem", RSAKey::createFromJWK($jwk->toPublic())->toPEM());
         $this->filesystem->copy('templates/organizations/default.html.twig', "templates/organizations/{$rsin}.html.twig");
     }
-
 }
