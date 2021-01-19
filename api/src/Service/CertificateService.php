@@ -12,8 +12,12 @@ use Jose\Component\Encryption\Algorithm\KeyEncryption\RSAOAEP512;
 use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\Algorithm\HS256;
 use Jose\Component\Signature\Algorithm\RS512;
+use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\CompactSerializer;
+use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Jose\Easy\JWSBuilder;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -352,6 +356,8 @@ class CertificateService
 
     public function w3cClaim(array $data, Certificate $certificate) {
 
+        $package = new Package(new EmptyVersionStrategy());
+
         $now = new \DateTime('now', new DateTimeZone('Europe/Amsterdam'));
         $array = [];
         $array['@context'] = array("https://www.w3.org/2018/credentials/v1", "https://www.w3.org/2018/credentials/examples/v1");
@@ -368,7 +374,7 @@ class CertificateService
         $proof['type'] = 'RsaSignature';
         $proof['created'] = date('H:i:s d-m-Y', filectime("cert/{$certificate->getOrganization()}.pem"));
         $proof['proofPurpose'] = 'assertionMethode';
-        $proof['verificationMethod'] = "public/cert/{$certificate->getOrganization()}.pem";
+        $proof['verificationMethod'] = dirname(__FILE__, 3)."/public/cert/{$certificate->getOrganization()}.pem";
         $proof['jws'] = $this->createJWS($certificate, $array['credentialSubject']);
 
         $array['proof'] = $proof;

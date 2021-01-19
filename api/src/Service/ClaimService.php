@@ -28,8 +28,7 @@ class ClaimService
 
         if (
             $this->filesystem->exists("cert/{$rsin}.pem") ||
-            $this->filesystem->exists("public/cert/{$rsin}.pem") ||
-            $this->filesystem->exists("templates/organizations/{$rsin}.html.twig")
+            $this->filesystem->exists("public/cert/{$rsin}.pem")
         ) {
             return true;
         } else {
