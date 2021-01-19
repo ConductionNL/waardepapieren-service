@@ -23,6 +23,7 @@ use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Ramsey\Uuid\Uuid;
 use Twig\Environment as Twig;
@@ -40,16 +41,24 @@ class CertificateService
     private $qrCodeFactory;
     private $twig;
     private $filesystem;
+    private $requestStack;
 
-    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory, Twig $twig)
+    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory, Twig $twig, RequestStack $requestStack)
     {
         $this->commonGroundService = $commonGroundService;
         $this->params = $params;
         $this->qrCodeFactory = $qrCodeFactory;
         $this->twig = $twig;
         $this->filesystem = new Filesystem();
+        $this->requestStack = $requestStack;
     }
 
+    /**
+     * This function retrieves an existing certificate from the database
+     *
+     * @param Uuid $id The uuid of the certificate we want to retrieve
+     * @return Certificate Retrieved certificate object
+     */
     public function get($id){
         $registerdCertificate = $this->commonGroundService->getResource(['component'=>'wari','type'=>'certificate','id'=>$id]);
 
@@ -62,6 +71,16 @@ class CertificateService
         return $certificate;
     }
 
+    /**
+     * This function creates all the different data types of the certificate
+     *
+     * @param Certificate $certificate The certificate object
+     * @param array $fields
+     * @return Certificate the completed certificate object
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function create(Certificate $certificate, $fields = [])
     {
         // Get person from BRP
@@ -110,6 +129,13 @@ class CertificateService
         return $certificate;
     }
 
+    /**
+     * This function creates the claim based on the type defined in the certificate object
+     *
+     * @param Certificate $certificate The certificate object
+     * @return Certificate The modified certificate object
+     * @throws \Exception
+     */
     public function createClaim(Certificate $certificate) {
 
         // Lets add data to this claim
@@ -280,8 +306,11 @@ class CertificateService
         return $certificate;
     }
 
-    /*
+    /**
      * This function creates a QR code for the given claim
+     *
+     * @param Certificate $certificate The certificate object
+     * @return Certificate The modified certificate object
      */
     public function createImage(Certificate $certificate) {
 
@@ -300,8 +329,14 @@ class CertificateService
         return $certificate;
     }
 
-    /*
+    /**
      * This function creates the (pdf) document for a given certificate type
+     *
+     * @param Certificate $certificate The certificate object
+     * @return Certificate The modified certificate object
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function createDocument(Certificate $certificate) {
 
@@ -324,8 +359,11 @@ class CertificateService
         return $certificate;
     }
 
-    /*
-     * This function creates a jwt envelope for a payload and secret
+    /**
+     * This function generates a jwt token using the claim that's available from the certificate object.
+     *
+     * @param Certificate $certificate The certificate object
+     * @return string The generated jwt token
      */
     public function createJWT(Certificate $certificate) {
 
@@ -354,6 +392,14 @@ class CertificateService
         return $base64UrlHeader.'.'.$base64UrlPayload.'.'.$base64UrlSignature;
     }
 
+    /**
+     * This function generates a claim based on the w3c structure
+     *
+     * @param array $data The data used to create the claim
+     * @param Certificate $certificate The certificate object
+     * @return array The generated claim
+     * @throws \Exception
+     */
     public function w3cClaim(array $data, Certificate $certificate) {
 
         $package = new Package(new EmptyVersionStrategy());
@@ -374,14 +420,21 @@ class CertificateService
         $proof['type'] = 'RsaSignature';
         $proof['created'] = date('H:i:s d-m-Y', filectime("cert/{$certificate->getOrganization()}.pem"));
         $proof['proofPurpose'] = 'assertionMethode';
-        $proof['verificationMethod'] = dirname(__FILE__, 3)."/public/cert/{$certificate->getOrganization()}.pem";
+        $proof['verificationMethod'] = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost()."/cert/{$certificate->getOrganization()}.pem";
         $proof['jws'] = $this->createJWS($certificate, $array['credentialSubject']);
 
         $array['proof'] = $proof;
         return $array;
     }
 
-    public function createJWS(Certificate $certificate, $array) {
+    /**
+     * This function generates a JWS token with the RS512 algorithm
+     *
+     * @param Certificate $certificate the certificate object
+     * @param array $data the data that gets stored in the jws token
+     * @return string Generated JWS token.
+     */
+    public function createJWS(Certificate $certificate, array $data) {
         $algorithmManager = new AlgorithmManager([
             new RS512(),
         ]);
@@ -398,7 +451,7 @@ class CertificateService
             'exp'  => time() + 3600,
             'iss'  => $certificate->getId(),
             'aud'  => $certificate->getPersonObject()['burgerservicenummer'],
-            'data' => $array,
+            'data' => $data,
         ]);
 
         $jws = $jwsBuilder
