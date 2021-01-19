@@ -11,11 +11,8 @@ on:
             - master
             - staging
             - development
-
 jobs:
-
     build:
-
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1

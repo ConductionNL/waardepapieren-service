@@ -58,9 +58,14 @@ class CertificateSubscriber implements EventSubscriberInterface
 
         }
 
+        // Lets support field selection
+        if($fields = $event->getRequest()->get('fields')){
+            $fields = explode(',', $fields);
+        }
+
         // We should also check on entity = component
         if ($method == 'POST') {
-            $certificate = $this->certificateService->create($certificate);
+            $certificate = $this->certificateService->create($certificate, $fields);
         }
         elseif($method == 'GET' && $event->getRequest()->get('id')){
             $certificate = $this->certificateService->get($event->getRequest()->get('id'));
@@ -69,18 +74,48 @@ class CertificateSubscriber implements EventSubscriberInterface
             /* @todo thow unknown poeeration exeption */
         }
 
-        // Lets return the result
-         $response = $this->serializer->serialize(
-            $certificate,
-            'json'
-        );
+        //Lets set a return content type
+        $contentType = $event->getRequest()->headers->get('accept');
+        if (!$contentType) {
+            $contentType = $event->getRequest()->headers->get('Accept');
+        }
+
+        switch ($contentType) {
+            case 'application/json':
+                $renderType = 'json';
+                break;
+            case 'application/ld+json':
+                $renderType = 'jsonld';
+                break;
+            case 'application/hal+json':
+                $renderType = 'jsonhal';
+                break;
+            default:
+                $contentType = 'application/ld+json';
+                $renderType = 'jsonld';
+        }
+
+        if ($fields != [] && $fields != '') {
+            // now we need to overide the normal subscriber
+            $response = $this->serializer->serialize(
+                $certificate,
+                $renderType,
+                ['attributes'    => $fields]
+            );
+        } else {
+            $response = $this->serializer->serialize(
+                $certificate,
+                $renderType,
+            );
+        }
 
         // Creating a response
         $response = new Response(
             $response,
             Response::HTTP_OK,
-            ['content-type' => 'application/json']
+            ['content-type' => $contentType]
         );
+
 
         $event->setResponse($response);
     }

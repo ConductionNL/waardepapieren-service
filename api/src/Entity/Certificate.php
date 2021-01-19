@@ -48,24 +48,92 @@ class Certificate
     private $person;
 
     /**
+     * @var array The person for this certificate as an object from the BRP
+     *
+     * @example https://dev.zuid-drecht.nl/api/v1/brp/ingeschrevenpersonen/999992016
+     *
+     */
+    private $personObject;
+
+    /**
      * @var string The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.
      *
      * @example geboorte akte
      *
-     * @Assert\Choice({"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"})
+     * @Assert\Choice({
+     *     "akte_van_geboorte",
+     *     "akte_van_huwelijk",
+     *     "akte_van_overlijden",
+     *     "akte_van_registratie_van_een_partnerschap",
+     *     "akte_van_omzetting_van_een_huwelijk_in_een_registratie_van_een_partnerschap",
+     *     "akte_van_omzetting_van_een_registratie_van_een_partnerschap",
+     *     "verklaring_diplomas",
+     *     "verklaring_inkomen",
+     *     "verklaring_studieschuld",
+     *     "verklaring_van_huwelijksbevoegdheid",
+     *     "verklaring_van_in_leven_zijn",
+     *     "verklaring_van_nederlandershap",
+     *     "uittreksel_basis_registratie_personen",
+     *     "uittreksel_registratie_niet_ingezetenen",
+     *     "historisch_uittreksel_basis_registratie_personen",
+     * })
      *
      * @Groups({"read", "write"})
      */
     private $type;
 
     /**
-     * @var string The claim of this certificate. This is a jwt token.
+     * @var string The organizations that is requested to "sign" this claim
+     *
+     * @example https://example.com/organization
+     *
+     * @Groups({"read", "write"})
+     */
+    private $organization;
+
+    /**
+     * @var array The claim of this certificate as an json object
      *
      * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
      *
      * @Groups({"read"})
      */
     private $claim;
+
+    /**
+     * @var array The discipl of this certificate as an json object
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     * @Groups({"read"})
+     */
+    private $discipl;
+
+    /**
+     * @var string The claim of this certificate as an json object
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     * @Groups({"read"})
+     */
+    private $irma;
+
+    /**
+     * @var string The data of the claim this certificate as an json object
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     */
+    private $claimData;
+
+    /**
+     * @var string The claim of this certificate as a jwt token.
+     *
+     * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
+     *
+     * @Groups({"read"})
+     */
+    private $jwt;
 
     /**
      * @var string The image of this certificate. This is a qr-code.
@@ -76,11 +144,10 @@ class Certificate
      */
     private $image;
 
-
     /**
+     *
      */
     private $imageLocation;
-
 
     /**
      * @var string The document of this certificate. This is a pdf.
@@ -115,6 +182,18 @@ class Certificate
         return $this;
     }
 
+    public function getPersonObject(): ?array
+    {
+        return $this->personObject;
+    }
+
+    public function setPersonObject(array $personObject): self
+    {
+        $this->personObject = $personObject;
+
+        return $this;
+    }
+
     public function getType(): ?string
     {
         return $this->type;
@@ -127,14 +206,74 @@ class Certificate
         return $this;
     }
 
-    public function getClaim(): ?string
+    public function getOrganization(): ?string
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(string $organization): self
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    public function getClaim(): ?array
     {
         return $this->claim;
     }
 
-    public function setClaim(string $claim): self
+    public function setClaim(array $claim): self
     {
         $this->claim = $claim;
+
+        return $this;
+    }
+
+    public function getDiscipl(): ?array
+    {
+        return $this->discipl;
+    }
+
+    public function setDiscipl(array $discipl): self
+    {
+        $this->discipl = $discipl;
+
+        return $this;
+    }
+
+    public function getIrma(): ?array
+    {
+        return $this->irma;
+    }
+
+    public function setIrma(array $irma): self
+    {
+        $this->irma = $irma;
+
+        return $this;
+    }
+
+    public function getClaimData(): ?array
+    {
+        return $this->claimData;
+    }
+
+    public function setClaimData(array $claimData): self
+    {
+        $this->claimData = $claimData;
+
+        return $this;
+    }
+
+    public function getJWT(): ?string
+    {
+        return $this->jwt;
+    }
+
+    public function setJWT(string $jwt): self
+    {
+        $this->jwt = $jwt;
 
         return $this;
     }

@@ -1,0 +1,22 @@
+
+{% extends base %}
+
+{% block content %}
+<h1> Akte van Geboorte </h1>
+
+<p>
+    Uit de basisregistratie personenen van de gemeente {{ person.verblijfplaats.woonplaatsnaam }} blijkt dat daarin is opgenomen:
+</p>
+
+{% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
+
+
+<p>
+    Is geboren in de gemeente {{ person.geboorte.plaats.omschrijving }} te {{ person.geboorte.datum.datum }}
+</p>
+
+{% include '/blocks/ondertekening.html.twig' with {'person': person} %}
+
+{% include '/blocks/claim.html.twig' with {'qr': qr} %}
+
+{% endblock %}

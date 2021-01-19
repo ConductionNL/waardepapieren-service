@@ -1,0 +1,112 @@
+{# Base template for the he Dutch Education Service (Dient Uitvoering Onderwijs) #}
+<html>
+<head>
+    <style>
+        /**
+            Set the margins of the page to 0, so the footer and the header
+            can be of the full height and width !
+         **/
+        @page {
+            margin: 0cm 0cm;
+        }
+
+        /** Define now the real margins of every page in the PDF **/
+        body {
+            color: #2b2b2b;
+            margin-top: 2cm;
+            margin-left: 2cm;
+            margin-right: 2cm;
+            margin-bottom: 2cm;
+        }
+
+        /** Define the header rules **/
+        header {
+            position: fixed;
+            top: 0cm;
+            left: 0cm;
+            right: 0cm;
+            height: 2cm;
+
+            /** Extra personal styles **/
+            background-color: #FFFFFF;
+            color: white;
+            text-align: center;
+            line-height: 1.5cm;
+        }
+
+        /** Define the footer rules **/
+        footer {
+            position: fixed;
+            bottom: 0cm;
+            left: 0cm;
+            right: 0cm;
+            height: 2cm;
+            font-size: 10px;
+            vertical-align: center;
+
+            /** Extra personal styles **/
+            background-color: #154273;
+            color: white;
+            text-align: center;
+        }
+        footer.p {
+            position: absolute;
+            top: 50%; transform:
+            translate(-50%, -50%);
+            padding-left: 2.5cm;
+            padding-right: 2.5cm;
+        }
+
+        h1 {
+            font-family: Calibri;
+            font-weight: bold;
+            text-align: center;
+            font-size: 22px;
+            margin-top: 1cm;
+        }
+        h2 {
+            font-family: Calibri;
+            font-weight: bold;
+            text-align: left;
+            font-size: 18px;
+        }
+        table {
+            border:none;
+            width: 100%
+        }
+        a {
+            color: #154273;
+        }
+
+        .header-logo {
+            background-color: #154273;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAACvCAYAAAALzXsjAAAACXBIWXMAABM2AAATNgH5DPgbAAASJElEQVR4nO2da4xV1RXHN30JBaGQFCx0xjaD6YMxYoUPZbSJmIDSVFQ+ADYF+VCIGmhDC32ApBFo0qEhTa0QlEQhrQ4fUGkjOCTVpDj0A9BAOsQ0MiYFMaAJBJTgK2nz2/esw5oz59zzuFdnDdn/ZHLncR/7rP9677XPDPvyzJ/9zwWYwWcCFbYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcYQCDGGQIgxBEKMIRBiDIEQYwiEGEMgxBgCIcZwVRCyavEs13FTm4GVNI6rgpA5He1uxtRAyKBj2bzb3CtPrHQX3rvsLeRfz6xx7ZMnDuVLGtqEnDxz3vX2veVarxvnTp0973qO9bkL771vYGXVcVX8t+gXNj/o9vX0um27DxhYTWMY8jEEF9U+eZLruGmygdU0jiFNSMt149wLmx9yo0cOd3d2THEbHp5rYFWNYUgRMmbUiH5B+9SZcwP+rkGgh7ShhM8NlbU+9osFbv6saf77g8f63D0rt/rv71m5xT22eoEP7msf3+N/B2liOeCJ5w7Ef7OOIWEhC2ZP92RcvPS+27X/sJtxU5sP5Hd1tLveE2/57KrnaJ9PfykSIcNFRICl9902ZApHs4TgfsTdtFw31j/2njjtlv+uyy1e97T/GUuhFkHgf1w93wv9FKnwidPu9qWb3aYd++P3k8LRuhsz6bLQ/B2PPuC/f6nnuDt5thYryKYAKS5foKv7sLcgXBaW4o71ua7uQ/5v2iogGKuaEf0OUuU9LMGkhaD1Trkc6gvcFTEhWYljPRBw8sy5AUH9rlvb/SOvxVogbdPOmtUsnD39U7qacjAd1Pe92lvTek/KP9yqRbPc6kWzXc+xE54knfa6yCII9hCzYPY03+MCm3Z0+/hCYF8QETF61PBBvLJsmCQETca1LLhzekwIGo6AqTf4Ant7jqe+Htc0pa1mScQZXcFDlIvcnkWYdFkIHzdDZqVdlE5dqcypQ0h7ee7xvrd8XNDJAFjeucs/8nssCKJ5rtU2i0lCcC8i6J2PLnEn/rrBE4O1IEz/nEuX/SNZlTzyOnAxeiQhgDTc1Ot71rsd65f495QaxiJMNxd1toXrwQK0O3rzbI2Mr06opcWQhXVITOFnhE+LXp4zc9lmX7tYhflu79t//338PQSIYKuA13/n/o2DcyEF0XSXdVeU2TQLKzp3eTfjlCVUAWRQVDYLxKRkmt0MND3LooaYE+X/LRPG+oyJAJpsBBYFNQbxg2q8ETzbfSjO2KoAVygZGmBTjFT8wonL9giBhGXzvue/p0CTJiAgqyFdpZUhQbcsqr6uWcASiEMSm1xUbI4ZOcK3ZEgiIKcZmVtTCEHzVi2e7RecdCtkOmj4kWfWeJfRSP6P24FwPg8hZAXn0VGbHi1ub5sYJwFVgAum0ywWLu8lezAuyuoasT6NpgR1NIiF0+BL4qAX3vvx4okJ0msqCqkrqro91gdJZV+P5a9/qLbpRZc5jVwsBet4YveBplhyUwjRTbs0SB+Kx8l3r2304wYAa2C4oSphWUARjvzl14WeC2HNSBoadlksuh4ZuKxF657yVTLNPoSHq6FY65jaNuAihNxbfvjbWMASUG9sm+R7UPU+TyDu7VT0ePBon08wZGTo+c0Ppm5c8fnEAlxr64Sxfv0kBPzMmFFWpkfcNEFIa04qCgFsGo2JXMaGh+bGAl0RtTVc5FYoAvkbwtzI86a2ucWPPOX/TmOxDBBcP+Etqj28GY0LuWjjyiVaMgheilG0HjLIGukOj/4E0twkGibkZFQtZwGhIEza3mgeX2kuZum822KiBggzBVThaf5cZ0Jp4H11FggpuqvM/goWzHXJ+paptWVBaqVG0TAheX77kS17BghfZ0e4I6whzlgKCFVaIvSnkmuR1BMXV8S1AdwXCiOBOZkxQRINTxRJgnwS7FI2A58d+fUZv6n6PvhizHnm9G9mPmfat7/mXj/1tvffb5971/8OEhbOnuZ+svAOt+mn89zk1vHx81f9YXe/an9X92H/KPsYELZ43VN+sEF3dYkHuMAjr/3Xf5Zzw3zaO37ctd5NbXvugLuePlfkdsj+uvYfjncVeXzg7hnuhtbxNfd69rz74MOP/fe8x70zb3bLF8zMvE7WMubaEe71U+/Ezc0qaMhC0CT2LOoBbcdl8aVTRLZjxSqcahTW6pQr6TPaq4G/hzCt/feu3OoFzZdOPcWlEdTRcISuXSGB/s3ZV/pjrBV3djKyZj3pkoeDkVU1QoZrhssis0BIFH55rkbIoXL3O3sjR3hSyGSWd3YNEGgSBNnevtMD6h1cCW5Fv1YGI+oBS6KDwHOxOAjEdaEURa5HIJlkM5DZXESb2Iso0kBDEGVqAC6czGvNlj3e1XAxee/B8zp37PdrEkAQ8YS2TbKpifYXWfeFqOJHQRAslgQ5RclwPrEpdu0oDi2YeiNJmRZCyon2oim4mSTQSBGgpLWYbdFASnZDAC4ywCabUmQ7OvUUd4IrZIwU65GEAe0vkiAIIAbFIFaVabWgFFi8Tij8zmTivEptn3967noyCZELEzeTBL+TNggxQWag9P5FHuZ0TCnUkOMzIMIfOzhzrp/AiD17e3r9enX2BkFy8ShJ0XXNKbF9gAImi8EicadeqZBJCH4Uf+qHz86e948IBeGQt+Mm8OVaK8sOoBUptLyWjxoR1zJYFD/vfPQBbwVp1THaeLJiG6XMNIrMiQlkwpJ14jKxEuQkzUe2I/K2Igr3smgbYNJaC/GHaKdYR1I70lwGGk0sYFG6+NKop82SqUGQbq9o1OutyZr0fLAGfp5kg0eEmVegUmeJlRPfIFS/L+9Dd6LoPn7hLAshJtvdyYwI7UUzERa+FY0QwQgRLnILLJwucOfO7lJ73NqF0vjjfZ+N3CbrwUpblaWyjr2v9sbTK2hrVnGHF4AE1oZXmLtyq3ermhiIFI/B9ejOtbxOg2srs+VQuduLWyDgQ4JelC+QRg2PG4jyPW4mqwWBies53CL+XmJHvUAJGYC2OWm17qMlLYTEJC1W8h4IXnp2TLtkKRAegmzvlvs3Vm7FVyYEtwAp5PECtPDlbSv9TwdV+wFfm5ddyFQJF6IJwcXQlvCbYJHANIEypajTXt28zNr+FUJ0UzNvfdItputMfKjNhW2NhS/t+kbqkkqEiCYwOyXaIhZTJn9PAuFjcbrwEx+NBuM6ZNdR5/K69yTbrbiY2gzWlrjo0/Ctk+7D/bKxKkgKH4tl/VX3R0oTwgWgcbQrtCCyTF5DWt+SASE84km9wMkF+2GCS5d9k3L14lleGbQQeV+dcMgaXST4tVv2xJZbD8ejCXrReLGEPMKSspDkJumKi6BU6wSt5EL5oGRHVIYc0iCan7Z1y+95Xy4ijRiKU9wO2uY3uRQZEtARHEPXuE/cCGm5EIIryksajkenr9L2xVEatgbqKRvXrl/LWluibQfS3zL77aW6vTvXL3EffvRxfGBGgJD0iIwGQpv/yyfdy4f+k/m+ZCb43xtaJ7hrvjBQR0gIIBVraolIwyXgv7GA51856ru07EDizng/voa5YW799r1uwrhr425x2vpY246//TP173R8+Qy+5tx6Y+r66FbT2uG5gp5jb/gk5kujvujXVxSlLAQ/fDCF7Y6M21pwsdK8w6W5qMeUpjFoKNmQHojQ0IE56Z8RNq/VfTc+8999p/3a0shgbbgmXUclweukSUm8IR7p4w8aKKX2AFgqn5F2LfVQutvbmlKNZzXL1jy+Z2AGsyhqOXTuGlDUIRjIKlIYuiiroxjTs716TfUyJ+IYlp7WFU5zobgfrICzJml1DMRrQmTSpSxKjZIiDBZJFoPGEzz18LOGnzw/ey5VKPyO90h2aIv4WrRTNJ7sSQutnx/v3JVqzRoXUma7cDPswaTFM6yUMylp27VcC/JgbTIkzlq1khRBKQuRlHRKgeEzXEF726TMv7NYFl1lTkssMrkGBIaQN0WtGWKMTJgUQV5j0E8rjhru3W7SFXE9afVO5yeZZSE4Lnjjw3NzezwIBJNNG0bQgGB/9uNoX26LAatDEGIJab0y2Z10qtjMa8NjFRwAyvP3FKgtE8bFZ1Pqgc8WF1wGpWOInID1d1Vom+izo7SJRfJ3FsRzpVGXpX1oVuuEcTEhaccOpB6hBeIibU624jVkSxj3iGUnC8CL6q5BeU1EaZ9IzNuYcQuPZD1SBZWHHEjxSC250LS2OwMFZCY8j+EGhM1QwY2TJw54Pl1bnXaOjo6faZBaDhs2zD8+8uPvu9unf8MPHwjQSP5+ZYjhDbd0w599u4N9/2QsY5hCGoG+JX72/ICYhhLM/9V27xlkrxxruuf2qakyKZvipqE0IQTxrmgShMCeld8jmPtm3uyFL5MYfkCas4A/+G78PDQ5mXbWcv72fgJ3UZMQopK/dxGpmkiIe+f8u27fn1a4W751fb/novHJjTEIWbGw/1TJjCWdMRFcJ8qn154En3nx0mV35LWT3oM8ufZHpQkq7bJoFLI34nIO0JAiShaj01v2GjTWZGzhEpARQNGpjzSkpadZ7QzWypqzzqFI4lFzwZMy18Vn6qMZZVGaEAqyekFd6oSsYivprnQxJzcM2BbtbfBZ7GUUSSLykGyPyIAexSNrTXO7Mocs0Nkgwma8NG1d/A7Lp4dWFqUJwZ2kFTxyHjwvU0pW9SQEfkDhxGnv5yEUoYkgeD/ee2l0KKhsZ1Y2xpKpNa5NzrzTC0vLsEjbs/pgkCizXrjuZIxCRlUOl5bu9ibzegRY5CAOlsDCix5NS8tYpNGXRgyk0UUQjc0iwhXsTLv4lhzdhQYxpO2edw15KB3UW/3RgCuBfMP2F+MgXw9kWwR3XAfF4PBrPj8g2AqkUdebqHKl0UdG9sFHH/fLxFqiMVE/ErT9xTjDSgMJA4E36/OJM7WZ5Mvu+VeOFZpG9Dfj/ErtxJaAMdjklm4eGppcrMWL4ufqCO5dUaDDn/OzDrxSwOlp9DRINY4i6EHtWq9pf+72KZ9ND0xaINra9F2CyrqcrpcONZSEuEYJkYlv8ncJgGU29KmOcS1kWvS9eD0FX1FAKBtTfL68vgxkx1PuoUUs4zqKXgOveWz1fK88aV3svKMaaSgdQ/DjcgxAtyTE38od3q52SDzDhWdZxfg7fl5aCqUtRLertanzvbifrHmp+u87Lp7s0GOY0qJpBrSi6FO8MrxQBmzI5SUGJA9lD4OWspCO6JZJ7NqlTZKIleyNbvqSBYTPvBMuCxfRaI3RLJBw+DvTRY3OeoKUSU5cbFIOvA/dbtJpHst0sytNnchkh4vb7LWdPjkTWM9l6VEhyyhyYlgmFSERmUAkcYh4UnUMqFJQhwCGC/QEvIuCe178SLZOrKJIAcqd7ZLegOvH+luiwfCy+NTvBlRmw2iwUSUoN4qGT1DJPGxWLJBZWFLkrFvyWYbcpcLfYz4apEgeh6Cv1ehNdgQNWwixpMwBF9oJydYLZBGDaPS5RAYkqDdTm4RMsGdBZ3FyMwLddhFws7My8S5ror4MGraQKjd2kXse4m+bfTsMV6DCrhfnsHjZ4Swb79ImcsqiIUKq3L4b01607mkf+Gh7yAEZWtWDdes9OcPhoq1dgjXzZGXrHyxsTM7B1Tw0REiVW3ZnTZoPZvbl73ul1kRvjNtNFTk4mgQkNtKpaJCQsf0GqLkzKC4IjRsd3QKPBeqLLXoodLCh74clwNVyjRLrNGQwT+6eWhUNEbIvYwwzbUEslEVTnScnygnsVRpxzULWWA9BOqtxmMSm+B8INNZ1GLS7kureVZVeUrOhM7MyGV2zcVX8U7CrCeFfrxpDIMQYAiHGEAgxhkCIMQRCjCEQYgyBEGMIhBhDIMQYAiHGEAgxhkCIMQRCjCEQYgyBEGMIhBhDIMQYAiHGEAgxhkCIMQRCjCEQYgyBEGMIhBhDIMQYAiGW4Jz7P0ZfZWtGQUBKAAAAAElFTkSuQmCC');
+            background-size: 100%;
+            display: inline-block;
+            height: 90px;
+            width: 45px;
+            margin: auto;
+        }
+
+    </style>
+</head>
+<body> <
+
+!-- Define header and footer blocks before your content -->
+<header>
+    <div class="header-logo" title="Logo Belastingdienst">
+
+    </div>
+</header>
+
+<footer>
+    <p>
+        {% include '/blocks/legal.html.twig'%}
+    </p>
+</footer>
+
+{% block content %}
+
+{% endblock %}
+</body>
+</html>
