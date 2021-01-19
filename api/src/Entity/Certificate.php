@@ -51,7 +51,6 @@ class Certificate
      * @var array The person for this certificate as an object from the BRP
      *
      * @example https://dev.zuid-drecht.nl/api/v1/brp/ingeschrevenpersonen/999992016
-     *
      */
     private $personObject;
 
@@ -122,7 +121,6 @@ class Certificate
      * @var string The data of the claim this certificate as an json object
      *
      * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJic24iOiI5OTk5OTM0NTYiLCJuYW1lIjoiSm9obiBEb2UifQ.xasJlHtinAZUjPSPieYyW7-TF1wW-06x-ph4BOrt3fo
-     *
      */
     private $claimData;
 
@@ -145,8 +143,14 @@ class Certificate
     private $image;
 
     /**
+     * @var array w3c version of the claim
      *
+     * @example ...
+     *
+     * @Groups({"read"})
      */
+    private $w3c;
+
     private $imageLocation;
 
     /**
@@ -310,6 +314,18 @@ class Certificate
     public function setDocument(string $document): self
     {
         $this->document = $document;
+
+        return $this;
+    }
+
+    public function getW3c(): ?array
+    {
+        return $this->w3c;
+    }
+
+    public function setW3c(array $w3c): self
+    {
+        $this->w3c = $w3c;
 
         return $this;
     }
