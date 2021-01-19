@@ -42,7 +42,7 @@ class ClaimService
         $jwk = JWKFactory::createRSAKey(
             4096, // Size in bits of the key. We recommend at least 2048 bits.
             [
-                'alg' => 'RSA-512',
+                'alg' => 'RS512',
                 'use' => 'alg'
             ]);
         $this->filesystem->dumpFile("cert/{$rsin}.pem", RSAKey::createFromJWK($jwk)->toPEM());

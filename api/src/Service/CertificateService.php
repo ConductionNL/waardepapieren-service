@@ -4,8 +4,16 @@ namespace App\Service;
 
 use App\Entity\Certificate;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
+use DateTimeZone;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\Encryption\Algorithm\KeyEncryption\RSAOAEP512;
+use Jose\Component\KeyManagement\JWKFactory;
+use Jose\Component\Signature\Algorithm\HS256;
+use Jose\Component\Signature\Algorithm\RS512;
+use Jose\Component\Signature\Serializer\CompactSerializer;
+use Jose\Easy\JWSBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -27,6 +35,7 @@ class CertificateService
     private $params;
     private $qrCodeFactory;
     private $twig;
+    private $filesystem;
 
     public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory, Twig $twig)
     {
@@ -34,6 +43,7 @@ class CertificateService
         $this->params = $params;
         $this->qrCodeFactory = $qrCodeFactory;
         $this->twig = $twig;
+        $this->filesystem = new Filesystem();
     }
 
     public function get($id){
@@ -228,9 +238,10 @@ class CertificateService
             default:
                 /*@todo throw error */
         }
-
-        $claimData["doel"] = $certificate->getType();
+        $certificate->setW3c($this->w3cClaim($claimData, $certificate));
         $claimData["persoon"] = $certificate->getPersonObject()['burgerservicenummer'];
+        $claimData["doel"] = $certificate->getType();
+
         $certificate->setClaimData($claimData);
 
         // Create token payload as a JSON string
@@ -337,5 +348,61 @@ class CertificateService
 
         // Return JWT
         return $base64UrlHeader.'.'.$base64UrlPayload.'.'.$base64UrlSignature;
+    }
+
+    public function w3cClaim(array $data, Certificate $certificate) {
+
+        $now = new \DateTime('now', new DateTimeZone('Europe/Amsterdam'));
+        $array = [];
+        $array['@context'] = array("https://www.w3.org/2018/credentials/v1", "https://www.w3.org/2018/credentials/examples/v1");
+        $array['id'] = $certificate->getId();
+        $array['type'] = array('VerifiableCredential', $certificate->getType());
+        $array['issuer'] = $certificate->getOrganization();
+        $array['inssuanceDate'] = $now->format('H:i:s d-m-Y');
+        $array['credentialSubject']['id'] = $certificate->getPersonObject()['burgerservicenummer'];
+        foreach ($data as $key => $value) {
+            $array['credentialSubject'][$key] = $value;
+        }
+
+        $proof = [];
+        $proof['type'] = 'RsaSignature';
+        $proof['created'] = date('H:i:s d-m-Y', filectime("cert/{$certificate->getOrganization()}.pem"));
+        $proof['proofPurpose'] = 'assertionMethode';
+        $proof['verificationMethod'] = "public/cert/{$certificate->getOrganization()}.pem";
+        $proof['jws'] = $this->createJWS($certificate, $array['credentialSubject']);
+
+        $array['proof'] = $proof;
+        return $array;
+    }
+
+    public function createJWS(Certificate $certificate, $array) {
+        $algorithmManager = new AlgorithmManager([
+            new RS512(),
+        ]);
+
+        $jwk = JWKFactory::createFromKeyFile(
+            "../cert/{$certificate->getOrganization()}.pem"
+        );
+
+        $jwsBuilder = new \Jose\Component\Signature\JWSBuilder($algorithmManager);
+
+        $payload = json_encode([
+            'iat'  => time(),
+            'nbf'  => time(),
+            'exp'  => time() + 3600,
+            'iss'  => $certificate->getId(),
+            'aud'  => $certificate->getPersonObject()['burgerservicenummer'],
+            'data' => $array,
+        ]);
+
+        $jws = $jwsBuilder
+            ->create()
+            ->withPayload($payload)
+            ->addSignature($jwk, ['alg' => 'RS512'])
+            ->build();
+
+        $serializer = new CompactSerializer();
+
+        return $serializer->serialize($jws, 0);
     }
 }

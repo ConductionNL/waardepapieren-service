@@ -145,6 +145,15 @@ class Certificate
     private $image;
 
     /**
+     * @var array w3c version of the claim
+     *
+     * @example ...
+     *
+     * @Groups({"read"})
+     */
+    private $w3c;
+
+    /**
      *
      */
     private $imageLocation;
@@ -310,6 +319,18 @@ class Certificate
     public function setDocument(string $document): self
     {
         $this->document = $document;
+
+        return $this;
+    }
+
+    public function getW3c(): ?array
+    {
+        return $this->w3c;
+    }
+
+    public function setW3c(array $w3c): self
+    {
+        $this->w3c = $w3c;
 
         return $this;
     }
