@@ -18,20 +18,14 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CertificateSubscriber implements EventSubscriberInterface
 {
-    private $params;
-    private $em;
     private $certificateService;
     private $serializer;
-    private $commonGroundService;
     private $filesystem;
 
-    public function __construct(ParameterBagInterface $params, EntityManagerInterface $em, SerializerInterface $serializer, CertificateService $certificateService, CommongroundService $commonGroundService)
+    public function __construct(SerializerInterface $serializer, CertificateService $certificateService)
     {
-        $this->params = $params;
         $this->certificateService = $certificateService;
-        $this->commonGroundService = $commonGroundService;
         $this->serializer = $serializer;
-        $this->em = $em;
         $this->filesystem = new Filesystem();
     }
 
@@ -53,18 +47,11 @@ class CertificateSubscriber implements EventSubscriberInterface
             $contentType = $event->getRequest()->headers->get('Accept');
         }
 
-        /* @todo check for  routes */
-
         // Entity Check
-        if (!$certificate instanceof Certificate) {
-            return;
-        }
-
-        if (
+        if (!$certificate instanceof Certificate ||
             !$this->filesystem->exists("../cert/{$certificate->getOrganization()}.pem") ||
             !$this->filesystem->exists("cert/{$certificate->getOrganization()}.pem") ||
-            !$this->filesystem->exists("../templates/organizations/{$certificate->getOrganization()}.html.twig")
-        ) {
+            !$this->filesystem->exists("../templates/organizations/{$certificate->getOrganization()}.html.twig")) {
             return;
         }
 
@@ -78,14 +65,6 @@ class CertificateSubscriber implements EventSubscriberInterface
             $certificate = $this->certificateService->create($certificate, $fields);
         } elseif ($method == 'GET' && $event->getRequest()->get('id')) {
             $certificate = $this->certificateService->get($event->getRequest()->get('id'));
-        } else {
-            /* @todo thow unknown poeeration exeption */
-        }
-
-        //Lets set a return content type
-        $contentType = $event->getRequest()->headers->get('accept');
-        if (!$contentType) {
-            $contentType = $event->getRequest()->headers->get('Accept');
         }
 
         switch ($contentType) {
@@ -116,7 +95,6 @@ class CertificateSubscriber implements EventSubscriberInterface
                 $renderType,
             );
         }
-
         // Creating a response
         $response = new Response(
             $response,
