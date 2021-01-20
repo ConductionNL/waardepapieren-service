@@ -2,25 +2,16 @@
 
 namespace App\Service;
 
-use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Jose\Component\Core\Util\RSAKey;
 use Jose\Component\KeyManagement\JWKFactory;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Twig\Environment as Twig;
 
 class ClaimService
 {
-    private $commonGroundService;
-    private $params;
-    private $twig;
     private $filesystem;
 
-    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, Twig $twig)
+    public function __construct()
     {
-        $this->commonGroundService = $commonGroundService;
-        $this->params = $params;
-        $this->twig = $twig;
         $this->filesystem = new Filesystem();
     }
 

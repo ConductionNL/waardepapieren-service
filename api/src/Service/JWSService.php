@@ -2,31 +2,15 @@
 
 namespace App\Service;
 
-use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Core\JWK;
 use Jose\Component\Signature\Algorithm\RS512;
 use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Twig\Environment as Twig;
 
 class JWSService
 {
-    private $commonGroundService;
-    private $params;
-    private $twig;
-    private $filesystem;
-
-    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, Twig $twig)
-    {
-        $this->commonGroundService = $commonGroundService;
-        $this->params = $params;
-        $this->twig = $twig;
-        $this->filesystem = new Filesystem();
-    }
 
     /**
      * This function verifies if the provided public key is the signature needed for the JWS token.
