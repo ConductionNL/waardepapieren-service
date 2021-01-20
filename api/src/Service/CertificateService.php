@@ -15,7 +15,6 @@ use Jose\Component\Signature\Serializer\CompactSerializer;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment as Twig;
@@ -23,13 +22,12 @@ use Twig\Environment as Twig;
 class CertificateService
 {
     private $commonGroundService;
-    private $params;
     private $qrCodeFactory;
     private $twig;
     private $filesystem;
     private $requestStack;
 
-    public function __construct(CommonGroundService $commonGroundService, ParameterBagInterface $params, QrCodeFactoryInterface $qrCodeFactory, Twig $twig, RequestStack $requestStack)
+    public function __construct(CommonGroundService $commonGroundService, QrCodeFactoryInterface $qrCodeFactory, Twig $twig, RequestStack $requestStack)
     {
         $this->commonGroundService = $commonGroundService;
         $this->qrCodeFactory = $qrCodeFactory;
@@ -390,8 +388,6 @@ class CertificateService
      */
     public function w3cClaim(array $data, Certificate $certificate)
     {
-        $package = new Package(new EmptyVersionStrategy());
-
         $now = new \DateTime('now', new DateTimeZone('Europe/Amsterdam'));
         $array = [];
         $array['@context'] = ['https://www.w3.org/2018/credentials/v1', 'https://www.w3.org/2018/credentials/examples/v1'];
@@ -403,17 +399,28 @@ class CertificateService
         foreach ($data as $key => $value) {
             $array['credentialSubject'][$key] = $value;
         }
+        $array['proof'] = $this->createProof($certificate, $array);
 
+        return $array;
+    }
+
+    /**
+     * This function creates a proof
+     *
+     * @param Certificate $certificate the certificate object
+     * @param array       $data        the data that gets stored in the jws token of the proof
+     *
+     * @return array proof
+     */
+    public function createProof(Certificate $certificate, array $data) {
         $proof = [];
         $proof['type'] = 'RsaSignature';
         $proof['created'] = date('H:i:s d-m-Y', filectime("cert/{$certificate->getOrganization()}.pem"));
         $proof['proofPurpose'] = 'assertionMethode';
         $proof['verificationMethod'] = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost()."/cert/{$certificate->getOrganization()}.pem";
-        $proof['jws'] = $this->createJWS($certificate, $array['credentialSubject']);
+        $proof['jws'] = $this->createJWS($certificate, $data['credentialSubject']);
 
-        $array['proof'] = $proof;
-
-        return $array;
+        return $proof;
     }
 
     /**
@@ -429,13 +436,10 @@ class CertificateService
         $algorithmManager = new AlgorithmManager([
             new RS512(),
         ]);
-
         $jwk = JWKFactory::createFromKeyFile(
             "../cert/{$certificate->getOrganization()}.pem"
         );
-
         $jwsBuilder = new \Jose\Component\Signature\JWSBuilder($algorithmManager);
-
         $payload = json_encode([
             'iat'  => time(),
             'nbf'  => time(),
@@ -444,15 +448,12 @@ class CertificateService
             'aud'  => $certificate->getPersonObject()['burgerservicenummer'],
             'data' => $data,
         ]);
-
         $jws = $jwsBuilder
             ->create()
             ->withPayload($payload)
             ->addSignature($jwk, ['alg' => 'RS512'])
             ->build();
-
         $serializer = new CompactSerializer();
-
         return $serializer->serialize($jws, 0);
     }
 }
