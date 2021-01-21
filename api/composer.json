@@ -24,6 +24,7 @@
         "symfony/yaml": "5.1.*",
         "tbbc/money-bundle": "^4.0",
         "tecnickcom/tcpdf": "^6.3",
+        "web-token/jwt-framework": "^2.2",
         "webonyx/graphql-php": "^0.13.8"
     },
     "require-dev" : {
