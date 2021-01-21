@@ -11,7 +11,6 @@ use Jose\Component\Signature\Serializer\JWSSerializerManager;
 
 class JWSService
 {
-
     /**
      * This function verifies if the provided public key is the signature needed for the JWS token.
      *
