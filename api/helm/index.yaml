@@ -3,14 +3,14 @@ entries:
   waar:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2021-01-20T15:36:37.8368995Z"
+    created: "2021-01-21T09:05:03.0924882Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: 8b0d59c85405cd1ee0307026d75223b7f3aee32280670047d0315f636ab92958
+    digest: d3c1e7fcde29f02242b2aaefb74e14ec07cd54e3953d8ca4a4e0b30fe8d5af21
     home: waar.zaakonline.nl
     icon: waar.zaakonline.nl
     name: waar
     urls:
     - waar-0.1.0.tgz
     version: 0.1.0
-generated: "2021-01-20T15:36:37.804402Z"
+generated: "2021-01-21T09:05:03.0777904Z"
