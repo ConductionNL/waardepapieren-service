@@ -13,8 +13,6 @@ use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\Algorithm\RS512;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Asset\Package;
-use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment as Twig;
@@ -405,14 +403,15 @@ class CertificateService
     }
 
     /**
-     * This function creates a proof
+     * This function creates a proof.
      *
      * @param Certificate $certificate the certificate object
      * @param array       $data        the data that gets stored in the jws token of the proof
      *
      * @return array proof
      */
-    public function createProof(Certificate $certificate, array $data) {
+    public function createProof(Certificate $certificate, array $data)
+    {
         $proof = [];
         $proof['type'] = 'RsaSignature';
         $proof['created'] = date('H:i:s d-m-Y', filectime("cert/{$certificate->getOrganization()}.pem"));
@@ -454,6 +453,7 @@ class CertificateService
             ->addSignature($jwk, ['alg' => 'RS512'])
             ->build();
         $serializer = new CompactSerializer();
+
         return $serializer->serialize($jws, 0);
     }
 }
