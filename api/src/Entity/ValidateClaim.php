@@ -112,5 +112,4 @@ class ValidateClaim
 
         return $this;
     }
-
 }

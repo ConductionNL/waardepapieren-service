@@ -30,11 +30,12 @@ class ValidateClaimSubscriber implements EventSubscriberInterface
     {
         $method = $event->getRequest()->getMethod();
         $claimToValidate = $event->getControllerResult();
-        if ($method == 'POST' && $claimToValidate instanceof ValidateClaim){
+        if ($method == 'POST' && $claimToValidate instanceof ValidateClaim) {
             $claim = $claimToValidate->getClaim();
             $claimToValidate->setValidBody($this->JWSService->checkTokenData($claim['proof']['jws'], $claim['credentialSubject']));
-            $jwk = JWKFactory::createFromKeyFile(str_replace($event->getRequest()->getSchemeAndHttpHost().'/', '',$claim['proof']['verificationMethod']));
+            $jwk = JWKFactory::createFromKeyFile(str_replace($event->getRequest()->getSchemeAndHttpHost().'/', '', $claim['proof']['verificationMethod']));
             $claimToValidate->setValidSignature($this->JWSService->verifyJWSToken($jwk, $claim['proof']['jws']));
+
             return $claimToValidate;
         }
     }
