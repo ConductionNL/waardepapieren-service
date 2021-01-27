@@ -10,7 +10,7 @@ info:
     - Version: V1.0
     - Repository: [online](https://github.com/ConductionNL/waardepapieren-service) / [zip](https://github.com/ConductionNL/waardepapieren-service/archive/master.zip)
     - Docker Image: [online](https://hub.docker.com/repository/docker/conduction/waar-php) 
-    - Datamodel: [postman](/api/v1/waar/schema/waar.postman_collection.json) / [oas](api/v1/waar/schema/openapi.yaml) / [pdf](api/v1/waar/schema/datamodel.pdf) / [modelio (zip)](api/v1/waar/schema/Datamodel_Modelio.zip) 
+    - Datamodel: [postman](/api/v1/waar/schema/waar.postman_collection.json) / [oas](/api/v1/waar/schema/openapi.yaml) / [pdf](/api/v1/waar/schema/datamodel.pdf) / [modelio (zip)](/api/v1/waar/schema/Datamodel_Modelio.zip) 
     
     Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.         
     
