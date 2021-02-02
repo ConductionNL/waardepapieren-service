@@ -107,10 +107,15 @@ localisation:
   localisationReady: yes
   availableLanguages:
     - en
-    - nl
+    - nl 
 
 dependsOn:
   open:
     - name: Kubernetes
       versionMin: "1.15.5-do.1"
+
+
+installations:
+    - type: helm
+      url: "https://github.com/ConductionNL/waardepapieren-service/raw/master/api/helm/waar-0.1.0.tgz"
 
