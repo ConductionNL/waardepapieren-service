@@ -4,7 +4,7 @@ name: waar
 applicationSuite: commonground
 url: "https://github.com/ConductionNL/waardepapieren-service"
 landingURL: "waar.zuid-drecht.nl"
-    isBasedOn: "https://github.com/ConductionNL/Proto-component-commonground.git"
+isBasedOn: "https://github.com/ConductionNL/Proto-component-commonground.git"
 softwareVersion: "V1.0"
 releaseDate: "2021-02-02"
 logo: waar.zaakonline.nl
@@ -119,5 +119,5 @@ dependsOn:
 
 installations:
     - type: helm
-      url: "https://github.com/ConductionNL/waardepapieren-service/raw/master/api/helm/waar-0.1.0.tgz"
+      url: "https://raw.githubusercontent.com/ConductionNL/waardepapieren-service/master/api/helm/"
 
