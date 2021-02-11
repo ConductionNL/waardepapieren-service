@@ -5,7 +5,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 11.10.0
-    created: "2021-02-11T09:17:11.8378331Z"
+    created: "2021-02-11T10:07:40.7364549Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -37,14 +37,14 @@ entries:
   waar:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2021-02-11T09:17:11.8232316Z"
+    created: "2021-02-11T10:07:40.7127717Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: c786e9db41c6497083d3b000398f0b37ae57c33331b5cd1a2c6d0e32637ca61a
+    digest: 435027cb5c6a29d19513456f6bf10ac2226c6ac8905cc2cdb3454db4a15ccde4
     home: waar.zaakonline.nl
     icon: waar.zaakonline.nl
     name: waar
     urls:
     - waar-0.1.0.tgz
     version: 0.1.0
-generated: "2021-02-11T09:17:11.8061123Z"
+generated: "2021-02-11T10:07:40.6911868Z"
