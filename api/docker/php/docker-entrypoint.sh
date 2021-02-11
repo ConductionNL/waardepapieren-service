@@ -68,7 +68,6 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 			echo "Creating OAS documentation"
 			bin/console api:openapi:export --output=/srv/api/public/schema/openapi.yaml --yaml --spec-version=3
 
-
 			# this should only be done in an build
 			echo "Updating Helm charts"
 			bin/console app:helm:update --location=/srv/api/helm --spec-version=3
