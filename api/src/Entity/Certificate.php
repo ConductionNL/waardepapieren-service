@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -161,6 +162,13 @@ class Certificate
      * @Groups({"read"})
      */
     private $document;
+
+    /**
+     * @Groups({"read", "write"})
+     * @MaxDepth(1)
+     * @ORM\ManyToOne(targetEntity=OrganizationConfig::class, inversedBy="certificates")
+     */
+    private $organizationConfig;
 
     public function getId(): ?Uuid
     {
@@ -326,6 +334,18 @@ class Certificate
     public function setW3c(array $w3c): self
     {
         $this->w3c = $w3c;
+
+        return $this;
+    }
+
+    public function getOrganizationConfig(): ?OrganizationConfig
+    {
+        return $this->organizationConfig;
+    }
+
+    public function setOrganizationConfig(?OrganizationConfig $organizationConfig): self
+    {
+        $this->organizationConfig = $organizationConfig;
 
         return $this;
     }
