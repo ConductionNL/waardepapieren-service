@@ -32,7 +32,7 @@ paths:
                   'hydra:member': { type: array, items: { $ref: '#/components/schemas/AuditTrail:jsonld-read' } }
                   'hydra:totalItems': { type: integer, minimum: 0 }
                   'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string }, required: { type: boolean } } } } } }
+                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string, nullable: true }, required: { type: boolean } } } } } }
                 required:
                   - 'hydra:member'
             application/json+ld:
@@ -42,7 +42,7 @@ paths:
                   'hydra:member': { type: array, items: { $ref: '#/components/schemas/AuditTrail:jsonld-read' } }
                   'hydra:totalItems': { type: integer, minimum: 0 }
                   'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string }, required: { type: boolean } } } } } }
+                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string, nullable: true }, required: { type: boolean } } } } } }
                 required:
                   - 'hydra:member'
             application/hal+json:
@@ -1309,7 +1309,7 @@ paths:
                   'hydra:member': { type: array, items: { $ref: '#/components/schemas/ChangeLog:jsonld-read' } }
                   'hydra:totalItems': { type: integer, minimum: 0 }
                   'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string }, required: { type: boolean } } } } } }
+                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string, nullable: true }, required: { type: boolean } } } } } }
                 required:
                   - 'hydra:member'
             application/json+ld:
@@ -1319,7 +1319,7 @@ paths:
                   'hydra:member': { type: array, items: { $ref: '#/components/schemas/ChangeLog:jsonld-read' } }
                   'hydra:totalItems': { type: integer, minimum: 0 }
                   'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string }, required: { type: boolean } } } } } }
+                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string, nullable: true }, required: { type: boolean } } } } } }
                 required:
                   - 'hydra:member'
             application/hal+json:
@@ -2198,6 +2198,268 @@ paths:
             schema:
               $ref: '#/components/schemas/ChangeLog-write'
         description: 'The updated ChangeLog resource'
+  /validate_claims:
+    post:
+      tags:
+        - ValidateClaim
+      operationId: postValidateClaimCollection
+      summary: 'Creates a ValidateClaim resource.'
+      responses:
+        201:
+          description: 'ValidateClaim resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim:jsonld-read'
+            application/json+ld:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim:jsonld-read'
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json+hal:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json+vnd.api:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/health+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json+health:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+          links:
+            GetValidateClaimItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getValidateClaimItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /validate_claims/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim:jsonld-write'
+          application/json+ld:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim:jsonld-write'
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/json+hal:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/json+vnd.api:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/health+json:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/json+health:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/ValidateClaim-write'
+        description: 'The new ValidateClaim resource'
+      parameters:
+        -
+          name: Authorization
+          description: 'The JWT of the entity performing the request'
+          in: header
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Logrecord-ID
+          description: 'A  globally unique id of the request, which makes a request traceable throughout the network.'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678, kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-NLX-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+  '/validate_claims/{id}':
+    get:
+      tags:
+        - ValidateClaim
+      operationId: getValidateClaimItem
+      summary: 'Retrieves a ValidateClaim resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: Authorization
+          description: 'The JWT of the entity performing the request'
+          in: header
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Logrecord-ID
+          description: 'A  globally unique id of the request, which makes a request traceable throughout the network.'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678, kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-NLX-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+        -
+          name: Link
+          description: 'A [websub](https://www.w3.org/TR/websub/#discovery) header like <https://hub.example.com/>; rel="hub"'
+          in: header
+        -
+          name: 'extend[]'
+          required: false
+          description: 'An array of nested objects to include in the return object'
+          in: query
+          schema:
+            type: array
+        -
+          name: 'fields[]'
+          required: false
+          description: 'An array of fields to return in output, wil return all fields is not supplied'
+          in: query
+          schema:
+            type: array
+        -
+          name: validOn
+          required: false
+          description: 'Returns object as valid on a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validFrom
+          required: false
+          description: 'Returns objects valid from a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validUntil
+          required: false
+          description: 'Returns objects valid until a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+      responses:
+        200:
+          description: 'ValidateClaim resource response'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim:jsonld-read'
+            application/json+ld:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim:jsonld-read'
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json+hal:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json+vnd.api:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/health+json:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/json+health:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ValidateClaim-read'
+        404:
+          description: 'Resource not found'
+      produces:
+        - application/health+json
 components:
   schemas:
     AuditTrail-read:
@@ -2483,12 +2745,33 @@ components:
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
           type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
         claim:
-          description: 'The claim of this certificate. This is a jwt token.'
+          description: 'The claim of this certificate as an json object'
+          type: array
+          items:
+            type: string
+        discipl:
+          description: 'The discipl of this certificate as an json object'
+          type: array
+          items:
+            type: string
+        irma:
+          description: 'The claim of this certificate as an json object'
+          type: string
+        jwt:
+          description: 'The claim of this certificate as a jwt token.'
           type: string
         image:
           description: 'The image of this certificate. This is a qr-code.'
           type: string
+        w3c:
+          description: 'w3c version of the claim'
+          type: array
+          items:
+            type: string
         document:
           description: 'The document of this certificate. This is a pdf.'
           type: string
@@ -2501,6 +2784,9 @@ components:
           type: string
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+          type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
           type: string
     'Certificate:jsonld-read':
       type: object
@@ -2521,12 +2807,33 @@ components:
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
           type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
         claim:
-          description: 'The claim of this certificate. This is a jwt token.'
+          description: 'The claim of this certificate as an json object'
+          type: array
+          items:
+            type: string
+        discipl:
+          description: 'The discipl of this certificate as an json object'
+          type: array
+          items:
+            type: string
+        irma:
+          description: 'The claim of this certificate as an json object'
+          type: string
+        jwt:
+          description: 'The claim of this certificate as a jwt token.'
           type: string
         image:
           description: 'The image of this certificate. This is a qr-code.'
           type: string
+        w3c:
+          description: 'w3c version of the claim'
+          type: array
+          items:
+            type: string
         document:
           description: 'The document of this certificate. This is a pdf.'
           type: string
@@ -2548,6 +2855,9 @@ components:
           type: string
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+          type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
           type: string
     ChangeLog-read:
       type: object
@@ -2666,7 +2976,93 @@ components:
         '@type':
           readOnly: true
           type: string
+    ValidateClaim-read:
+      type: object
+      description: ''
+      properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this resource'
+          externalDocs:
+            url: 'http://schema.org/identifier'
+          type: string
+          format: uuid
+        validSignature:
+          description: 'true or false'
+          type: boolean
+        validBody:
+          description: 'true or false'
+          type: boolean
+    ValidateClaim-write:
+      type: object
+      description: ''
+      properties:
+        claim:
+          description: 'w3c claim'
+          type: array
+          items:
+            type: string
+    'ValidateClaim:jsonld-read':
+      type: object
+      description: ''
+      properties:
+        '@context':
+          readOnly: true
+          type: string
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this resource'
+          externalDocs:
+            url: 'http://schema.org/identifier'
+          type: string
+          format: uuid
+        validSignature:
+          description: 'true or false'
+          type: boolean
+        validBody:
+          description: 'true or false'
+          type: boolean
+    'ValidateClaim:jsonld-write':
+      type: object
+      description: ''
+      properties:
+        '@context':
+          readOnly: true
+          type: string
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
+        claim:
+          description: 'w3c claim'
+          type: array
+          items:
+            type: string
 definitions:
+  Certificate-read:
+    properties:
+      id:
+        description: 'The UUID identifier of this resource'
+        type: string
+        example: e2984465-190a-4562-829e-a8cca81aa35d
+        format: uuid
+    required: []
+  ValidateClaim-read:
+    properties:
+      id:
+        description: 'The UUID identifier of this resource'
+        type: string
+        example: e2984465-190a-4562-829e-a8cca81aa35d
+        format: uuid
+    required: []
   AuditTrail-read:
     properties:
       id:
@@ -2771,12 +3167,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-11-25 07:32:14'
+        example: '2021-02-11 09:26:35'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-11-25 07:32:14'
+        example: '2021-02-11 09:26:35'
     required: []
   AuditTrail-write:
     properties:
@@ -2824,12 +3220,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-11-25 07:32:14'
+        example: '2021-02-11 09:26:35'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-11-25 07:32:14'
+        example: '2021-02-11 09:26:35'
     required: []
   ChangeLog-write:
     properties:
@@ -2840,6 +3236,18 @@ definitions:
         maxLength: 2555
     required: []
 tags:
+  -
+    name: Certificate
+    description: |
+      
+      
+      
+  -
+    name: ValidateClaim
+    description: |
+      
+      
+      
   -
     name: AuditTrail
     description: |
@@ -2870,8 +3278,8 @@ securityDefinitions:
 host: irc.zaakonline.nl
 servers:
   -
-    name: 'https://waardepapieren-gemeentehoorn.commonground.nu'
-    url: 'waar.dev.https://waardepapieren-gemeentehoorn.commonground.nu'
+    name: waardepapieren-gemeentehoorn.commonground.nu
+    url: waar.dev.waardepapieren-gemeentehoorn.commonground.nu
 externalDocs:
   -
     description: 'OAS Documentatie'

@@ -1,0 +1,20 @@
+
+{% extends base %}
+
+{% block content %}
+<h1> Verklaring Inkomen </h1>
+
+<p>
+    Uit de administatie van de belastingdienst is gebleken dat voor:
+</p>
+
+{% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
+
+<p>
+    In het jaar 2020 een versameld belastbaar inkomen van <b><u>€ 25.121,-</u></b> is vastgesteld.
+</p>
+
+
+{% include '/blocks/claim.html.twig' with {'qr': qr} %}
+
+{% endblock %}

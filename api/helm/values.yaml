@@ -15,7 +15,7 @@ settings:
   repro: https://github.com/ConductionNL/waardepapieren-service
   demo: waar.zuid-drecht.nl
   container: https://hub.docker.com/repository/docker/conduction/waar-php
-  domain: https://waardepapieren-gemeentehoorn.commonground.nu
+  domain: waardepapieren-gemeentehoorn.commonground.nu
   subdomain: waar
   subpath: waar
   subpathRouting: true
