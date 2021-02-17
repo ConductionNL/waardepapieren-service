@@ -5,8 +5,3 @@ name: waar
 version: 0.1.0
 home: waar.zaakonline.nl
 icon: waar.zaakonline.nl
-dependencies:
-    - name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 10.1.1
-      condition: postgresql.enabled
