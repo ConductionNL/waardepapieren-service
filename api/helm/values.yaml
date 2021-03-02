@@ -4,15 +4,15 @@
 
 settings:
   registryBase: docker.io/conduction
-  projectName: waar
-  name: waar
+  projectName: waardepapieren-service
+  name: waardepapieren-service
   version: V1.0
   majorVersion: v1
   description: 'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'
   repro: https://github.com/ConductionNL/waardepapieren-service
   demo: waar.zuid-drecht.nl
   domain: waardepapieren-gemeentehoorn.commonground.nu
-  subdomain: waar
+  subdomain: waardepapieren-service
   subpath: waar
   subpathRouting: true
   env: dev
