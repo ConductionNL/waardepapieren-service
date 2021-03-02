@@ -5,7 +5,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 11.10.0
-    created: "2021-02-18T08:15:18.5322766Z"
+    created: "2021-03-02T00:18:41.5072303Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -37,14 +37,27 @@ entries:
   waar:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2021-02-18T08:15:18.4961639Z"
+    created: "2021-03-02T00:18:41.4954071Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: df366df391384177ae802ec1dca48eeb9f10cbafdd929c4a6071fd6c7e5e8476
+    digest: d2a91d93b5cf2dba71c7279a8e477205e162ae1a098ac50c3fa0fecf14060941
     home: waar.zaakonline.nl
     icon: waar.zaakonline.nl
+    keywords:
+    - commonground
+    - haven
+    - nlx
+    - component
+    maintainers:
+    - email: ruben@conduction.nl
+      name: Ruben van der Linde
+    - email: info@conduction.nl
+      name: Conduction
     name: waar
+    sources:
+    - https://commonground.conduction.nl/
+    - https://www.commonground.nl/
     urls:
     - waar-0.1.0.tgz
     version: 0.1.0
-generated: "2021-02-18T08:15:18.4342833Z"
+generated: "2021-03-02T00:18:41.4855246Z"
