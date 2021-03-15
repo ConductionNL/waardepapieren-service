@@ -209,6 +209,8 @@ class CertificateService
                     unset($claimData['naam']['@id']);
                     unset($claimData['naam']['@type']);
                     unset($claimData['naam']['uuid']);
+
+                    $claimData['naam'] = array_filter($claimData['naam'], "unsetEmpty");
                 }
 
                 if (array_key_exists('geboorte', $certificate->getPersonObject())) {
@@ -216,13 +218,17 @@ class CertificateService
                     $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
                     $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
                     $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
+
+                    $claimData['geboorte'] = array_filter($claimData['geboorte'], "unsetEmpty");
                 }
                 if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
                     $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
-                    $claimData['van'] = '2021-01-01';
+                    $claimData['verblijfplaats']['van'] = '2021-01-01';
                     unset($claimData['verblijfplaats']['@id']);
                     unset($claimData['verblijfplaats']['@type']);
                     unset($claimData['verblijfplaats']['uuid']);
+
+                    $claimData['verblijfplaats'] = array_filter($claimData['verblijfplaats'], "unsetEmpty");
                 }
 
                 $claimData['verblijfplaatsHistorish'] = [
@@ -246,6 +252,7 @@ class CertificateService
         $certificate->setW3c($this->w3cClaim($claimData, $certificate));
         $claimData['persoon'] = $certificate->getPersonObject()['burgerservicenummer'];
         $claimData['doel'] = $certificate->getType();
+
 
         $certificate->setClaimData($claimData);
 
@@ -293,8 +300,9 @@ class CertificateService
 
         // First we need set a bit of basic configuration
         $configuration['size'] = 300;
-        $configuration['margin'] = 10;
+        $configuration['margin'] = 0;
         $configuration['writer'] = 'png';
+        $configuration['errorCorrectionLevel'] = 'low';
 
         // Then we need to render the QR code
         $qrCode = $this->qrCodeFactory->create($certificate->getJwt(), $configuration);
@@ -304,6 +312,16 @@ class CertificateService
         $certificate->setImage('data:image/png;base64,'.base64_encode($response->getContent()));
 
         return $certificate;
+    }
+
+
+    /**
+     * Filter function for removing empty items
+     *
+     */
+    public function unsetEmpty($var)
+    {
+        return ($var !== NULL  && $var !== "");
     }
 
     /**
