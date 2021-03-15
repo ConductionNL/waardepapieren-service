@@ -210,7 +210,7 @@ class CertificateService
                     unset($claimData['naam']['@type']);
                     unset($claimData['naam']['uuid']);
 
-                    $claimData['naam'] = array_filter($claimData['naam'], "unsetEmpty");
+                    $claimData['naam'] = array_filter($claimData['naam'], $this->unsetEmpty());
                 }
 
                 if (array_key_exists('geboorte', $certificate->getPersonObject())) {
@@ -219,7 +219,7 @@ class CertificateService
                     $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
                     $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
 
-                    $claimData['geboorte'] = array_filter($claimData['geboorte'], "unsetEmpty");
+                    $claimData['geboorte'] = array_filter($claimData['geboorte'], $this->unsetEmpty());
                 }
                 if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
                     $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
@@ -228,7 +228,7 @@ class CertificateService
                     unset($claimData['verblijfplaats']['@type']);
                     unset($claimData['verblijfplaats']['uuid']);
 
-                    $claimData['verblijfplaats'] = array_filter($claimData['verblijfplaats'], "unsetEmpty");
+                    $claimData['verblijfplaats'] = array_filter($claimData['verblijfplaats'], $this->unsetEmpty());
                 }
 
                 $claimData['verblijfplaatsHistorish'] = [
