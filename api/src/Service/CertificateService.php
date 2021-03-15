@@ -210,7 +210,7 @@ class CertificateService
                     unset($claimData['naam']['@type']);
                     unset($claimData['naam']['uuid']);
 
-                    "//"$claimData['naam'] = array_filter($claimData['naam'], $this->unsetEmpty());
+                    //$claimData['naam'] = array_filter($claimData['naam'], $this->unsetEmpty());
                 }
 
                 if (array_key_exists('geboorte', $certificate->getPersonObject())) {
@@ -222,7 +222,8 @@ class CertificateService
                     //$claimData['geboorte'] = array_filter($claimData['geboorte'], $this->unsetEmpty());
                 }
                 if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
-                    $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                    //$claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                    $claimData['verblijfplaats'] = ["identificatiecodeVerblijfplaats"=>"0530010002090237"];
                     $claimData['verblijfplaats']['van'] = '2021-01-01';
                     unset($claimData['verblijfplaats']['@id']);
                     unset($claimData['verblijfplaats']['@type']);
@@ -234,15 +235,18 @@ class CertificateService
                 $claimData['verblijfplaatsHistorish'] = [
                     ['van'              => '2010-01-01',
                         'tot'           => '2010-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>60, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Medemblik'],
+                        'bag_id'=>'0530010002090237'
+                        //'verblijfplaats'=> ['huisnummer'=>60, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Medemblik'],
                     ],
-                    ['van'              => '2011-01-01',
+                    [   'van'           => '2011-01-01',
                         'tot'           => '2011-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>61, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Hoorn'],
+                        'bag_id'=>'0530010002090237'
+                        //'verblijfplaats'=> ['huisnummer'=>61, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Hoorn'],
                     ],
-                    ['van'              => '2012-01-01',
+                    [   'van'           => '2012-01-01',
                         'tot'           => '2020-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>62, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Zaanstad'],
+                        'bag_id'=>'0530010002090237'
+                        //'verblijfplaats'=> ['huisnummer'=>62, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Zaanstad'],
                     ],
                 ];
                 break;
@@ -312,16 +316,6 @@ class CertificateService
         $certificate->setImage('data:image/png;base64,'.base64_encode($response->getContent()));
 
         return $certificate;
-    }
-
-
-    /**
-     * Filter function for removing empty items
-     *
-     */
-    public function unsetEmpty($var)
-    {
-        return ($var !== NULL  && $var !== "");
     }
 
     /**
