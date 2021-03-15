@@ -6,6 +6,14 @@ use App\Entity\Certificate;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use DateTimeZone;
 use Dompdf\Dompdf;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Jose\Component\Core\AlgorithmManager;
@@ -303,10 +311,11 @@ class CertificateService
     {
 
         // First we need set a bit of basic configuration
-        $configuration['size'] = 300;
-        $configuration['margin'] = 0;
-        $configuration['writer'] = 'png';
-        $configuration['errorCorrectionLevel'] = 'low';
+        $configuration = [
+            'size'=> 1000,
+            'margin'=> 1,
+            'writer'=> 'png'
+        ];
 
         // Then we need to render the QR code
         $qrCode = $this->qrCodeFactory->create($certificate->getJwt(), $configuration);
