@@ -1,34 +1,21 @@
-<h1> Uitreksel Basisregistratie Personen</h1>
+{% extends base %}
 
-<p>
-    Uit de basisregistratie personenen van de gemeente Hoorn blijkt dat daarin is opgenomen:
-</p>
+{% block content %}
+    <h1> Verklaring van Nederlanderschap </h1>
 
-<p>
-    <table>
-        <tr>
-            <td><b>Naam</b></td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td> <b>Voornamen</b></td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td><b>Geboren</b></td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td><b>Wonende te</b></td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td><b>Burgelijke staat</b></td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td><b>BSN</b></td>
-            <td> </td>
-        </tr>
-    </table>
-</p>
+    <p>
+        Uit de basisregistratie personenen van de gemeente {{ person.verblijfplaats.woonplaatsnaam }} blijkt dat daarin is opgenomen:
+    </p>
+
+    {% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
+
+
+    <p>
+        En dat deze persoon beschikt over de nederlandse nationaliteit
+    </p>
+
+    {% include '/blocks/ondertekening.html.twig' with {'person': person} %}
+
+    {% include '/blocks/claim.html.twig' with {'qr': qr} %}
+
+{% endblock %}
