@@ -6,6 +6,14 @@ use App\Entity\Certificate;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use DateTimeZone;
 use Dompdf\Dompdf;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Jose\Component\Core\AlgorithmManager;
@@ -209,6 +217,8 @@ class CertificateService
                     unset($claimData['naam']['@id']);
                     unset($claimData['naam']['@type']);
                     unset($claimData['naam']['uuid']);
+
+                    //$claimData['naam'] = array_filter($claimData['naam'], $this->unsetEmpty());
                 }
 
                 if (array_key_exists('geboorte', $certificate->getPersonObject())) {
@@ -216,27 +226,35 @@ class CertificateService
                     $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
                     $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
                     $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
+
+                    //$claimData['geboorte'] = array_filter($claimData['geboorte'], $this->unsetEmpty());
                 }
                 if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
-                    $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
-                    $claimData['van'] = '2021-01-01';
+                    //$claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                    $claimData['verblijfplaats'] = ["identificatiecodeVerblijfplaats"=>"0530010002090237"];
+                    $claimData['verblijfplaats']['van'] = '2021-01-01';
                     unset($claimData['verblijfplaats']['@id']);
                     unset($claimData['verblijfplaats']['@type']);
                     unset($claimData['verblijfplaats']['uuid']);
+
+                    //$claimData['verblijfplaats'] = array_filter($claimData['verblijfplaats'], $this->unsetEmpty());
                 }
 
                 $claimData['verblijfplaatsHistorish'] = [
                     ['van'              => '2010-01-01',
                         'tot'           => '2010-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>60, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Medemblik'],
+                        'bag_id'=>'0530010002090237'
+                        //'verblijfplaats'=> ['huisnummer'=>60, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Medemblik'],
                     ],
-                    ['van'              => '2011-01-01',
+                    [   'van'           => '2011-01-01',
                         'tot'           => '2011-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>61, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Hoorn'],
+                        'bag_id'=>'0530010002090237'
+                        //'verblijfplaats'=> ['huisnummer'=>61, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Hoorn'],
                     ],
-                    ['van'              => '2012-01-01',
+                    [   'van'           => '2012-01-01',
                         'tot'           => '2020-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>62, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Zaanstad'],
+                        'bag_id'=>'0530010002090237'
+                        //'verblijfplaats'=> ['huisnummer'=>62, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Zaanstad'],
                     ],
                 ];
                 break;
@@ -246,6 +264,7 @@ class CertificateService
         $certificate->setW3c($this->w3cClaim($claimData, $certificate));
         $claimData['persoon'] = $certificate->getPersonObject()['burgerservicenummer'];
         $claimData['doel'] = $certificate->getType();
+
 
         $certificate->setClaimData($claimData);
 
@@ -292,9 +311,11 @@ class CertificateService
     {
 
         // First we need set a bit of basic configuration
-        $configuration['size'] = 300;
-        $configuration['margin'] = 10;
-        $configuration['writer'] = 'png';
+        $configuration = [
+            'size'=> 1000,
+            'margin'=> 1,
+            'writer'=> 'png'
+        ];
 
         // Then we need to render the QR code
         $qrCode = $this->qrCodeFactory->create($certificate->getJwt(), $configuration);

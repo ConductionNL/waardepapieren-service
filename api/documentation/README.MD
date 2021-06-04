@@ -1,4 +1,4 @@
-# waar
+# waardepapieren-service
 
 Description
 ----
