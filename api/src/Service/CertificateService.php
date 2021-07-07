@@ -6,14 +6,6 @@ use App\Entity\Certificate;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use DateTimeZone;
 use Dompdf\Dompdf;
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
-use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Factory\QrCodeFactoryInterface;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Jose\Component\Core\AlgorithmManager;
@@ -231,7 +223,7 @@ class CertificateService
                 }
                 if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
                     //$claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
-                    $claimData['verblijfplaats'] = ["identificatiecodeVerblijfplaats"=>"0530010002090237"];
+                    $claimData['verblijfplaats'] = ['identificatiecodeVerblijfplaats'=>'0530010002090237'];
                     $claimData['verblijfplaats']['van'] = '2021-01-01';
                     unset($claimData['verblijfplaats']['@id']);
                     unset($claimData['verblijfplaats']['@type']);
@@ -243,17 +235,17 @@ class CertificateService
                 $claimData['verblijfplaatsHistorish'] = [
                     ['van'              => '2010-01-01',
                         'tot'           => '2010-12-31',
-                        'bag_id'=>'0530010002090237'
+                        'bag_id'        => '0530010002090237',
                         //'verblijfplaats'=> ['huisnummer'=>60, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Medemblik'],
                     ],
-                    [   'van'           => '2011-01-01',
+                    ['van'              => '2011-01-01',
                         'tot'           => '2011-12-31',
-                        'bag_id'=>'0530010002090237'
+                        'bag_id'        => '0530010002090237',
                         //'verblijfplaats'=> ['huisnummer'=>61, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Hoorn'],
                     ],
-                    [   'van'           => '2012-01-01',
+                    ['van'              => '2012-01-01',
                         'tot'           => '2020-12-31',
-                        'bag_id'=>'0530010002090237'
+                        'bag_id'        => '0530010002090237',
                         //'verblijfplaats'=> ['huisnummer'=>62, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Zaanstad'],
                     ],
                 ];
@@ -264,7 +256,6 @@ class CertificateService
         $certificate->setW3c($this->w3cClaim($claimData, $certificate));
         $claimData['persoon'] = $certificate->getPersonObject()['burgerservicenummer'];
         $claimData['doel'] = $certificate->getType();
-
 
         $certificate->setClaimData($claimData);
 
@@ -312,9 +303,9 @@ class CertificateService
 
         // First we need set a bit of basic configuration
         $configuration = [
-            'size'=> 1000,
+            'size'  => 1000,
             'margin'=> 1,
-            'writer'=> 'png'
+            'writer'=> 'png',
         ];
 
         // Then we need to render the QR code
