@@ -33,6 +33,7 @@ RUN set -eux; \
 COPY .env ./
 COPY helm helm/
 COPY bin bin/
+COPY cert cert/
 COPY config config/
 COPY public public/
 COPY src src/
