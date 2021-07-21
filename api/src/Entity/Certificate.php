@@ -56,6 +56,12 @@ class Certificate
     private $personObject;
 
     /**
+     * @var array data array will be used for the claim.
+     * @Groups({"read", "write"})
+     */
+    private $data;
+
+    /**
      * @var string The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.
      *
      * @example geboorte akte
@@ -67,6 +73,7 @@ class Certificate
      *     "akte_van_registratie_van_een_partnerschap",
      *     "akte_van_omzetting_van_een_huwelijk_in_een_registratie_van_een_partnerschap",
      *     "akte_van_omzetting_van_een_registratie_van_een_partnerschap",
+     *     "haven",
      *     "verklaring_diplomas",
      *     "verklaring_inkomen",
      *     "verklaring_studieschuld",
@@ -202,6 +209,18 @@ class Certificate
     public function setPersonObject(array $personObject): self
     {
         $this->personObject = $personObject;
+
+        return $this;
+    }
+
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    public function setData(array $data): self
+    {
+        $this->data = $data;
 
         return $this;
     }

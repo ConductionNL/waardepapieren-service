@@ -68,26 +68,20 @@ class CertificateService
      */
     public function create(Certificate $certificate, $fields = [])
     {
-        // Get person from BRP
 
-        // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
-
-        if (filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)) {
+        if ($certificate->getPerson() !== null && filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)) {
             $person = $this->commonGroundService->getResource($certificate->getPerson());
-        } else {
+        } elseif($certificate->getPerson() !== null) {
             $person = $this->commonGroundService->getResource(['component'=>'brp', 'type'=>'ingeschrevenpersonen', 'id'=>$certificate->getPerson()]);
         }
 
-        // Lets check if this actually brought us a person
-        if (!$person) {
-            /* @todo throw error */
-        } else {
-            $person = $certificate->setPersonObject($person);
-        }
+        $data = [
+            'person' => $certificate->getPerson() ?? null,
+            'organization' => $certificate->getOrganization() ?? null,
+            'type' => $certificate->getType(),
+        ];
 
-        // Theorganisation should be dynamic
-        $organization = 'https://wrc.zaakonline.nl/organisations/16353702-4614-42ff-92af-7dd11c8eef9f';
-        $registerdCertificate = ['person'=>$certificate->getPerson(), 'organization'=>$organization, 'type'=>$certificate->getType()];
+        $registerdCertificate = array_filter($data);
         $registerdCertificate = $this->commonGroundService->createResource($registerdCertificate, ['component'=>'wari', 'type'=>'certificates']);
 
         // Then we can create a certificate
@@ -122,6 +116,10 @@ class CertificateService
 
         // Lets add data to this claim
         $claimData = $certificate->getClaimData();
+
+        if ($certificate->getData() !== null) {
+            $claimData = $certificate->getData();
+        }
 
         switch ($certificate->getType()) {
             case 'akte_van_geboorte':
@@ -254,7 +252,10 @@ class CertificateService
                 /*@todo throw error */
         }
         $certificate->setW3c($this->w3cClaim($claimData, $certificate));
-        $claimData['persoon'] = $certificate->getPersonObject()['burgerservicenummer'];
+        if ($certificate->getPerson() !== null) {
+            $claimData['persoon'] = $certificate->getPersonObject()['burgerservicenummer'];
+        }
+
         $claimData['doel'] = $certificate->getType();
 
         $certificate->setClaimData($claimData);
@@ -262,8 +263,8 @@ class CertificateService
         // Create token payload as a JSON string
         $claim = [
             'iss'                 => $certificate->getId(),
-            'user_id'             => $certificate->getPersonObject()['id'],
-            'user_representation' => $certificate->getPersonObject()['@id'],
+            'user_id'             => $certificate->getPersonObject()['id'] ?? $certificate->getOrganization(),
+            'user_representation' => $certificate->getPersonObject()['@id'] ?? $certificate->getOrganization(),
             'claim_data'          => $certificate->getClaimData(),
             'validation_uri'      => 'https://waardepapieren-gemeentehoorn.commonground.nu/api/v1/waar',
             'iat'                 => time(),
@@ -332,13 +333,15 @@ class CertificateService
     public function createDocument(Certificate $certificate)
     {
 
-        // First we need the HTML  for the template
-        $html = $this->twig->render('certificates/'.$certificate->getType().'.html.twig', [
+        $data = [
             'qr'     => $certificate->getImage(),
             'claim'  => $certificate->getClaim(),
-            'person' => $certificate->getPersonObject(),
+            'person' => $certificate->getPersonObject() ?? null,
             'base'   => '/organizations/'.$certificate->getOrganization().'.html.twig',
-        ]);
+        ];
+
+        // First we need the HTML  for the template
+        $html = $this->twig->render('certificates/'.$certificate->getType().'.html.twig', array_filter($data));
 
         // Then we need to render the template
         $dompdf = new DOMPDF();
@@ -405,7 +408,7 @@ class CertificateService
         $array['type'] = ['VerifiableCredential', $certificate->getType()];
         $array['issuer'] = $certificate->getOrganization();
         $array['inssuanceDate'] = $now->format('H:i:s d-m-Y');
-        $array['credentialSubject']['id'] = $certificate->getPersonObject()['burgerservicenummer'];
+        $array['credentialSubject']['id'] = $certificate->getPersonObject()['burgerservicenummer'] ?? $certificate->getOrganization();
         foreach ($data as $key => $value) {
             $array['credentialSubject'][$key] = $value;
         }
@@ -456,7 +459,7 @@ class CertificateService
             'nbf'  => time(),
             'exp'  => time() + 3600,
             'iss'  => $certificate->getId(),
-            'aud'  => $certificate->getPersonObject()['burgerservicenummer'],
+            'aud'  => $certificate->getPersonObject()['burgerservicenummer'] ?? $certificate->getOrganization(),
             'data' => $data,
         ]);
         $jws = $jwsBuilder
