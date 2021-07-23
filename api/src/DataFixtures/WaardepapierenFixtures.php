@@ -92,11 +92,6 @@ class WaardepapierenFixtures extends Fixture
         $type->setValue('historisch_uittreksel_basis_registratie_personen');
         $type->setOrganizationConfig($hoorn);
 
-        $type = new Type();
-        $type->setName('Uittreksel basis registratie personen');
-        $type->setValue('uittreksel_basis_registratie_personen');
-        $type->setOrganizationConfig($hoorn);
-
         $manager->persist($type);
         $manager->flush();
     }

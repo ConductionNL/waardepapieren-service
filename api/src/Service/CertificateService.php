@@ -70,9 +70,9 @@ class CertificateService
     {
 
         if ($certificate->getPerson() !== null && filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)) {
-            $person = $this->commonGroundService->getResource($certificate->getPerson());
+            $certificate->setPersonObject($this->commonGroundService->getResource($certificate->getPerson()));
         } elseif($certificate->getPerson() !== null) {
-            $person = $this->commonGroundService->getResource(['component'=>'brp', 'type'=>'ingeschrevenpersonen', 'id'=>$certificate->getPerson()]);
+            $certificate->setPersonObject($this->commonGroundService->getResource(['component'=>'brp', 'type'=>'ingeschrevenpersonen', 'id'=>$certificate->getPerson()]));
         }
 
         $data = [
@@ -86,7 +86,6 @@ class CertificateService
 
         // Then we can create a certificate
         $certificate = $certificate->setId(Uuid::fromString($registerdCertificate['id']));
-        !$certificate->getPersonObject() && isset($person) ? $certificate->setPersonObject($person) : null;
         $certificate = $this->createClaim($certificate);
 
         $certificate = $this->createImage($certificate);
