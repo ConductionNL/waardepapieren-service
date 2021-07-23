@@ -4,35 +4,26 @@
     <h1 style='font-family: Calibri; font-weight: bold; text-align: center; font-size: 22px; color: #CA494D;'> Uitreksel Basisregistratie Personen</h1>
 
     <p>
-        Uit de basisregistratie personenen van de gemeente {{ person.verblijfplaats.woonplaatsnaam }} blijkt dat daarin is opgenomen:
-    </p>
-
-
-    {% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
-
-    <p>
-        is in de gemeente {{ person.verblijfplaats.woonplaatsnaam }}  ingeschreven op het navolgende adres:
+        Uit de basisregistratie personenen van de gemeente {% if person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% elseif person.verblijfplaats.woonplaats|default %}{{ person.verblijfplaats.woonplaats }}{% endif%} blijkt dat daarin is opgenomen:
     </p>
 
     <p>
-    <table>
-        <tr>
-            <td>van:</td>
-            <td>tot:</td>
-            <td>adres:</td>
-            <td>gemeente:</td>
-        </tr>
-        <tr>
-            <td><b>{{ person.verblijfplaats.datumIngangGeldigheid }}</b></td>
-            <td><b>Heden</b></td>
-            <td><b>{{ person.verblijfplaats.straatnaam}} {{ person.verblijfplaats.huisnummer}} {{ person.verblijfplaats.huisnummertoevoeging}}, {{ person.verblijfplaats.postcode}}  </b></td>
-            <td><b>{{ person.verblijfplaats.woonplaatsnaam }}</b></td>
-        </tr>
-    </table>
+        Geslachtsnaam: {% if person.naam.geslachtsnaam|default %}{{ person.naam.geslachtsnaam }}{% else %}N.V.T{% endif %}
     </p>
-
     <p>
-        Totaal aantal personen ingeschreven op het adres: 3
+        Voorna(a)m(en): {% if person.naam.voornamen|default %}{{ person.naam.voornamen }}{% else %}N.V.T{% endif %}
+    </p>
+    <p>
+        Geboortedatum: {% if person.geboorte.datum.datum|default %}{{ person.geboorte.datum.datum }} {% if person.geboorte.plaats.omschrijving %}te {{ person.geboorte.plaats.omschrijving }}{% endif %}{% else %}N.V.T{% endif %}
+    </p>
+    <p>
+        Geboorteland: {% if person.geboorte.land.omschrijving|default %}{{ person.geboorte.land.omschrijving }}{% else %}N.V.T{% endif %}
+    </p>
+    <p>
+        Adres(laatstelijk): {% if person.verblijfplaats.adresregel1|default and person.verblijfplaats.adresregel2|default %}{{ person.verblijfplaats.adresregel1 }}, {{ person.verblijfplaats.adresregel2 }}{% else %}N.V.T{% endif %}
+    </p>
+    <p>
+        Datum aanvang adres: {% if person.verblijfplaats.datumAanvangAdreshouding.datum|default %}{{ person.verblijfplaats.datumAanvangAdreshouding.datum }}{% else %}N.V.T{% endif %}
     </p>
 
     {% include '/blocks/ondertekening.html.twig' with {'person': person} %}
