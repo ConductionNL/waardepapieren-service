@@ -14,6 +14,18 @@ security:
   jwt:
     id:
     privateKey:
+  dependencies:
+    brp:
+      auth: username-password
+      locale: null
+      location: http://vrij-brp.demodam.nl/haal-centraal-brp-bevragen/api/v1.3
+      password: changeme
+      username: changeme
+      accept: application/hal+json
+    wari:
+      apikey: changeme
+      auth: apikey
+      location: waardepapieren-register.local
 
 php:
   repository: docker.io/conduction/protocomponent-php
