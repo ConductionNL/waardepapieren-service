@@ -68,19 +68,16 @@ class CertificateService
      */
     public function create(Certificate $certificate, $fields = [])
     {
-
         if ($certificate->getPerson() !== null && filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)) {
-            $person = $this->commonGroundService->getResource($certificate->getPerson());
-            $certificate->setPersonObject($person);
-        } elseif($certificate->getPerson() !== null) {
-            $person = $this->commonGroundService->getResource(['component'=>'brp', 'type'=>'ingeschrevenpersonen', 'id'=>$certificate->getPerson()]);
-            $certificate->setPersonObject($person);
+            $certificate->setPersonObject($this->commonGroundService->getResource($certificate->getPerson()));
+        } elseif ($certificate->getPerson() !== null) {
+            $certificate->setPersonObject($this->commonGroundService->getResource(['component'=>'brp', 'type'=>'ingeschrevenpersonen', 'id'=>$certificate->getPerson()]));
         }
 
         $data = [
-            'person' => $certificate->getPerson() ?? null,
+            'person'       => $certificate->getPerson() ?? null,
             'organization' => $certificate->getOrganization() ?? null,
-            'type' => $certificate->getType(),
+            'type'         => $certificate->getType(),
         ];
 
         $registerdCertificate = array_filter($data);
@@ -321,7 +318,6 @@ class CertificateService
      */
     public function createDocument(Certificate $certificate)
     {
-
         $data = [
             'qr'     => $certificate->getImage(),
             'claim'  => $certificate->getClaim(),
