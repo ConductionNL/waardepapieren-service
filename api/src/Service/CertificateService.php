@@ -179,7 +179,7 @@ class CertificateService
                 $claimData['voornamen'] = $person['naam']['voornamen'] ?? null;
                 $claimData['geboortedatum'] = $person['geboorte']['datum']['datum'] ?? null;
                 $claimData['geboorteland'] = $person['geboorte']['land']['omschrijving'] ?? null;
-                $claimData['verblijfplaats'] = $person['verblijfplaats']['adresregel1'] . ', ' . $person['verblijfplaats']['adresregel2'] ?? null;
+                $claimData['verblijfplaats'] = $person['verblijfplaats']['adresregel1'].', '.$person['verblijfplaats']['adresregel2'] ?? null;
                 $claimData['datumAanvangAdreshouding'] = $person['verblijfplaats']['datumAanvangAdreshouding']['datum'] ?? null;
                 $claimData = array_filter($claimData);
                 break;
