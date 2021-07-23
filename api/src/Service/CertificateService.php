@@ -86,6 +86,7 @@ class CertificateService
 
         // Then we can create a certificate
         $certificate = $certificate->setId(Uuid::fromString($registerdCertificate['id']));
+        !$certificate->getPersonObject() && isset($person) ? $certificate->setPersonObject($person) : null;
         $certificate = $this->createClaim($certificate);
 
         $certificate = $this->createImage($certificate);
@@ -175,7 +176,6 @@ class CertificateService
 
                 break;
             case 'uittreksel_basis_registratie_personen':
-
                 if (array_key_exists('naam', $certificate->getPersonObject())) {
                     $claimData['naam'] = $certificate->getPersonObject()['naam'];
                     unset($claimData['naam']['@id']);
