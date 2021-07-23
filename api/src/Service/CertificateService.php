@@ -174,26 +174,14 @@ class CertificateService
 
                 break;
             case 'uittreksel_basis_registratie_personen':
-                if (array_key_exists('naam', $certificate->getPersonObject())) {
-                    $claimData['naam'] = $certificate->getPersonObject()['naam'];
-                    unset($claimData['naam']['@id']);
-                    unset($claimData['naam']['@type']);
-                    unset($claimData['naam']['uuid']);
-                }
-
-                if (array_key_exists('geboorte', $certificate->getPersonObject())) {
-                    $claimData['geboorte'] = [];
-                    $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
-                    $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
-                    $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
-                }
-                if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
-                    $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
-                    unset($claimData['verblijfplaats']['@id']);
-                    unset($claimData['verblijfplaats']['@type']);
-                    unset($claimData['verblijfplaats']['uuid']);
-                }
-
+                $person = $certificate->getPersonObject();
+                $claimData['geslachtsnaam'] = $person['naam']['geslachtsnaam'] ?? null;
+                $claimData['voornamen'] = $person['naam']['voornamen'] ?? null;
+                $claimData['geboortedatum'] = $person['geboorte']['datum']['datum'] ?? null;
+                $claimData['geboorteland'] = $person['geboorte']['land']['omschrijving'] ?? null;
+                $claimData['verblijfplaats'] = $person['verblijfplaats']['adresregel1'].', '.$person['verblijfplaats']['adresregel2'] ?? null;
+                $claimData['datumAanvangAdreshouding'] = $person['verblijfplaats']['datumAanvangAdreshouding']['datum'] ?? null;
+                $claimData = array_filter($claimData);
                 break;
             case 'uittreksel_registratie_niet_ingezetenen':
 
