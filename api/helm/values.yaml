@@ -16,16 +16,14 @@ security:
     privateKey:
   dependencies:
     brp:
-      auth: username-password
-      locale: null
-      location: http://vrij-brp.demodam.nl/haal-centraal-brp-bevragen/api/v1.3
-      password: changeme
-      username: changeme
+      apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+      auth: apikey
+      location: http://brpservice
       accept: application/hal+json
     wari:
-      apikey: changeme
+      apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
       auth: apikey
-      location: waardepapieren-register.local
+      location: http://waardepapieren-register
 
 php:
   repository: docker.io/conduction/protocomponent-php
@@ -75,11 +73,11 @@ ingress:
   type: "nginx"
   hostname: .local
   path: /
-  annotations: {}
+  annotations:
     # kubernetes.io/ingress.global-static-ip-name: chart-ip
     # kubernetes.io/ingress.class: gce
     # kubernetes.io/tls-acme: "true"
-  tls: []
+  tls:
     # Secrets must be manually created in the namespace, you can also use cert-manager.
     # - hosts:
     # - example.com

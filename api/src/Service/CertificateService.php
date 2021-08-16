@@ -95,7 +95,9 @@ class CertificateService
         $registerdCertificate['image'] = $certificate->getImage();
         $registerdCertificate['document'] = $certificate->getDocument();
 
-        $this->commonGroundService->saveResource($registerdCertificate);
+        var_dump($this->commonGroundService->saveResource($registerdCertificate));
+
+
 
         // Now we can return our freshly created certificate
         return $certificate;
@@ -216,23 +218,7 @@ class CertificateService
                     //$claimData['verblijfplaats'] = array_filter($claimData['verblijfplaats'], $this->unsetEmpty());
                 }
 
-                $claimData['verblijfplaatsHistorish'] = [
-                    ['van'              => '2010-01-01',
-                        'tot'           => '2010-12-31',
-                        'bag_id'        => '0530010002090237',
-                        //'verblijfplaats'=> ['huisnummer'=>60, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Medemblik'],
-                    ],
-                    ['van'              => '2011-01-01',
-                        'tot'           => '2011-12-31',
-                        'bag_id'        => '0530010002090237',
-                        //'verblijfplaats'=> ['huisnummer'=>61, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Hoorn'],
-                    ],
-                    ['van'              => '2012-01-01',
-                        'tot'           => '2020-12-31',
-                        'bag_id'        => '0530010002090237',
-                        //'verblijfplaats'=> ['huisnummer'=>62, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Zaanstad'],
-                    ],
-                ];
+//                $claimData['verblijfplaatsHistorish'] = $this->commonGroundService->getResourceList(['component' => 'brp', 'type' => 'ingeschrevenpersonen', 'id' => $certificate->getPersonObject()['burgerservicenummer'] . '/verblijfplaatshistorie']);
                 break;
             default:
                 /*@todo throw error */
@@ -324,6 +310,11 @@ class CertificateService
             'person' => $certificate->getPersonObject() ?? null,
             'base'   => '/organizations/'.$certificate->getOrganization().'.html.twig',
         ];
+
+        if($certificate->getType() == 'historisch_uittreksel_basis_registratie_personen')
+        {
+            $data['verblijfplaatshistorie'] = $this->commonGroundService->getResourceList(['component' => 'brp', 'type' => 'ingeschrevenpersonen', 'id' => $certificate->getPersonObject()['burgerservicenummer'] . '/verblijfplaatshistorie'])['_embedded']['verblijfplaatshistorie'];
+        }
 
         // First we need the HTML  for the template
         $html = $this->twig->render('certificates/'.$certificate->getType().'.html.twig', array_filter($data));

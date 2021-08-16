@@ -4,13 +4,34 @@
     <h1 style='font-family: Calibri; font-weight: bold; text-align: center; font-size: 22px; color: #CA494D;'> Uitreksel Basisregistratie Personen</h1>
 
     <p>
+<<<<<<< Updated upstream
         Uit de basisregistratie personenen van de gemeente {% if person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% elseif person.verblijfplaats.woonplaats|default %}{{ person.verblijfplaats.woonplaats }}{% endif%} blijkt dat daarin is opgenomen:
+=======
+        Uit de basisregistratie personenen van de gemeente
+        {% if person.verblijfplaats.woonplaatsnaam|default %}
+            {{ person.verblijfplaats.woonplaatsnaam }}
+        {% else %}
+            {{ person.verblijfplaats.woonplaats}}
+        {% endif %}
+        blijkt dat daarin is opgenomen:
+>>>>>>> Stashed changes
     </p>
 
     <p>
+<<<<<<< Updated upstream
         Geslachtsnaam: {% if person.naam.geslachtsnaam|default %}{{ person.naam.geslachtsnaam }}{% else %}N.V.T{% endif %}
+=======
+        is in de gemeente
+        {% if person.verblijfplaats.woonplaatsnaam|default %}
+            {{ person.verblijfplaats.woonplaatsnaam }}
+        {% else %}
+            {{ person.verblijfplaats.woonplaats}}
+        {% endif %}
+        ingeschreven op het navolgende adres:
+>>>>>>> Stashed changes
     </p>
     <p>
+<<<<<<< Updated upstream
         Voorna(a)m(en): {% if person.naam.voornamen|default %}{{ person.naam.voornamen }}{% else %}N.V.T{% endif %}
     </p>
     <p>
@@ -21,6 +42,22 @@
     </p>
     <p>
         Adres(laatstelijk): {% if person.verblijfplaats.adresregel1|default and person.verblijfplaats.adresregel2|default %}{{ person.verblijfplaats.adresregel1 }}, {{ person.verblijfplaats.adresregel2 }}{% else %}N.V.T{% endif %}
+=======
+    <table>
+        <tr>
+            <td>van:</td>
+            <td>tot:</td>
+            <td>adres:</td>
+            <td>gemeente:</td>
+        </tr>
+        <tr>
+            <td><b>{% if person.verblijfplaats.datumIngangGeldigheid is iterable %}{{ person.verblijfplaats.datumIngangGeldigheid.datum }}{% else %}{{ person.verblijfplaats.datumIngangGeldigheid|date('Y-m-d') }}{% endif %}</b></td>
+            <td><b>Heden</b></td>
+            <td><b>{% if person.verblijfplaats.straatnaam|default %}{{ person.verblijfplaats.straatnaam}} {% elseif person.verblijfplaats.straat|default %}{{ person.verblijfplaats.straat }} {% endif %}{{ person.verblijfplaats.huisnummer}}{% if person.verblijfplaats.huisletter|default %} {{ person.verblijfplaats.huisletter}}{% endif %}{% if person.verblijfplaats.huisnummertoevoeging|default %} {{ person.verblijfplaats.huisnummertoevoeging}}{% endif %}, {{ person.verblijfplaats.postcode}}  </b></td>
+            <td><b>{% if person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% else %}{{ person.verblijfplaats.woonplaats}}{% endif %}</b></td>
+        </tr>
+    </table>
+>>>>>>> Stashed changes
     </p>
     <p>
         Datum aanvang adres: {% if person.verblijfplaats.datumAanvangAdreshouding.datum|default %}{{ person.verblijfplaats.datumAanvangAdreshouding.datum }}{% else %}N.V.T{% endif %}
