@@ -17,7 +17,7 @@
     <tr>
         <td><b>Wonende te</b></td>
         <td>{% if person.verblijfplaats.straatnaam|default %}{{ person.verblijfplaats.straatnaam}} {% elseif person.verblijfplaats.straat|default %}{{ person.verblijfplaats.straat }} {% endif %}{{ person.verblijfplaats.huisnummer}}{% if person.verblijfplaats.huisletter|default %} {{ person.verblijfplaats.huisletter}}{% endif %}{% if person.verblijfplaats.huisnummertoevoeging|default %} {{ person.verblijfplaats.huisnummertoevoeging}}{% endif %}, {{ person.verblijfplaats.postcode}}  {% if person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% else %}{{  person.verblijfplaats.woonplaats }}{% endif %}</td>
-        <td>(woonaddres)</td>
+        <td>(woonadres)</td>
     </tr>
     <tr>
         <td><b>Burgelijke staat</b></td>
