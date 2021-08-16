@@ -95,7 +95,7 @@ class CertificateService
         $registerdCertificate['image'] = $certificate->getImage();
         $registerdCertificate['document'] = $certificate->getDocument();
 
-        var_dump($this->commonGroundService->saveResource($registerdCertificate));
+        $this->commonGroundService->saveResource($registerdCertificate);
 
 
 
