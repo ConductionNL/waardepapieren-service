@@ -434,6 +434,7 @@ class CertificateService
             'iat'  => time(),
             'nbf'  => time(),
             'exp'  => time() + 3600,
+            'crt'  => $this->commonGroundService->cleanUrl(['component' => 'frontend', 'type' => 'claims/public_keys', 'id' => $certificate->getOrganization()]),
             'iss'  => $certificate->getId(),
             'aud'  => $certificate->getPersonObject()['burgerservicenummer'] ?? $certificate->getOrganization(),
             'data' => $data,
