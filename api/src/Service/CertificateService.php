@@ -238,7 +238,7 @@ class CertificateService
             'user_id'             => $certificate->getPersonObject()['id'] ?? $certificate->getOrganization(),
             'user_representation' => $certificate->getPersonObject()['@id'] ?? $certificate->getOrganization(),
             'claim_data'          => $certificate->getClaimData(),
-            'validation_uri'      => 'https://waardepapieren-gemeentehoorn.commonground.nu/api/v1/waar',
+            'validation_uri'      => $this->commonGroundService->cleanUrl(['component' => 'frontend', 'type' => 'claims/public_keys', 'id' => $certificate->getOrganization()]),
             'iat'                 => time(),
         ];
         $certificate = $certificate->setClaim($claim);
