@@ -1,17 +1,17 @@
 {% extends base %}
 
 {% block content %}
-<h1 style='font-family: Calibri; font-weight: bold; text-align: center; font-size: 22px; color: #CA494D;'> Uitreksel Basisregistratie Personen</h1>
+<h1 style='font-family: Calibri; font-weight: bold; text-align: center; font-size: 22px; color: #CA494D;'>Historisch Uittreksel Basisregistratie Personen</h1>
 
 <p>
-    Uit de basisregistratie personenen van de gemeente {{ person.verblijfplaats.woonplaatsnaam }} blijkt dat daarin is opgenomen:
+    Uit de basisregistratie personenen van de gemeente {{ person.verblijfplaats.woonplaats }} blijkt dat daarin is opgenomen:
 </p>
 
 
 {% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
 
 <p>
-    is in de gemeente {{ person.verblijfplaats.woonplaatsnaam }}  ingeschreven op het navolgende adres:
+    is in de gemeente {{ person.verblijfplaats.woonplaats }}  ingeschreven op het navolgende adres:
 </p>
 
 <p>
@@ -23,17 +23,17 @@
             <td>gemeente:</td>
         </tr>
         <tr>
-            <td><b>{{ person.verblijfplaats.datumIngangGeldigheid }}</b></td>
+            <td><b>{{ person.verblijfplaats.datumAanvangAdreshouding.datum }}</b></td>
             <td><b>Heden</b></td>
-            <td><b>{{ person.verblijfplaats.straatnaam}} {{ person.verblijfplaats.huisnummer}} {{ person.verblijfplaats.huisnummertoevoeging}}, {{ person.verblijfplaats.postcode}}  </b></td>
-            <td><b>{{ person.verblijfplaats.woonplaatsnaam }}</b></td>
+            <td><b>{{ person.verblijfplaats.straatnaam}} {{ person.verblijfplaats.huisnummer}}{{ person.verblijfplaats.huisletter }} {{ person.verblijfplaats.huisnummertoevoeging }}, {{ person.verblijfplaats.postcode }}</b></td>
+            <td><b>{{ person.verblijfplaats.woonplaats }}</b></td>
         </tr>
     </table>
 </p>
 
-<p>
-    Totaal aantal personen ingeschreven op het adres: 3
-</p>
+{#<p>#}
+{#    Totaal aantal personen ingeschreven op het adres: 3#}
+{#</p>#}
 
 <p>
     Betrokkene is hiervoor ingeschreven geweest op de navolgende adressen:
@@ -46,24 +46,19 @@
         <td>adres:</td>
         <td>gemeente:</td>
     </tr>
+    {% for verblijfplaats in verblijfplaatshistorie %}
     <tr>
-        <td><b>30 december 2020</b></td>
-        <td><b>Heden</b></td>
-        <td><b>{{ person.verblijfplaats.straatnaam}} {{ person.verblijfplaats.huisnummer}} {{ person.verblijfplaats.huisnummertoevoeging}}, {{ person.verblijfplaats.postcode}}</b></td>
-        <td><b>{{ person.verblijfplaats.woonplaatsnaam }}</b></td>
+        <td><b>{{ verblijfplaats.datumAanvangAdreshouding.datum }}</b></td>
+        <td><b>{% if verblijfplaats.datumTot|default %}{{ verblijfplaats.datumTot.datum }}{% else %}Heden{% endif %}</b></td>
+        {% if verblijfplaats.land|default %}
+            <td><b>{{ verblijfplaats.adresregel1 }}<br>{{ verblijfplaats.adresregel2}}<br>{{ verblijfplaats.adresregel3 }}</b></td>
+            <td><b>{{ verblijfplaats.land.omschrijving }}</b></td>
+        {% else %}
+            <td><b>{{ verblijfplaats.straatnaam }} {{ verblijfplaats.huisnummer}}{{ verblijfplaats.huisletter }} {{ verblijfplaats.huisnummertoevoeging }}, {{ verblijfplaats.postcode }}</b></td>
+            <td><b>{{ verblijfplaats.woonplaats }}</b></td>
+        {% endif %}
     </tr>
-    <tr>
-        <td><b>30 december 2015</b></td>
-        <td><b>39 december 2020</b></td>
-        <td><b>Kortedijk 1, 1001 ZD</b></td>
-        <td><b>Zuidrecht</b></td>
-    </tr>
-    <tr>
-        <td><b>30 december 2000</b></td>
-        <td><b>32 december 2015<</b></td>
-        <td><b>Langedijk 666, 1002 ZD</b></td>
-        <td><b>Zuidrecht</b></td>
-    </tr>
+    {% endfor %}
 </table>
 
 {% include '/blocks/ondertekening.html.twig' with {'person': person} %}

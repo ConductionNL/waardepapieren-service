@@ -68,26 +68,19 @@ class CertificateService
      */
     public function create(Certificate $certificate, $fields = [])
     {
-        // Get person from BRP
-
-        // ^ don't forget to check if $person is a bsn or 'haal centraal' uri!?
-
-        if (filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)) {
-            $person = $this->commonGroundService->getResource($certificate->getPerson());
-        } else {
-            $person = $this->commonGroundService->getResource(['component'=>'brp', 'type'=>'ingeschrevenpersonen', 'id'=>$certificate->getPerson()]);
+        if ($certificate->getPerson() !== null && filter_var($certificate->getPerson(), FILTER_VALIDATE_URL)) {
+            $certificate->setPersonObject($this->commonGroundService->getResource($certificate->getPerson()));
+        } elseif ($certificate->getPerson() !== null) {
+            $certificate->setPersonObject($this->commonGroundService->getResource(['component'=>'brp', 'type'=>'ingeschrevenpersonen', 'id'=>$certificate->getPerson()]));
         }
 
-        // Lets check if this actually brought us a person
-        if (!$person) {
-            /* @todo throw error */
-        } else {
-            $person = $certificate->setPersonObject($person);
-        }
+        $data = [
+            'person'       => $certificate->getPerson() ?? null,
+            'organization' => $certificate->getOrganization() ?? null,
+            'type'         => $certificate->getType(),
+        ];
 
-        // Theorganisation should be dynamic
-        $organization = 'https://wrc.zaakonline.nl/organisations/16353702-4614-42ff-92af-7dd11c8eef9f';
-        $registerdCertificate = ['person'=>$certificate->getPerson(), 'organization'=>$organization, 'type'=>$certificate->getType()];
+        $registerdCertificate = array_filter($data);
         $registerdCertificate = $this->commonGroundService->createResource($registerdCertificate, ['component'=>'wari', 'type'=>'certificates']);
 
         // Then we can create a certificate
@@ -103,6 +96,8 @@ class CertificateService
         $registerdCertificate['document'] = $certificate->getDocument();
 
         $this->commonGroundService->saveResource($registerdCertificate);
+
+
 
         // Now we can return our freshly created certificate
         return $certificate;
@@ -122,6 +117,10 @@ class CertificateService
 
         // Lets add data to this claim
         $claimData = $certificate->getClaimData();
+
+        if ($certificate->getData() !== null) {
+            $claimData = $certificate->getData();
+        }
 
         switch ($certificate->getType()) {
             case 'akte_van_geboorte':
@@ -177,27 +176,14 @@ class CertificateService
 
                 break;
             case 'uittreksel_basis_registratie_personen':
-
-                if (array_key_exists('naam', $certificate->getPersonObject())) {
-                    $claimData['naam'] = $certificate->getPersonObject()['naam'];
-                    unset($claimData['naam']['@id']);
-                    unset($claimData['naam']['@type']);
-                    unset($claimData['naam']['uuid']);
-                }
-
-                if (array_key_exists('geboorte', $certificate->getPersonObject())) {
-                    $claimData['geboorte'] = [];
-                    $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
-                    $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
-                    $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
-                }
-                if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
-                    $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
-                    unset($claimData['verblijfplaats']['@id']);
-                    unset($claimData['verblijfplaats']['@type']);
-                    unset($claimData['verblijfplaats']['uuid']);
-                }
-
+                $person = $certificate->getPersonObject();
+                $claimData['geslachtsnaam'] = $person['naam']['geslachtsnaam'] ?? null;
+                $claimData['voornamen'] = $person['naam']['voornamen'] ?? null;
+                $claimData['geboortedatum'] = $person['geboorte']['datum']['datum'] ?? null;
+                $claimData['geboorteland'] = $person['geboorte']['land']['omschrijving'] ?? null;
+                $claimData['verblijfplaats'] = $person['verblijfplaats']['adresregel1'].', '.$person['verblijfplaats']['adresregel2'] ?? null;
+                $claimData['datumAanvangAdreshouding'] = $person['verblijfplaats']['datumAanvangAdreshouding']['datum'] ?? null;
+                $claimData = array_filter($claimData);
                 break;
             case 'uittreksel_registratie_niet_ingezetenen':
 
@@ -209,6 +195,8 @@ class CertificateService
                     unset($claimData['naam']['@id']);
                     unset($claimData['naam']['@type']);
                     unset($claimData['naam']['uuid']);
+
+                    //$claimData['naam'] = array_filter($claimData['naam'], $this->unsetEmpty());
                 }
 
                 if (array_key_exists('geboorte', $certificate->getPersonObject())) {
@@ -216,35 +204,30 @@ class CertificateService
                     $claimData['geboorte']['datum'] = $certificate->getPersonObject()['geboorte']['datum']['datum'];
                     $claimData['geboorte']['land'] = $certificate->getPersonObject()['geboorte']['land']['omschrijving'];
                     $claimData['geboorte']['plaats'] = $certificate->getPersonObject()['geboorte']['plaats']['omschrijving'];
+
+                    //$claimData['geboorte'] = array_filter($claimData['geboorte'], $this->unsetEmpty());
                 }
                 if (array_key_exists('verblijfplaats', $certificate->getPersonObject())) {
-                    $claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
-                    $claimData['van'] = '2021-01-01';
+                    //$claimData['verblijfplaats'] = $certificate->getPersonObject()['verblijfplaats'];
+                    $claimData['verblijfplaats'] = ['identificatiecodeVerblijfplaats'=>'0530010002090237'];
+                    $claimData['verblijfplaats']['van'] = '2021-01-01';
                     unset($claimData['verblijfplaats']['@id']);
                     unset($claimData['verblijfplaats']['@type']);
                     unset($claimData['verblijfplaats']['uuid']);
+
+                    //$claimData['verblijfplaats'] = array_filter($claimData['verblijfplaats'], $this->unsetEmpty());
                 }
 
-                $claimData['verblijfplaatsHistorish'] = [
-                    ['van'              => '2010-01-01',
-                        'tot'           => '2010-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>60, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Medemblik'],
-                    ],
-                    ['van'              => '2011-01-01',
-                        'tot'           => '2011-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>61, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Hoorn'],
-                    ],
-                    ['van'              => '2012-01-01',
-                        'tot'           => '2020-12-31',
-                        'verblijfplaats'=> ['huisnummer'=>62, 'postcode'=>'9876 ZZ', 'straatnaam'=>'Straathofjesweg', 'woonplaatsnaam'=>'Zaanstad'],
-                    ],
-                ];
+//                $claimData['verblijfplaatsHistorish'] = $this->commonGroundService->getResourceList(['component' => 'brp', 'type' => 'ingeschrevenpersonen', 'id' => $certificate->getPersonObject()['burgerservicenummer'] . '/verblijfplaatshistorie']);
                 break;
             default:
                 /*@todo throw error */
         }
         $certificate->setW3c($this->w3cClaim($claimData, $certificate));
-        $claimData['persoon'] = $certificate->getPersonObject()['burgerservicenummer'];
+        if ($certificate->getPerson() !== null) {
+            $claimData['persoon'] = $certificate->getPersonObject()['burgerservicenummer'];
+        }
+
         $claimData['doel'] = $certificate->getType();
 
         $certificate->setClaimData($claimData);
@@ -252,8 +235,8 @@ class CertificateService
         // Create token payload as a JSON string
         $claim = [
             'iss'                 => $certificate->getId(),
-            'user_id'             => $certificate->getPersonObject()['id'],
-            'user_representation' => $certificate->getPersonObject()['@id'],
+            'user_id'             => $certificate->getPersonObject()['id'] ?? $certificate->getOrganization(),
+            'user_representation' => $certificate->getPersonObject()['@id'] ?? $certificate->getOrganization(),
             'claim_data'          => $certificate->getClaimData(),
             'validation_uri'      => 'https://waardepapieren-gemeentehoorn.commonground.nu/api/v1/waar',
             'iat'                 => time(),
@@ -292,9 +275,11 @@ class CertificateService
     {
 
         // First we need set a bit of basic configuration
-        $configuration['size'] = 300;
-        $configuration['margin'] = 10;
-        $configuration['writer'] = 'png';
+        $configuration = [
+            'size'  => 1000,
+            'margin'=> 1,
+            'writer'=> 'png',
+        ];
 
         // Then we need to render the QR code
         $qrCode = $this->qrCodeFactory->create($certificate->getJwt(), $configuration);
@@ -319,14 +304,20 @@ class CertificateService
      */
     public function createDocument(Certificate $certificate)
     {
-
-        // First we need the HTML  for the template
-        $html = $this->twig->render('certificates/'.$certificate->getType().'.html.twig', [
+        $data = [
             'qr'     => $certificate->getImage(),
             'claim'  => $certificate->getClaim(),
-            'person' => $certificate->getPersonObject(),
+            'person' => $certificate->getPersonObject() ?? null,
             'base'   => '/organizations/'.$certificate->getOrganization().'.html.twig',
-        ]);
+        ];
+
+        if($certificate->getType() == 'historisch_uittreksel_basis_registratie_personen')
+        {
+            $data['verblijfplaatshistorie'] = $this->commonGroundService->getResourceList(['component' => 'brp', 'type' => 'ingeschrevenpersonen', 'id' => $certificate->getPersonObject()['burgerservicenummer'] . '/verblijfplaatshistorie'])['_embedded']['verblijfplaatshistorie'];
+        }
+
+        // First we need the HTML  for the template
+        $html = $this->twig->render('certificates/'.$certificate->getType().'.html.twig', array_filter($data));
 
         // Then we need to render the template
         $dompdf = new DOMPDF();
@@ -393,7 +384,7 @@ class CertificateService
         $array['type'] = ['VerifiableCredential', $certificate->getType()];
         $array['issuer'] = $certificate->getOrganization();
         $array['inssuanceDate'] = $now->format('H:i:s d-m-Y');
-        $array['credentialSubject']['id'] = $certificate->getPersonObject()['burgerservicenummer'];
+        $array['credentialSubject']['id'] = $certificate->getPersonObject()['burgerservicenummer'] ?? $certificate->getOrganization();
         foreach ($data as $key => $value) {
             $array['credentialSubject'][$key] = $value;
         }
@@ -444,7 +435,7 @@ class CertificateService
             'nbf'  => time(),
             'exp'  => time() + 3600,
             'iss'  => $certificate->getId(),
-            'aud'  => $certificate->getPersonObject()['burgerservicenummer'],
+            'aud'  => $certificate->getPersonObject()['burgerservicenummer'] ?? $certificate->getOrganization(),
             'data' => $data,
         ]);
         $jws = $jwsBuilder

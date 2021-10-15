@@ -1,140 +1,153 @@
-# Default values for api.
+# Default values for webresourcecatalogus.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-settings:
-  registryBase: docker.io/conduction
-  projectName: waar
-  name: waar
-  title: Waardepapieren Service
+config:
   version: V1.0
-  majorVersion: v1
-  id: 
-  description: 'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'
-  type: component
-  repro: https://github.com/ConductionNL/waardepapieren-service
-  demo: waar.zuid-drecht.nl
-  container: https://hub.docker.com/repository/docker/conduction/waar-php
-  domain: waardepapieren-gemeentehoorn.commonground.nu
-  subdomain: waar
-  subpath: waar
-  subpathRouting: true
-  organisationName: Conduction
-  email: info@conduction.nl
-  country: Netherlands
-  state: Noord-Holland
-  locality: Amsterdam
-  unit: Common-Ground
-  env: dev
-  web: false
-  debug: 1
-  cache: 1
-  replicaCount: 1
-  corsAllowOrigin: ['*']
-  trustedHosts: '^.+$'
-  pullPolicy: Always
-  # You will need these proxies on kubernetes
+  debug: 0
+  cache: true
+  internal: false
+  env: prod
+  trustedHosts: "^.+$"
+  corsAllowOrigin: [ "*" ]
   trustedProxies:
     - 10.0.0.0/8
     - 172.16.0.0/12
     - 192.168.0.0/16
-  # If you are runnig a single component on a kubernetes cluster you can just easaliy enable the load balancer, if not you need to set up a multi component load balancer
-  loadbalancerEnabled: false
-  # If you want to enable NLX you are requered to add the appropreate certificates to you nlx-settings folder (located in the /api folder)
-  nlxInwayEnabled: false
-  # If you are runnig a single component on a kubernetes cluster you can just easaliy enable the load balancer, if not you need to set up a multi component load balancer
-  notificationEnabled: false
-  audittrailEnabled: false
-  authorisationEnabled: false
-  healthEnabled: false
-  archiveEnabled: false
 
 security:
-  commongroundId: "47e971de-2272-4e09-a141-134612e46a22"
-  commongroundKey: "47e971de-2272-4e09-a141-134612e46a22"
-  applicationKey: "47e971de-2272-4e09-a141-134612e46a22"
-  userKey: "79d5b14c-70ab-41fb-ac02-917e3288870b"
-  authorisationProviderUser: https://uc.zuid-drecht.nl
-  authorisationProviderApplication: https://openzaak.dev.zuid-drecht.nl/authorizaties/api/v1
+  applicationKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+  secret: ""
+  jwt:
+    id:
+    privateKey:
+  dependencies:
+    brp:
+      apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+      auth: apikey
+      location: http://brpservice
+      accept: application/hal+json
+    wari:
+      apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+      auth: apikey
+      location: http://waardepapieren-register
 
+replicaCount: 2
 
 php:
-  repository: docker.io/conduction/protocomponent-php
-  tag: latest
-  mercure:
-    jwtSecret: ""
-  env: prod
-  secret: ""
-  replicaCount: 2
+  repository: ghcr.io/conductionnl/waardepapieren-service-php
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+  resources: {}
+    # As per helm best practise, we do not enable these values by default,
+  # although we do provide optimal values in the lines below that can be uncommented
+#    limits:
+#      cpu: 400m
+#      memory: 512Mi
+#    requests:
+#      cpu: 200m
+#      memory: 256Mi
 
 nginx:
-  repository: docker.io/conduction/protocomponent-nginx
-  tag: latest
+  repository: ghcr.io/conductionnl/waardepapieren-service-nginx
   pullPolicy: Always
-  replicaCount: 2
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+  resources: {}
+    # As per helm best practise, we do not enable these values by default,
+  # although we do provide optimal values in the lines below that can be uncommented
+#    limits:
+#      cpu: 200m
+#      memory: 128Mi
+#    requests:
+#      cpu: 100m
+#      memory: 64Mi
 
-varnish:
-  enabled: true
-  #url: https://example.com
-  repository: docker.io/conduction/protocomponent-varnish
-  tag: latest
-  pullPolicy: Always
-  replicaCount: 1
+redis:
+  enabled: false
+  architecture: standalone
+  redisPort: 6379
+  auth:
+    enabled: false
+  pullPolicy: IfNotPresent
 
 postgresql:
   enabled: true
-  imageTag: 10-alpine
-  # If bringing your own PostgreSQL, the full uri to use
-  #url: pgsql://api-platform:!ChangeMe!@example.com/api?serverVersion=10.1
-  postgresqlUsername: "example"
-  postgresqlPassword: "!ChangeMe!"
-  postgresqlDatabase: "api"
+  # If plugging in an external postgresql provider, the full url to use
+  url: ''
+  image:
+    tag: 11
+    pullPolicy: IfNotPresent
+  postgresqlUsername: 'webresourcecatalogus'
+  postgresqlPassword: '!ChangeMe!'
+  postgresqlDatabase: 'webresourcecatalogus'
   # Persistent Volume Storage configuration.
   # ref: https://kubernetes.io/docs/user-guide/persistent-volumes
   persistence:
+    enabled: true
+  tls:
     enabled: false
-  pullPolicy: IfNotPresent
-#  image:
-#    repository: postgres
-#    tag: alpine
+    autoGenerated: false
+  volumePermissions:
+    enabled: true
 
-mercure:
-  enabled: true
-  publishUrl: http://mercure/hub
-  subscribeUrl: https://mercure.example.com/hub
-  allowAnonymous: "1"
-  corsAllowedOrigins: "^https?://.*?\\.example\\.com$"
-  acmeHosts: "" # TODO: Fix the Mercure chart
-  service:
-    type: NodePort
-    port: 80
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+
+securityContext:
+  privileged: false
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsNonRoot: false
+#  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  annotations: {}
+  port: 80
 
 ingress:
-  annotations:
-    # kubernetes.io/ingress.global-static-ip-name: chart-ip
-    # kubernetes.io/ingress.class: gce
+  enabled: false
+  className: "nginx"
+  hostname: waardepapieren-service.local
+  path: /
+  pathType: ImplementationSpecific
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  tls:
-    # Secrets must be manually created in the namespace, you can also use cert-manager.
-    # - hosts:
-      # - example.com
-      # - mercure.example.com
-  hosts:
-    api:
-      host: example.com
-      serviceName: varnish
-    mercure:
-      host: mercure.example.com
-      serviceName: mercure
+  hosts: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
+
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

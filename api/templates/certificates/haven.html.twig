@@ -1,0 +1,12 @@
+{% extends base %}
+
+{% block content %}
+    <h1> Haven </h1>
+
+    <p>
+        Dit cluster is Haven compliant
+    </p>
+
+    {% include '/blocks/claim.html.twig' with {'qr': qr} %}
+
+{% endblock %}

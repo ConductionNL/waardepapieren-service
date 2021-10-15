@@ -1,19 +1,18 @@
 openapi: 3.0.2
 info:
-  title: 'Waardepapieren Service'
+  title: ''
   version: V1.0
   description: |
     API Details
-    - Component: Waardepapieren Service
-    - Reference: waar
+    - Component: 
+    - Reference: waardepapieren-service
     - Enviroment: dev
     - Version: V1.0
     - Repository: [online](https://github.com/ConductionNL/waardepapieren-service) / [zip](https://github.com/ConductionNL/waardepapieren-service/archive/master.zip)
-    - Docker Image: [online](https://hub.docker.com/repository/docker/conduction/waar-php) 
-    - Datamodel: [postman](/schema/waar.postman_collection.json) / [oas](/schema/openapi.yaml) / [pdf](/schema/datamodel.pdf) / [modelio (zip)](/schema/Datamodel_Modelio.zip) 
-    
+    - Docker Image: [online]() 
+    - Datamodel: [postman](/schema/waardepapieren-service.postman_collection.json) / [oas](/schema/openapi.yaml) / [pdf](/schema/datamodel.pdf) / [modelio (zip)](/schema/Datamodel_Modelio.zip) 
+
     Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.         
-    
 paths:
   /audit_trails:
     get:
@@ -3921,6 +3920,11 @@ components:
         person:
           description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
           type: string
+        data:
+          description: 'data array will be used for the claim.'
+          type: array
+          items:
+            type: string
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
           type: string
@@ -3966,6 +3970,11 @@ components:
         person:
           description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
           type: string
+        data:
+          description: 'data array will be used for the claim.'
+          type: array
+          items:
+            type: string
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
           type: string
@@ -4000,6 +4009,11 @@ components:
         person:
           description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
           type: string
+        data:
+          description: 'data array will be used for the claim.'
+          type: array
+          items:
+            type: string
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
           type: string
@@ -4054,6 +4068,11 @@ components:
         person:
           description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
           type: string
+        data:
+          description: 'data array will be used for the claim.'
+          type: array
+          items:
+            type: string
         type:
           description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
           type: string
@@ -4698,12 +4717,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2021-02-17 14:54:16'
+        example: '2021-07-23 11:18:59'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2021-02-17 14:54:16'
+        example: '2021-07-23 11:18:59'
     required: []
   AuditTrail-write:
     properties:
@@ -4751,12 +4770,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2021-02-17 14:54:16'
+        example: '2021-07-23 11:18:59'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2021-02-17 14:54:16'
+        example: '2021-07-23 11:18:59'
     required: []
   ChangeLog-write:
     properties:
@@ -4769,39 +4788,35 @@ definitions:
 tags:
   -
     name: Certificate
-    description: |
-      
-      
-      
+    description: |+
+
+
   -
     name: OrganizationConfig
-    description: |
-      
-      
-      
+    description: |+
+
+
   -
     name: Type
-    description: |
-      
-      
-      
+    description: |+
+
+
   -
     name: ValidateClaim
-    description: |
-      
-      
-      
+    description: |+
+
+
   -
     name: AuditTrail
-    description: |
+    description: |-
       An resource representing a log line.
-      
+
       This entity represents a product that can be ordered via the OrderRegistratieComponent.
   -
     name: ChangeLog
-    description: |
+    description: |-
       An resource representing a log line.
-      
+
       This entity represents a product that can be ordered via the OrderRegistratieComponent.
 securityDefinitions:
   JWT-Oauth:
@@ -4822,7 +4837,7 @@ host: irc.zaakonline.nl
 servers:
   -
     name: waardepapieren-gemeentehoorn.commonground.nu
-    url: waar.dev.waardepapieren-gemeentehoorn.commonground.nu
+    url: waardepapieren-service.dev.waardepapieren-gemeentehoorn.commonground.nu
 externalDocs:
   -
     description: 'OAS Documentatie'
