@@ -339,30 +339,24 @@ class CertificateService
      */
     public function createJWT(Certificate $certificate)
     {
-
-        // Create a secret
-        $secret = $certificate->getId();
-
         // Create a payload
         $payload = $certificate->getClaim();
 
-        // Create token header as a JSON string
-        $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+        $algorithmManager = new AlgorithmManager([
+            new RS512(),
+        ]);
+        $jwk = JWKFactory::createFromKeyFile(
+            "../cert/{$certificate->getOrganization()}.pem"
+        );
+        $jwsBuilder = new \Jose\Component\Signature\JWSBuilder($algorithmManager);
+        $jws = $jwsBuilder
+            ->create()
+            ->withPayload(json_encode($payload))
+            ->addSignature($jwk, ['alg' => 'RS512'])
+            ->build();
+        $serializer = new CompactSerializer();
 
-        // Encode Header to Base64Url String
-        $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
-
-        // Encode Payload to Base64Url String
-        $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode($payload)));
-
-        // Create Signature Hash
-        $signature = hash_hmac('sha256', $base64UrlHeader.'.'.$base64UrlPayload, $secret, true);
-
-        // Encode Signature to Base64Url String
-        $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
-
-        // Return JWT
-        return $base64UrlHeader.'.'.$base64UrlPayload.'.'.$base64UrlSignature;
+        return $serializer->serialize($jws, 0);
     }
 
     /**
