@@ -4,7 +4,7 @@
     <h1> Verklaring van Nederlanderschap </h1>
 
     <p>
-        Uit de basisregistratie personenen van de gemeente {{ person.verblijfplaats.woonplaatsnaam }} blijkt dat daarin is opgenomen:
+        Uit de basisregistratie personenen van de gemeente {% if person.verblijfplaats.woonplaats|default %}{{ person.verblijfplaats.woonplaats }}{% elseif person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% end %} blijkt dat daarin is opgenomen:
     </p>
 
     {% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}
