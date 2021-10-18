@@ -5,7 +5,7 @@
 <h1> Akte van Geboorte </h1>
 
 <p>
-    Uit de basisregistratie personenen van de gemeente {% if person.verblijfplaats.woonplaats|default %}{{ person.verblijfplaats.woonplaats }}{% elseif person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% end %} blijkt dat daarin is opgenomen:
+    Uit de basisregistratie personenen van de gemeente {% if person.verblijfplaats.woonplaats|default %}{{ person.verblijfplaats.woonplaats }}{% elseif person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% endif %} blijkt dat daarin is opgenomen:
 </p>
 
 {% include '/blocks/persoonsgegevens.html.twig' with {'person': person} %}

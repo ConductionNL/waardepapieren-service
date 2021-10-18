@@ -4,7 +4,7 @@
     <h1 style='font-family: Calibri; font-weight: bold; text-align: center; font-size: 22px; color: #CA494D;'>Uittreksel Basisregistratie Personen</h1>
 
     <p>
-        Uit de basisregistratie personenen van de gemeente {% if person.verblijfplaats.woonplaats|default %}{{ person.verblijfplaats.woonplaats }}{% elseif person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% end %} blijkt dat daarin is opgenomen:
+        Uit de basisregistratie personenen van de gemeente {% if person.verblijfplaats.woonplaats|default %}{{ person.verblijfplaats.woonplaats }}{% elseif person.verblijfplaats.woonplaatsnaam|default %}{{ person.verblijfplaats.woonplaatsnaam }}{% endif %} blijkt dat daarin is opgenomen:
     </p>
 
 
