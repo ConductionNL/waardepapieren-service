@@ -5,7 +5,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 11.13.0
-    created: "2021-10-06T10:09:56.4858444+02:00"
+    created: "2021-12-06T15:09:15.6612901Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -39,7 +39,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 6.2.5
-    created: "2021-10-06T10:09:56.4976739+02:00"
+    created: "2021-12-06T15:09:15.6934912Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -73,7 +73,7 @@ entries:
       artifacthub.io/containsSecurityUpdates: "true"
     apiVersion: v2
     appVersion: V1.0
-    created: "2021-10-06T10:09:56.475939+02:00"
+    created: "2021-12-06T15:09:15.6343674Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -83,7 +83,7 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 15.3.2
-    digest: 40bb8f95963a70be5fc705fc84c2593fc2f056f12637e6d64fac95cdbb395e30
+    digest: 949aa489676faed734957b2523e68b8c6fd839468172531ab8faf9258b9c2157
     home: https://www.conduction.nl
     icon: https://conductionnl.github.io/images/conduction_avatar_blue_on_transparant.svg
     keywords:
@@ -107,7 +107,7 @@ entries:
       artifacthub.io/containsSecurityUpdates: "true"
     apiVersion: v2
     appVersion: V1.0
-    created: "2021-10-06T10:09:56.4548289+02:00"
+    created: "2021-12-06T15:09:15.5515596Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -119,7 +119,7 @@ entries:
       version: 12.7.7
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: ee8b7b18eebb02aa7ac4187ad41c45938ced121f0036e766de173c797fcf292a
+    digest: 595af466de4752efe74b653e3d6276a3ec6da07929235192fac95d5b5afaa83d
     home: https://www.conduction.nl
     icon: https://conductionnl.github.io/images/conduction_avatar_blue_on_transparant.svg
     keywords:
@@ -141,7 +141,7 @@ entries:
     version: 1.0.0
   - apiVersion: v1
     appVersion: V1.0
-    created: "2021-10-06T10:09:56.4321694+02:00"
+    created: "2021-12-06T15:09:15.5176024Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
     digest: e52e23bddddabfaaa9a67ec2840b99874f7a176670b29c8cd84679712121f43d
@@ -164,4 +164,4 @@ entries:
     urls:
     - waardepapieren-service-0.1.0.tgz
     version: 0.1.0
-generated: "2021-10-06T10:09:56.4123842+02:00"
+generated: "2021-12-06T15:09:15.5011859Z"
