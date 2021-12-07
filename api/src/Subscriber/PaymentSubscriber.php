@@ -42,9 +42,6 @@ class PaymentSubscriber implements EventSubscriberInterface
             return;
         }
 
-
-        if
-
         $shaSignature = $this->params->get('app_shasign');
         $variables = [];
 

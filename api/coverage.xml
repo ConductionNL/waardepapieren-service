@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1638803487">
-  <project timestamp="1638803487">
+<coverage generated="1638865788">
+  <project timestamp="1638865788">
     <file name="/srv/api/src/Command/CreateOrganizationCommand.php">
       <class name="App\Command\CreateOrganizationCommand" namespace="global">
         <metrics complexity="6" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="29" coveredelements="0"/>
@@ -755,9 +755,32 @@
       <line num="103" type="stmt" count="0"/>
       <metrics loc="104" ncloc="99" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="0" elements="49" coveredelements="0"/>
     </file>
+    <file name="/srv/api/src/Subscriber/PaymentCertificateSubscriber.php">
+      <class name="App\Subscriber\PaymentCertificateSubscriber" namespace="global">
+        <metrics complexity="10" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="0" elements="17" coveredelements="0"/>
+      </class>
+      <line num="19" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="21" type="stmt" count="0"/>
+      <line num="22" type="stmt" count="0"/>
+      <line num="23" type="stmt" count="0"/>
+      <line num="25" type="method" name="getSubscribedEvents" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <line num="32" type="method" name="paymentCertificate" visibility="public" complexity="8" crap="72" count="0"/>
+      <line num="34" type="stmt" count="0"/>
+      <line num="35" type="stmt" count="0"/>
+      <line num="39" type="stmt" count="0"/>
+      <line num="40" type="stmt" count="0"/>
+      <line num="41" type="stmt" count="0"/>
+      <line num="43" type="stmt" count="0"/>
+      <line num="46" type="stmt" count="0"/>
+      <line num="48" type="stmt" count="0"/>
+      <line num="49" type="stmt" count="0"/>
+      <line num="50" type="stmt" count="0"/>
+      <metrics loc="58" ncloc="57" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="0" elements="17" coveredelements="0"/>
+    </file>
     <file name="/srv/api/src/Subscriber/PaymentSubscriber.php">
       <class name="App\Subscriber\PaymentSubscriber" namespace="global">
-        <metrics complexity="9" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+        <metrics complexity="9" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="0" elements="46" coveredelements="0"/>
       </class>
       <line num="17" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
       <line num="19" type="stmt" count="0"/>
@@ -767,9 +790,45 @@
       <line num="29" type="method" name="payment" visibility="public" complexity="7" crap="56" count="0"/>
       <line num="31" type="stmt" count="0"/>
       <line num="32" type="stmt" count="0"/>
-      <line num="34" type="stmt" count="0"/>
-      <line num="35" type="stmt" count="0"/>
-      <metrics loc="91" ncloc="90" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="10" coveredelements="0"/>
+      <line num="33" type="stmt" count="0"/>
+      <line num="37" type="stmt" count="0"/>
+      <line num="38" type="stmt" count="0"/>
+      <line num="39" type="stmt" count="0"/>
+      <line num="40" type="stmt" count="0"/>
+      <line num="42" type="stmt" count="0"/>
+      <line num="45" type="stmt" count="0"/>
+      <line num="46" type="stmt" count="0"/>
+      <line num="49" type="stmt" count="0"/>
+      <line num="50" type="stmt" count="0"/>
+      <line num="51" type="stmt" count="0"/>
+      <line num="52" type="stmt" count="0"/>
+      <line num="53" type="stmt" count="0"/>
+      <line num="54" type="stmt" count="0"/>
+      <line num="55" type="stmt" count="0"/>
+      <line num="56" type="stmt" count="0"/>
+      <line num="57" type="stmt" count="0"/>
+      <line num="58" type="stmt" count="0"/>
+      <line num="59" type="stmt" count="0"/>
+      <line num="60" type="stmt" count="0"/>
+      <line num="61" type="stmt" count="0"/>
+      <line num="62" type="stmt" count="0"/>
+      <line num="63" type="stmt" count="0"/>
+      <line num="64" type="stmt" count="0"/>
+      <line num="65" type="stmt" count="0"/>
+      <line num="66" type="stmt" count="0"/>
+      <line num="69" type="stmt" count="0"/>
+      <line num="71" type="stmt" count="0"/>
+      <line num="72" type="stmt" count="0"/>
+      <line num="75" type="stmt" count="0"/>
+      <line num="76" type="stmt" count="0"/>
+      <line num="78" type="stmt" count="0"/>
+      <line num="79" type="stmt" count="0"/>
+      <line num="82" type="stmt" count="0"/>
+      <line num="84" type="stmt" count="0"/>
+      <line num="85" type="stmt" count="0"/>
+      <line num="86" type="stmt" count="0"/>
+      <line num="88" type="stmt" count="0"/>
+      <metrics loc="90" ncloc="89" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="0" elements="46" coveredelements="0"/>
     </file>
     <file name="/srv/api/src/Subscriber/ValidateClaimSubscriber.php">
       <class name="App\Subscriber\ValidateClaimSubscriber" namespace="global">
@@ -792,6 +851,6 @@
       <line num="41" type="stmt" count="0"/>
       <metrics loc="42" ncloc="42" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
     </file>
-    <metrics files="21" loc="2506" ncloc="1756" classes="21" methods="128" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="538" coveredstatements="0" elements="666" coveredelements="0"/>
+    <metrics files="22" loc="2563" ncloc="1812" classes="22" methods="131" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="588" coveredstatements="0" elements="719" coveredelements="0"/>
   </project>
 </coverage>
