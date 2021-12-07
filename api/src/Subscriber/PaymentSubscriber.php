@@ -4,11 +4,11 @@ namespace App\Subscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Payment;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Ramsey\Uuid\Uuid;
 
 class PaymentSubscriber implements EventSubscriberInterface
 {
@@ -76,7 +76,7 @@ class PaymentSubscriber implements EventSubscriberInterface
         $variables['signature'] = [];
 
         foreach ($variables['keyArray'] as $key => $value) {
-            $variables['signature'][] = $key . '=' . $value . $shaSignature;
+            $variables['signature'][] = $key.'='.$value.$shaSignature;
         }
 
         $paymentArray['SHASign'] = hash('sha256', implode('', $variables['signature']));

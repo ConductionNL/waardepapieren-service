@@ -9,10 +9,10 @@ use App\Service\CertificateService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PaymentCertificateSubscriber implements EventSubscriberInterface
@@ -73,7 +73,7 @@ class PaymentCertificateSubscriber implements EventSubscriberInterface
 
             $signature = [];
             foreach ($keyArray as $key => $value) {
-                $signature[] = $key . '=' . $value . $shaSignature;
+                $signature[] = $key.'='.$value.$shaSignature;
             }
             $hashedSign = strtoupper(hash('sha256', implode('', $signature)));
 
@@ -89,8 +89,8 @@ class PaymentCertificateSubscriber implements EventSubscriberInterface
             if (isset($variables['paramsArray']['STATUS']) && ($variables['paramsArray']['STATUS'] == '5' ||
                 $variables['paramsArray']['STATUS'] == '9' || $variables['paramsArray']['STATUS'] == '51' ||
                 $variables['paramsArray']['STATUS'] == '91') && isset($orderId) && isset($receivedOrderId) && $orderId == $receivedOrderId) {
-                // Create certificate 
-                $certificate = new Certificate;
+                // Create certificate
+                $certificate = new Certificate();
                 $certificate->setType($payment->getType());
                 $certificate->setOrganization($payment->getOrganization());
                 $certificate->setPerson($payment->getPerson());
