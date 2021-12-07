@@ -19,6 +19,7 @@ class ClaimController extends AbstractController
     {
         $filesystem = new Filesystem();
         $key = file_get_contents(__DIR__."/../../public/cert/{$rsin}.pem");
+
         return new Response(
             json_encode(['key' => $key, 'rsin' => $rsin]),
             Response::HTTP_OK,

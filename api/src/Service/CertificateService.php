@@ -97,8 +97,6 @@ class CertificateService
 
         $this->commonGroundService->saveResource($registerdCertificate);
 
-
-
         // Now we can return our freshly created certificate
         return $certificate;
     }
@@ -311,9 +309,8 @@ class CertificateService
             'base'   => '/organizations/'.$certificate->getOrganization().'.html.twig',
         ];
 
-        if($certificate->getType() == 'historisch_uittreksel_basis_registratie_personen')
-        {
-            $data['verblijfplaatshistorie'] = $this->commonGroundService->getResourceList(['component' => 'brp', 'type' => 'ingeschrevenpersonen', 'id' => $certificate->getPersonObject()['burgerservicenummer'] . '/verblijfplaatshistorie'])['_embedded']['verblijfplaatshistorie'];
+        if ($certificate->getType() == 'historisch_uittreksel_basis_registratie_personen') {
+            $data['verblijfplaatshistorie'] = $this->commonGroundService->getResourceList(['component' => 'brp', 'type' => 'ingeschrevenpersonen', 'id' => $certificate->getPersonObject()['burgerservicenummer'].'/verblijfplaatshistorie'])['_embedded']['verblijfplaatshistorie'];
         }
 
         // First we need the HTML  for the template
