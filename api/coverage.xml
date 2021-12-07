@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1627039160">
-  <project timestamp="1627039160">
+<coverage generated="1638865788">
+  <project timestamp="1638865788">
     <file name="/srv/api/src/Command/CreateOrganizationCommand.php">
       <class name="App\Command\CreateOrganizationCommand" namespace="global">
         <metrics complexity="6" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="29" coveredelements="0"/>
@@ -36,6 +36,19 @@
       <line num="88" type="stmt" count="0"/>
       <metrics loc="90" ncloc="83" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="29" coveredelements="0"/>
     </file>
+    <file name="/srv/api/src/Controller/ClaimController.php">
+      <class name="App\Controller\ClaimController" namespace="global">
+        <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="7" coveredelements="0"/>
+      </class>
+      <line num="18" type="method" name="keyAction" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="20" type="stmt" count="0"/>
+      <line num="21" type="stmt" count="0"/>
+      <line num="22" type="stmt" count="0"/>
+      <line num="23" type="stmt" count="0"/>
+      <line num="24" type="stmt" count="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <metrics loc="28" ncloc="22" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="7" coveredelements="0"/>
+    </file>
     <file name="/srv/api/src/DataFixtures/AppFixtures.php">
       <class name="App\DataFixtures\AppFixtures" namespace="global">
         <metrics complexity="3" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
@@ -53,7 +66,7 @@
     </file>
     <file name="/srv/api/src/DataFixtures/WaardepapierenFixtures.php">
       <class name="App\DataFixtures\WaardepapierenFixtures" namespace="global">
-        <metrics complexity="9" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="0" elements="61" coveredelements="0"/>
+        <metrics complexity="9" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="0" elements="57" coveredelements="0"/>
       </class>
       <line num="21" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
       <line num="23" type="stmt" count="0"/>
@@ -112,11 +125,7 @@
       <line num="95" type="stmt" count="0"/>
       <line num="96" type="stmt" count="0"/>
       <line num="97" type="stmt" count="0"/>
-      <line num="98" type="stmt" count="0"/>
-      <line num="100" type="stmt" count="0"/>
-      <line num="101" type="stmt" count="0"/>
-      <line num="102" type="stmt" count="0"/>
-      <metrics loc="103" ncloc="99" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="0" elements="61" coveredelements="0"/>
+      <metrics loc="98" ncloc="94" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="0" elements="57" coveredelements="0"/>
     </file>
     <file name="/srv/api/src/Entity/Certificate.php">
       <class name="App\Entity\Certificate" namespace="global">
@@ -258,6 +267,67 @@
       <line num="216" type="stmt" count="0"/>
       <metrics loc="218" ncloc="137" classes="1" methods="15" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="0" elements="48" coveredelements="0"/>
     </file>
+    <file name="/srv/api/src/Entity/Payment.php">
+      <class name="App\Entity\Payment" namespace="global">
+        <metrics complexity="22" methods="22" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="0" elements="55" coveredelements="0"/>
+      </class>
+      <line num="179" type="method" name="getId" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="181" type="stmt" count="0"/>
+      <line num="184" type="method" name="setId" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="186" type="stmt" count="0"/>
+      <line num="188" type="stmt" count="0"/>
+      <line num="191" type="method" name="getPerson" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="193" type="stmt" count="0"/>
+      <line num="196" type="method" name="setPerson" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="198" type="stmt" count="0"/>
+      <line num="200" type="stmt" count="0"/>
+      <line num="203" type="method" name="getName" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="205" type="stmt" count="0"/>
+      <line num="208" type="method" name="setName" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="210" type="stmt" count="0"/>
+      <line num="212" type="stmt" count="0"/>
+      <line num="215" type="method" name="getType" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="217" type="stmt" count="0"/>
+      <line num="220" type="method" name="setType" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="222" type="stmt" count="0"/>
+      <line num="224" type="stmt" count="0"/>
+      <line num="227" type="method" name="getOrganization" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="229" type="stmt" count="0"/>
+      <line num="232" type="method" name="setOrganization" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="234" type="stmt" count="0"/>
+      <line num="236" type="stmt" count="0"/>
+      <line num="239" type="method" name="getPrice" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="241" type="stmt" count="0"/>
+      <line num="244" type="method" name="setPrice" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="246" type="stmt" count="0"/>
+      <line num="248" type="stmt" count="0"/>
+      <line num="251" type="method" name="getConfiguration" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="253" type="stmt" count="0"/>
+      <line num="256" type="method" name="setConfiguration" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="258" type="stmt" count="0"/>
+      <line num="260" type="stmt" count="0"/>
+      <line num="263" type="method" name="getStatus" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="265" type="stmt" count="0"/>
+      <line num="268" type="method" name="setStatus" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="270" type="stmt" count="0"/>
+      <line num="272" type="stmt" count="0"/>
+      <line num="275" type="method" name="getOrderId" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="277" type="stmt" count="0"/>
+      <line num="280" type="method" name="setOrderId" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="282" type="stmt" count="0"/>
+      <line num="284" type="stmt" count="0"/>
+      <line num="287" type="method" name="getRedirectUrl" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="289" type="stmt" count="0"/>
+      <line num="292" type="method" name="setRedirectUrl" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="294" type="stmt" count="0"/>
+      <line num="296" type="stmt" count="0"/>
+      <line num="299" type="method" name="getIngenicoUrl" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="301" type="stmt" count="0"/>
+      <line num="304" type="method" name="setIngenicoUrl" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="306" type="stmt" count="0"/>
+      <line num="308" type="stmt" count="0"/>
+      <metrics loc="310" ncloc="176" classes="1" methods="22" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="33" coveredstatements="0" elements="55" coveredelements="0"/>
+    </file>
     <file name="/srv/api/src/Entity/Type.php">
       <class name="App\Entity\Type" namespace="global">
         <metrics complexity="10" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="0" elements="25" coveredelements="0"/>
@@ -362,6 +432,15 @@
       <line num="20" type="stmt" count="0"/>
       <metrics loc="50" ncloc="17" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
     </file>
+    <file name="/srv/api/src/Repository/PaymentRepository.php">
+      <class name="App\Repository\PaymentRepository" namespace="global">
+        <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
+      </class>
+      <line num="17" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="19" type="stmt" count="0"/>
+      <line num="20" type="stmt" count="0"/>
+      <metrics loc="21" ncloc="15" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
+    </file>
     <file name="/srv/api/src/Repository/TypeRepository.php">
       <class name="App\Repository\TypeRepository" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
@@ -382,7 +461,7 @@
     </file>
     <file name="/srv/api/src/Service/CertificateService.php">
       <class name="App\Service\CertificateService" namespace="global">
-        <metrics complexity="40" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="184" coveredstatements="0" elements="194" coveredelements="0"/>
+        <metrics complexity="36" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="182" coveredstatements="0" elements="192" coveredelements="0"/>
       </class>
       <line num="28" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
       <line num="30" type="stmt" count="0"/>
@@ -399,27 +478,26 @@
       <line num="51" type="stmt" count="0"/>
       <line num="52" type="stmt" count="0"/>
       <line num="54" type="stmt" count="0"/>
-      <line num="69" type="method" name="create" visibility="public" complexity="6" crap="42" count="0"/>
+      <line num="69" type="method" name="create" visibility="public" complexity="4" crap="20" count="0"/>
+      <line num="71" type="stmt" count="0"/>
       <line num="72" type="stmt" count="0"/>
       <line num="73" type="stmt" count="0"/>
       <line num="74" type="stmt" count="0"/>
-      <line num="75" type="stmt" count="0"/>
+      <line num="78" type="stmt" count="0"/>
       <line num="79" type="stmt" count="0"/>
       <line num="80" type="stmt" count="0"/>
-      <line num="81" type="stmt" count="0"/>
+      <line num="83" type="stmt" count="0"/>
       <line num="84" type="stmt" count="0"/>
-      <line num="85" type="stmt" count="0"/>
+      <line num="87" type="stmt" count="0"/>
       <line num="88" type="stmt" count="0"/>
-      <line num="89" type="stmt" count="0"/>
       <line num="90" type="stmt" count="0"/>
-      <line num="92" type="stmt" count="0"/>
-      <line num="93" type="stmt" count="0"/>
+      <line num="91" type="stmt" count="0"/>
+      <line num="94" type="stmt" count="0"/>
+      <line num="95" type="stmt" count="0"/>
       <line num="96" type="stmt" count="0"/>
-      <line num="97" type="stmt" count="0"/>
       <line num="98" type="stmt" count="0"/>
-      <line num="100" type="stmt" count="0"/>
       <line num="103" type="stmt" count="0"/>
-      <line num="115" type="method" name="createClaim" visibility="public" complexity="25" crap="650" count="0"/>
+      <line num="115" type="method" name="createClaim" visibility="public" complexity="22" crap="506" count="0"/>
       <line num="119" type="stmt" count="0"/>
       <line num="121" type="stmt" count="0"/>
       <line num="122" type="stmt" count="0"/>
@@ -461,124 +539,123 @@
       <line num="181" type="stmt" count="0"/>
       <line num="182" type="stmt" count="0"/>
       <line num="183" type="stmt" count="0"/>
+      <line num="184" type="stmt" count="0"/>
+      <line num="185" type="stmt" count="0"/>
       <line num="186" type="stmt" count="0"/>
       <line num="187" type="stmt" count="0"/>
       <line num="188" type="stmt" count="0"/>
-      <line num="189" type="stmt" count="0"/>
       <line num="190" type="stmt" count="0"/>
-      <line num="192" type="stmt" count="0"/>
+      <line num="191" type="stmt" count="0"/>
       <line num="193" type="stmt" count="0"/>
       <line num="194" type="stmt" count="0"/>
       <line num="195" type="stmt" count="0"/>
       <line num="196" type="stmt" count="0"/>
-      <line num="199" type="stmt" count="0"/>
-      <line num="200" type="stmt" count="0"/>
+      <line num="197" type="stmt" count="0"/>
       <line num="202" type="stmt" count="0"/>
       <line num="203" type="stmt" count="0"/>
+      <line num="204" type="stmt" count="0"/>
       <line num="205" type="stmt" count="0"/>
       <line num="206" type="stmt" count="0"/>
-      <line num="207" type="stmt" count="0"/>
-      <line num="208" type="stmt" count="0"/>
-      <line num="209" type="stmt" count="0"/>
+      <line num="210" type="stmt" count="0"/>
+      <line num="212" type="stmt" count="0"/>
+      <line num="213" type="stmt" count="0"/>
       <line num="214" type="stmt" count="0"/>
       <line num="215" type="stmt" count="0"/>
       <line num="216" type="stmt" count="0"/>
-      <line num="217" type="stmt" count="0"/>
-      <line num="218" type="stmt" count="0"/>
       <line num="222" type="stmt" count="0"/>
-      <line num="224" type="stmt" count="0"/>
-      <line num="225" type="stmt" count="0"/>
+      <line num="223" type="stmt" count="0"/>
       <line num="226" type="stmt" count="0"/>
       <line num="227" type="stmt" count="0"/>
       <line num="228" type="stmt" count="0"/>
+      <line num="231" type="stmt" count="0"/>
       <line num="233" type="stmt" count="0"/>
+      <line num="237" type="stmt" count="0"/>
+      <line num="238" type="stmt" count="0"/>
+      <line num="239" type="stmt" count="0"/>
+      <line num="240" type="stmt" count="0"/>
+      <line num="241" type="stmt" count="0"/>
+      <line num="242" type="stmt" count="0"/>
+      <line num="244" type="stmt" count="0"/>
       <line num="250" type="stmt" count="0"/>
-      <line num="251" type="stmt" count="0"/>
-      <line num="254" type="stmt" count="0"/>
       <line num="255" type="stmt" count="0"/>
-      <line num="256" type="stmt" count="0"/>
-      <line num="259" type="stmt" count="0"/>
-      <line num="261" type="stmt" count="0"/>
-      <line num="265" type="stmt" count="0"/>
-      <line num="266" type="stmt" count="0"/>
-      <line num="267" type="stmt" count="0"/>
-      <line num="268" type="stmt" count="0"/>
-      <line num="269" type="stmt" count="0"/>
-      <line num="270" type="stmt" count="0"/>
-      <line num="272" type="stmt" count="0"/>
-      <line num="278" type="stmt" count="0"/>
-      <line num="283" type="stmt" count="0"/>
+      <line num="258" type="stmt" count="0"/>
+      <line num="260" type="stmt" count="0"/>
+      <line num="262" type="stmt" count="0"/>
+      <line num="264" type="stmt" count="0"/>
+      <line num="274" type="method" name="createImage" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="279" type="stmt" count="0"/>
+      <line num="285" type="stmt" count="0"/>
       <line num="286" type="stmt" count="0"/>
-      <line num="288" type="stmt" count="0"/>
-      <line num="290" type="stmt" count="0"/>
-      <line num="292" type="stmt" count="0"/>
-      <line num="302" type="method" name="createImage" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="307" type="stmt" count="0"/>
-      <line num="313" type="stmt" count="0"/>
+      <line num="289" type="stmt" count="0"/>
+      <line num="291" type="stmt" count="0"/>
+      <line num="305" type="method" name="createDocument" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="308" type="stmt" count="0"/>
+      <line num="309" type="stmt" count="0"/>
+      <line num="310" type="stmt" count="0"/>
+      <line num="311" type="stmt" count="0"/>
       <line num="314" type="stmt" count="0"/>
-      <line num="317" type="stmt" count="0"/>
-      <line num="319" type="stmt" count="0"/>
-      <line num="333" type="method" name="createDocument" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="337" type="stmt" count="0"/>
-      <line num="338" type="stmt" count="0"/>
-      <line num="339" type="stmt" count="0"/>
-      <line num="340" type="stmt" count="0"/>
-      <line num="344" type="stmt" count="0"/>
-      <line num="347" type="stmt" count="0"/>
+      <line num="316" type="stmt" count="0"/>
+      <line num="320" type="stmt" count="0"/>
+      <line num="323" type="stmt" count="0"/>
+      <line num="324" type="stmt" count="0"/>
+      <line num="325" type="stmt" count="0"/>
+      <line num="328" type="stmt" count="0"/>
+      <line num="330" type="stmt" count="0"/>
+      <line num="340" type="method" name="createJWT" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="343" type="stmt" count="0"/>
+      <line num="345" type="stmt" count="0"/>
+      <line num="346" type="stmt" count="0"/>
       <line num="348" type="stmt" count="0"/>
       <line num="349" type="stmt" count="0"/>
-      <line num="352" type="stmt" count="0"/>
+      <line num="351" type="stmt" count="0"/>
+      <line num="353" type="stmt" count="0"/>
       <line num="354" type="stmt" count="0"/>
-      <line num="364" type="method" name="createJWT" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="368" type="stmt" count="0"/>
-      <line num="371" type="stmt" count="0"/>
+      <line num="355" type="stmt" count="0"/>
+      <line num="356" type="stmt" count="0"/>
+      <line num="357" type="stmt" count="0"/>
+      <line num="359" type="stmt" count="0"/>
+      <line num="372" type="method" name="w3cClaim" visibility="public" complexity="2" crap="6" count="0"/>
       <line num="374" type="stmt" count="0"/>
+      <line num="375" type="stmt" count="0"/>
+      <line num="376" type="stmt" count="0"/>
       <line num="377" type="stmt" count="0"/>
+      <line num="378" type="stmt" count="0"/>
+      <line num="379" type="stmt" count="0"/>
       <line num="380" type="stmt" count="0"/>
+      <line num="381" type="stmt" count="0"/>
+      <line num="382" type="stmt" count="0"/>
       <line num="383" type="stmt" count="0"/>
-      <line num="386" type="stmt" count="0"/>
-      <line num="389" type="stmt" count="0"/>
-      <line num="402" type="method" name="w3cClaim" visibility="public" complexity="2" crap="6" count="0"/>
+      <line num="385" type="stmt" count="0"/>
+      <line num="387" type="stmt" count="0"/>
+      <line num="398" type="method" name="createProof" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="400" type="stmt" count="0"/>
+      <line num="401" type="stmt" count="0"/>
+      <line num="402" type="stmt" count="0"/>
+      <line num="403" type="stmt" count="0"/>
       <line num="404" type="stmt" count="0"/>
       <line num="405" type="stmt" count="0"/>
-      <line num="406" type="stmt" count="0"/>
       <line num="407" type="stmt" count="0"/>
-      <line num="408" type="stmt" count="0"/>
-      <line num="409" type="stmt" count="0"/>
-      <line num="410" type="stmt" count="0"/>
-      <line num="411" type="stmt" count="0"/>
-      <line num="412" type="stmt" count="0"/>
-      <line num="413" type="stmt" count="0"/>
-      <line num="415" type="stmt" count="0"/>
-      <line num="417" type="stmt" count="0"/>
-      <line num="428" type="method" name="createProof" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="418" type="method" name="createJWS" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="420" type="stmt" count="0"/>
+      <line num="421" type="stmt" count="0"/>
+      <line num="423" type="stmt" count="0"/>
+      <line num="424" type="stmt" count="0"/>
+      <line num="426" type="stmt" count="0"/>
+      <line num="427" type="stmt" count="0"/>
+      <line num="428" type="stmt" count="0"/>
+      <line num="429" type="stmt" count="0"/>
       <line num="430" type="stmt" count="0"/>
       <line num="431" type="stmt" count="0"/>
       <line num="432" type="stmt" count="0"/>
       <line num="433" type="stmt" count="0"/>
       <line num="434" type="stmt" count="0"/>
-      <line num="435" type="stmt" count="0"/>
       <line num="437" type="stmt" count="0"/>
-      <line num="448" type="method" name="createJWS" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="450" type="stmt" count="0"/>
-      <line num="451" type="stmt" count="0"/>
-      <line num="453" type="stmt" count="0"/>
-      <line num="454" type="stmt" count="0"/>
-      <line num="456" type="stmt" count="0"/>
-      <line num="457" type="stmt" count="0"/>
-      <line num="458" type="stmt" count="0"/>
-      <line num="459" type="stmt" count="0"/>
-      <line num="460" type="stmt" count="0"/>
-      <line num="461" type="stmt" count="0"/>
-      <line num="462" type="stmt" count="0"/>
-      <line num="463" type="stmt" count="0"/>
-      <line num="466" type="stmt" count="0"/>
-      <line num="467" type="stmt" count="0"/>
-      <line num="468" type="stmt" count="0"/>
-      <line num="469" type="stmt" count="0"/>
-      <line num="470" type="stmt" count="0"/>
-      <line num="472" type="stmt" count="0"/>
-      <metrics loc="474" ncloc="395" classes="1" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="184" coveredstatements="0" elements="194" coveredelements="0"/>
+      <line num="438" type="stmt" count="0"/>
+      <line num="439" type="stmt" count="0"/>
+      <line num="440" type="stmt" count="0"/>
+      <line num="441" type="stmt" count="0"/>
+      <line num="443" type="stmt" count="0"/>
+      <metrics loc="445" ncloc="366" classes="1" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="182" coveredstatements="0" elements="192" coveredelements="0"/>
     </file>
     <file name="/srv/api/src/Service/ClaimService.php">
       <class name="App\Service\ClaimService" namespace="global">
@@ -678,6 +755,81 @@
       <line num="103" type="stmt" count="0"/>
       <metrics loc="104" ncloc="99" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="0" elements="49" coveredelements="0"/>
     </file>
+    <file name="/srv/api/src/Subscriber/PaymentCertificateSubscriber.php">
+      <class name="App\Subscriber\PaymentCertificateSubscriber" namespace="global">
+        <metrics complexity="10" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="0" elements="17" coveredelements="0"/>
+      </class>
+      <line num="19" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="21" type="stmt" count="0"/>
+      <line num="22" type="stmt" count="0"/>
+      <line num="23" type="stmt" count="0"/>
+      <line num="25" type="method" name="getSubscribedEvents" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <line num="32" type="method" name="paymentCertificate" visibility="public" complexity="8" crap="72" count="0"/>
+      <line num="34" type="stmt" count="0"/>
+      <line num="35" type="stmt" count="0"/>
+      <line num="39" type="stmt" count="0"/>
+      <line num="40" type="stmt" count="0"/>
+      <line num="41" type="stmt" count="0"/>
+      <line num="43" type="stmt" count="0"/>
+      <line num="46" type="stmt" count="0"/>
+      <line num="48" type="stmt" count="0"/>
+      <line num="49" type="stmt" count="0"/>
+      <line num="50" type="stmt" count="0"/>
+      <metrics loc="58" ncloc="57" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="0" elements="17" coveredelements="0"/>
+    </file>
+    <file name="/srv/api/src/Subscriber/PaymentSubscriber.php">
+      <class name="App\Subscriber\PaymentSubscriber" namespace="global">
+        <metrics complexity="9" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="0" elements="46" coveredelements="0"/>
+      </class>
+      <line num="17" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="19" type="stmt" count="0"/>
+      <line num="20" type="stmt" count="0"/>
+      <line num="22" type="method" name="getSubscribedEvents" visibility="public" complexity="1" crap="2" count="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <line num="29" type="method" name="payment" visibility="public" complexity="7" crap="56" count="0"/>
+      <line num="31" type="stmt" count="0"/>
+      <line num="32" type="stmt" count="0"/>
+      <line num="33" type="stmt" count="0"/>
+      <line num="37" type="stmt" count="0"/>
+      <line num="38" type="stmt" count="0"/>
+      <line num="39" type="stmt" count="0"/>
+      <line num="40" type="stmt" count="0"/>
+      <line num="42" type="stmt" count="0"/>
+      <line num="45" type="stmt" count="0"/>
+      <line num="46" type="stmt" count="0"/>
+      <line num="49" type="stmt" count="0"/>
+      <line num="50" type="stmt" count="0"/>
+      <line num="51" type="stmt" count="0"/>
+      <line num="52" type="stmt" count="0"/>
+      <line num="53" type="stmt" count="0"/>
+      <line num="54" type="stmt" count="0"/>
+      <line num="55" type="stmt" count="0"/>
+      <line num="56" type="stmt" count="0"/>
+      <line num="57" type="stmt" count="0"/>
+      <line num="58" type="stmt" count="0"/>
+      <line num="59" type="stmt" count="0"/>
+      <line num="60" type="stmt" count="0"/>
+      <line num="61" type="stmt" count="0"/>
+      <line num="62" type="stmt" count="0"/>
+      <line num="63" type="stmt" count="0"/>
+      <line num="64" type="stmt" count="0"/>
+      <line num="65" type="stmt" count="0"/>
+      <line num="66" type="stmt" count="0"/>
+      <line num="69" type="stmt" count="0"/>
+      <line num="71" type="stmt" count="0"/>
+      <line num="72" type="stmt" count="0"/>
+      <line num="75" type="stmt" count="0"/>
+      <line num="76" type="stmt" count="0"/>
+      <line num="78" type="stmt" count="0"/>
+      <line num="79" type="stmt" count="0"/>
+      <line num="82" type="stmt" count="0"/>
+      <line num="84" type="stmt" count="0"/>
+      <line num="85" type="stmt" count="0"/>
+      <line num="86" type="stmt" count="0"/>
+      <line num="88" type="stmt" count="0"/>
+      <metrics loc="90" ncloc="89" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="0" elements="46" coveredelements="0"/>
+    </file>
     <file name="/srv/api/src/Subscriber/ValidateClaimSubscriber.php">
       <class name="App\Subscriber\ValidateClaimSubscriber" namespace="global">
         <metrics complexity="5" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
@@ -699,6 +851,6 @@
       <line num="41" type="stmt" count="0"/>
       <metrics loc="42" ncloc="42" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="0" elements="15" coveredelements="0"/>
     </file>
-    <metrics files="17" loc="2090" ncloc="1487" classes="17" methods="101" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="496" coveredstatements="0" elements="597" coveredelements="0"/>
+    <metrics files="22" loc="2563" ncloc="1812" classes="22" methods="131" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="588" coveredstatements="0" elements="719" coveredelements="0"/>
   </project>
 </coverage>

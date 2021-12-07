@@ -2786,6 +2786,824 @@ paths:
             schema:
               $ref: '#/components/schemas/OrganizationConfig-write'
         description: 'The updated OrganizationConfig resource'
+  /payments:
+    post:
+      tags:
+        - Payment
+      operationId: postPaymentCollection
+      summary: 'Creates a Payment resource.'
+      responses:
+        201:
+          description: 'Payment resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Payment:jsonld-read'
+            application/json+ld:
+              schema:
+                $ref: '#/components/schemas/Payment:jsonld-read'
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+hal:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+vnd.api:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/health+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+health:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+          links:
+            GetPaymentItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getPaymentItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /payments/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Payment:jsonld-write'
+          application/json+ld:
+            schema:
+              $ref: '#/components/schemas/Payment:jsonld-write'
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/json+hal:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/json+vnd.api:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/health+json:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/json+health:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Payment-write'
+        description: 'The new Payment resource'
+      parameters:
+        -
+          name: Authorization
+          description: 'The JWT of the entity performing the request'
+          in: header
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Logrecord-ID
+          description: 'A  globally unique id of the request, which makes a request traceable throughout the network.'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678, kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-NLX-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+    get:
+      tags:
+        - Payment
+      operationId: getPaymentCollection
+      summary: 'Retrieves the collection of Payment resources.'
+      responses:
+        200:
+          description: 'Payment collection response'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties:
+                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/Payment:jsonld-read' } }
+                  'hydra:totalItems': { type: integer, minimum: 0 }
+                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } } }
+                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string, nullable: true }, required: { type: boolean } } } } } }
+                required:
+                  - 'hydra:member'
+            application/json+ld:
+              schema:
+                type: object
+                properties:
+                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/Payment:jsonld-read' } }
+                  'hydra:totalItems': { type: integer, minimum: 0 }
+                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } } }
+                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string, nullable: true }, required: { type: boolean } } } } } }
+                required:
+                  - 'hydra:member'
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/json+hal:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/json+vnd.api:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/health+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/json+health:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment-read'
+      parameters:
+        -
+          name: 'order[id]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[person]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[name]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[type]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[organization]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[price]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[configuration]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[status]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[redirectUrl]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: 'order[orderId]'
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: id
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'id[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: person
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'person[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'name[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'type[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: organization
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'organization[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: price
+          in: query
+          required: false
+          schema:
+            type: integer
+        -
+          name: 'price[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+        -
+          name: configuration
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'configuration[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: deepObject
+          explode: true
+        -
+          name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'status[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: redirectUrl
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'redirectUrl[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: orderId
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'orderId[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+            default: 1
+        -
+          name: limit
+          in: query
+          required: false
+          description: 'The number of items per page'
+          schema:
+            type: integer
+            default: 30
+            minimum: 0
+        -
+          name: Authorization
+          description: 'The JWT of the entity performing the request'
+          in: header
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Logrecord-ID
+          description: 'A  globally unique id of the request, which makes a request traceable throughout the network.'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678, kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-NLX-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+        -
+          name: Link
+          description: 'A [websub](https://www.w3.org/TR/websub/#discovery) header like <https://hub.example.com/>; rel="hub"'
+          in: header
+        -
+          name: 'extend[]'
+          required: false
+          description: 'An array of nested objects to include in the return object'
+          in: query
+          schema:
+            type: array
+        -
+          name: 'fields[]'
+          required: false
+          description: 'An array of fields to return in output, wil return all fields is not supplied'
+          in: query
+          schema:
+            type: array
+        -
+          name: validOn
+          required: false
+          description: 'Returns object as valid on a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validFrom
+          required: false
+          description: 'Returns objects valid from a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validUntil
+          required: false
+          description: 'Returns objects valid until a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+      produces:
+        - application/health+json
+  '/payments/{id}':
+    get:
+      tags:
+        - Payment
+      operationId: getPaymentItem
+      summary: 'Retrieves a Payment resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: Authorization
+          description: 'The JWT of the entity performing the request'
+          in: header
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Logrecord-ID
+          description: 'A  globally unique id of the request, which makes a request traceable throughout the network.'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678, kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-NLX-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+        -
+          name: Link
+          description: 'A [websub](https://www.w3.org/TR/websub/#discovery) header like <https://hub.example.com/>; rel="hub"'
+          in: header
+        -
+          name: 'extend[]'
+          required: false
+          description: 'An array of nested objects to include in the return object'
+          in: query
+          schema:
+            type: array
+        -
+          name: 'fields[]'
+          required: false
+          description: 'An array of fields to return in output, wil return all fields is not supplied'
+          in: query
+          schema:
+            type: array
+        -
+          name: validOn
+          required: false
+          description: 'Returns object as valid on a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validFrom
+          required: false
+          description: 'Returns objects valid from a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validUntil
+          required: false
+          description: 'Returns objects valid until a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+      responses:
+        200:
+          description: 'Payment resource response'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Payment:jsonld-read'
+            application/json+ld:
+              schema:
+                $ref: '#/components/schemas/Payment:jsonld-read'
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+hal:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+vnd.api:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/health+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+health:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+        404:
+          description: 'Resource not found'
+      produces:
+        - application/health+json
+  '/payments/{id}/certificate':
+    get:
+      tags:
+        - Payment
+      operationId: create_certificatePaymentItem
+      summary: 'Retrieves a Payment resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: Authorization
+          description: 'The JWT of the entity performing the request'
+          in: header
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Logrecord-ID
+          description: 'A  globally unique id of the request, which makes a request traceable throughout the network.'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678, kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-NLX-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+        -
+          name: Link
+          description: 'A [websub](https://www.w3.org/TR/websub/#discovery) header like <https://hub.example.com/>; rel="hub"'
+          in: header
+        -
+          name: 'extend[]'
+          required: false
+          description: 'An array of nested objects to include in the return object'
+          in: query
+          schema:
+            type: array
+        -
+          name: 'fields[]'
+          required: false
+          description: 'An array of fields to return in output, wil return all fields is not supplied'
+          in: query
+          schema:
+            type: array
+        -
+          name: validOn
+          required: false
+          description: 'Returns object as valid on a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validFrom
+          required: false
+          description: 'Returns objects valid from a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+        -
+          name: validUntil
+          required: false
+          description: 'Returns objects valid until a given date time'
+          schema:
+            type: string
+            format: date-time
+          in: query
+      responses:
+        200:
+          description: 'Payment resource response'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Payment:jsonld-read'
+            application/json+ld:
+              schema:
+                $ref: '#/components/schemas/Payment:jsonld-read'
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+hal:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+vnd.api:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/health+json:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/json+health:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Payment-read'
+        404:
+          description: 'Resource not found'
+      produces:
+        - application/health+json
   /types:
     get:
       tags:
@@ -4325,6 +5143,198 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Type:jsonld-write'
+    Payment-read:
+      type: object
+      description: ''
+      properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this resource'
+          externalDocs:
+            url: 'http://schema.org/identifier'
+          type: string
+          format: uuid
+        person:
+          description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
+          type: string
+        name:
+          description: 'Name of the person.'
+          type: string
+        type:
+          description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+          type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        price:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: integer
+        configuration:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: array
+          items:
+            type: string
+          nullable: true
+        status:
+          description: 'Status of the payment'
+          type: string
+          nullable: true
+        redirectUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
+        ingenicoUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        orderId:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
+    Payment-write:
+      type: object
+      description: ''
+      properties:
+        person:
+          description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
+          type: string
+        name:
+          description: 'Name of the person.'
+          type: string
+        type:
+          description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+          type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        price:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: integer
+        configuration:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: array
+          items:
+            type: string
+          nullable: true
+        status:
+          description: 'Status of the payment'
+          type: string
+          nullable: true
+        redirectUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
+        ingenicoUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        orderId:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
+    'Payment:jsonld-read':
+      type: object
+      description: ''
+      properties:
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
+        '@context':
+          readOnly: true
+          type: string
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this resource'
+          externalDocs:
+            url: 'http://schema.org/identifier'
+          type: string
+          format: uuid
+        person:
+          description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
+          type: string
+        name:
+          description: 'Name of the person.'
+          type: string
+        type:
+          description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+          type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        price:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: integer
+        configuration:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: array
+          items:
+            type: string
+          nullable: true
+        status:
+          description: 'Status of the payment'
+          type: string
+          nullable: true
+        redirectUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
+        ingenicoUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        orderId:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
+    'Payment:jsonld-write':
+      type: object
+      description: ''
+      properties:
+        '@context':
+          readOnly: true
+          type: string
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
+        person:
+          description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
+          type: string
+        name:
+          description: 'Name of the person.'
+          type: string
+        type:
+          description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+          type: string
+        organization:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        price:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: integer
+        configuration:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: array
+          items:
+            type: string
+          nullable: true
+        status:
+          description: 'Status of the payment'
+          type: string
+          nullable: true
+        redirectUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
+        ingenicoUrl:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+        orderId:
+          description: 'The organizations that is requested to "sign" this claim'
+          type: string
+          nullable: true
     Type-read:
       type: object
       description: ''
@@ -4562,6 +5572,89 @@ definitions:
       certificates: []
       types: []
     required: []
+  Payment-read:
+    properties:
+      id:
+        description: 'The UUID identifier of this resource'
+        type: string
+        example: e2984465-190a-4562-829e-a8cca81aa35d
+        format: uuid
+      person:
+        description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
+        type: string
+        example: 'https://dev.zuid-drecht.nl/api/v1/brp/ingeschrevenpersonen/999992016'
+      name:
+        description: 'Name of the person.'
+        type: string
+        example: 'Jan Klaas'
+      type:
+        description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+        type: string
+        example: 'geboorte akte'
+      organization:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: string
+        example: 'https://example.com/organization'
+      price:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: int
+        example: 'https://example.com/organization'
+      configuration:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: array
+        example: 'https://example.com/organization'
+      status:
+        description: 'Status of the payment'
+        type: string
+        example: unpaid
+      redirectUrl:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: string
+        example: 'https://example.com/organization'
+      orderId:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: string
+        example: 'https://example.com/organization'
+    required: []
+  Payment-write:
+    properties:
+      person:
+        description: 'The person for this certificate, this can be a bsn or ''haal centraal'' uri.'
+        type: string
+        example: 'https://dev.zuid-drecht.nl/api/v1/brp/ingeschrevenpersonen/999992016'
+      name:
+        description: 'Name of the person.'
+        type: string
+        example: 'Jan Klaas'
+      type:
+        description: 'The type of this certificate. This can be one of the following: {"geboorte akte", "verblijfs geschiedenis", "uitreksel brp"}.'
+        type: string
+        example: 'geboorte akte'
+      organization:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: string
+        example: 'https://example.com/organization'
+      price:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: int
+        example: 'https://example.com/organization'
+      configuration:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: array
+        example: 'https://example.com/organization'
+      status:
+        description: 'Status of the payment'
+        type: string
+        example: unpaid
+      redirectUrl:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: string
+        example: 'https://example.com/organization'
+      orderId:
+        description: 'The organizations that is requested to "sign" this claim'
+        type: string
+        example: 'https://example.com/organization'
+    required: []
   Type-read:
     properties:
       id:
@@ -4717,12 +5810,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2021-07-23 11:18:59'
+        example: '2021-12-07 08:29:32'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2021-07-23 11:18:59'
+        example: '2021-12-07 08:29:32'
     required: []
   AuditTrail-write:
     properties:
@@ -4770,12 +5863,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2021-07-23 11:18:59'
+        example: '2021-12-07 08:29:32'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2021-07-23 11:18:59'
+        example: '2021-12-07 08:29:32'
     required: []
   ChangeLog-write:
     properties:
@@ -4793,6 +5886,11 @@ tags:
 
   -
     name: OrganizationConfig
+    description: |+
+
+
+  -
+    name: Payment
     description: |+
 
 
