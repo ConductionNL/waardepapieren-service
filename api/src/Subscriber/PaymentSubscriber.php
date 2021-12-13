@@ -84,6 +84,7 @@ class PaymentSubscriber implements EventSubscriberInterface
         $payment->setConfiguration($paymentArray);
         $payment->setRedirectUrl('https://secure.ogone.com/ncol/test/orderstandard.asp');
         $payment->setOrderId($paymentArray['orderid']);
+        $payment->setStatus('UNPAID');
 
         return $payment;
     }

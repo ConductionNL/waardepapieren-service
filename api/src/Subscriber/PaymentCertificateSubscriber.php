@@ -86,15 +86,20 @@ class PaymentCertificateSubscriber implements EventSubscriberInterface
             $receivedOrderId = $event->getRequest()->query->get('orderID');
             $orderId = $payment->getOrderId();
 
-            if (isset($variables['paramsArray']['STATUS']) && ($variables['paramsArray']['STATUS'] == '5' ||
+            if ($payment->getStatus() == 'UNPAID' && isset($variables['paramsArray']['STATUS']) && ($variables['paramsArray']['STATUS'] == '5' ||
                 $variables['paramsArray']['STATUS'] == '9' || $variables['paramsArray']['STATUS'] == '51' ||
                 $variables['paramsArray']['STATUS'] == '91') && isset($orderId) && isset($receivedOrderId) && $orderId == $receivedOrderId) {
+                $payment->setStatus($variables['paramsArray']['STATUS']);
+                $this->em->persist($payment);
+                $this->em->flush();
+
                 // Create certificate
                 $certificate = new Certificate();
                 $certificate->setType($payment->getType());
                 $certificate->setOrganization($payment->getOrganization());
                 $certificate->setPerson($payment->getPerson());
                 $result = $this->certificateService->create($certificate);
+
 
                 $response = $this->serializer->serialize(
                     $result,
@@ -109,6 +114,10 @@ class PaymentCertificateSubscriber implements EventSubscriberInterface
 
                 $event->setResponse($response);
             } else {
+
+                $payment->setStatus(isset($variables['paramsArray']['STATUS']) ? $variables['paramsArray']['STATUS'] : 'FAILED');
+                $this->em->persist($payment);
+                $this->em->flush();
                 throw new HttpException('500', 'Unsuccessful Payment');
             }
         } else {
